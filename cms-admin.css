@@ -1,705 +1,1237 @@
 /* ══════════════════════════════════════════════════════════════════
-   MADHANKR PERSONAL CMS — WORDPRESS / STANDARD CMS ADMIN STYLES
-   Independent administrative design system completely decoupled from
-   the public portfolio brand style.
-   Standard WP-Admin aesthetic: #1d2327 dark menu, #f0f0f1 canvas,
-   #2271b1 primary blue, system fonts, metaboxes, and wp-list-tables.
+   MADHANKR PERSONAL CMS — MODERN SAAS DASHBOARD DESIGN SYSTEM
+   Ultra-modern, premium creative studio admin interface inspired
+   by sleek modern analytics and creative management dashboards.
+   Clean soft canvas (#f4f6fa), pure white rounded cards (16px radius),
+   vibrant royal blue accents (#2563eb), modern pill tags, SVG wave
+   charts, weekly bar indicators, and segmented progress gauges.
    ══════════════════════════════════════════════════════════════════ */
 
-:root {
-  /* WordPress Core Color Palette */
-  --wp-adminbar-bg: #1d2327;
-  --wp-adminbar-text: #f0f0f1;
-  --wp-adminbar-hover: #72aee6;
-  
-  --wp-menu-bg: #1d2327;
-  --wp-menu-submenu-bg: #2c3338;
-  --wp-menu-text: #f0f0f1;
-  --wp-menu-text-muted: #a7aaad;
-  --wp-menu-hover-bg: #135e96;
-  --wp-menu-active-bg: #2271b1;
-  --wp-menu-active-text: #ffffff;
-  
-  --wp-body-bg: #f0f0f1;
-  --wp-card-bg: #ffffff;
-  --wp-border: #c3c4c7;
-  --wp-border-subtle: #dcdcde;
-  --wp-border-focus: #4f94d4;
-  
-  --wp-primary: #2271b1;
-  --wp-primary-hover: #135e96;
-  --wp-primary-active: #0a4b78;
-  
-  --wp-text: #2c3338;
-  --wp-text-heading: #1d2327;
-  --wp-text-muted: #646970;
-  
-  --wp-success: #008a20;
-  --wp-success-bg: #edfaef;
-  --wp-warning: #dba617;
-  --wp-warning-bg: #fcf9e8;
-  --wp-error: #d63638;
-  --wp-error-bg: #fcf0f1;
-  --wp-info: #72aee6;
-  --wp-info-bg: #f0f6fc;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  --wp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  --wp-font-code: Consolas, Monaco, "Courier New", Courier, monospace;
+:root {
+  /* Core Surface & Canvas Colors */
+  --cms-canvas: #f4f6fa;
+  --cms-surface: #ffffff;
+  --cms-surface-subtle: #f8fafc;
+  --cms-surface-hover: #f1f5f9;
+  
+  /* Borders & Dividers */
+  --cms-border: #e8ecf2;
+  --cms-border-subtle: #f1f4f8;
+  --cms-border-focus: #3b82f6;
+
+  /* Brand & Primary Accents (Vibrant Royal Blue) */
+  --cms-primary: #2563eb;
+  --cms-primary-hover: #1d4ed8;
+  --cms-primary-active: #1e40af;
+  --cms-primary-light: #eff6ff;
+  --cms-primary-subtle: #dbeafe;
+  --cms-primary-glow: rgba(37, 99, 235, 0.18);
+
+  /* Secondary Accents */
+  --cms-accent-cyan: #06b6d4;
+  --cms-accent-purple: #8b5cf6;
+  --cms-accent-emerald: #10b981;
+  --cms-accent-amber: #f59e0b;
+  --cms-accent-rose: #f43f5e;
+
+  /* Typography Colors */
+  --cms-text-heading: #0f172a;
+  --cms-text-body: #334155;
+  --cms-text-muted: #64748b;
+  --cms-text-subtle: #94a3b8;
+  --cms-text-inverse: #ffffff;
+
+  /* Status Colors */
+  --cms-success: #10b981;
+  --cms-success-bg: #ecfdf5;
+  --cms-success-text: #059669;
+
+  --cms-warning: #f59e0b;
+  --cms-warning-bg: #fffbeb;
+  --cms-warning-text: #d97706;
+
+  --cms-danger: #ef4444;
+  --cms-danger-bg: #fef2f2;
+  --cms-danger-text: #dc2626;
+
+  --cms-info: #3b82f6;
+  --cms-info-bg: #eff6ff;
+  --cms-info-text: #2563eb;
+
+  /* Fonts */
+  --cms-font: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --cms-font-mono: 'JetBrains Mono', Consolas, Monaco, monospace;
+
+  /* Shadows */
+  --cms-shadow-card: 0 1px 3px rgba(15, 23, 42, 0.02), 0 4px 14px rgba(15, 23, 42, 0.03);
+  --cms-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.06);
+  --cms-shadow-dropdown: 0 10px 28px rgba(15, 23, 42, 0.08);
+
+  /* Radii */
+  --cms-radius-xs: 6px;
+  --cms-radius-sm: 8px;
+  --cms-radius-md: 12px;
+  --cms-radius-lg: 16px;
+  --cms-radius-xl: 20px;
+  --cms-radius-pill: 9999px;
+
+  /* Compatibility aliases mapped to modern design tokens */
+  --wp-primary: var(--cms-primary);
+  --wp-primary-hover: var(--cms-primary-hover);
+  --wp-border: var(--cms-border);
+  --wp-border-subtle: var(--cms-border-subtle);
+  --wp-text-heading: var(--cms-text-heading);
+  --wp-text: var(--cms-text-body);
+  --wp-text-muted: var(--cms-text-muted);
+  --wp-card-bg: var(--cms-surface);
+  --wp-body-bg: var(--cms-canvas);
+  --wp-font: var(--cms-font);
 }
 
-/* Base Reset for Admin */
-* {
+/* ─── BASE RESET & APPARATUS ─────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body.admin-app {
-  background-color: var(--wp-body-bg);
-  color: var(--wp-text);
-  font-family: var(--wp-font);
-  font-size: 13px;
-  line-height: 1.4em;
+  background-color: var(--cms-canvas);
+  color: var(--cms-text-body);
+  font-family: var(--cms-font);
+  font-size: 13.5px;
+  line-height: 1.5;
   min-height: 100vh;
-  -webkit-font-smoothing: subpixel-antialiased;
+  display: flex;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-/* ─── 1. TOP ADMIN BAR (WPADMINBAR) ────────────────────────────── */
-#wpadminbar {
+/* ─── 1. LEFT MODERN SIDEBAR ────────────────────────────────────── */
+.admin-sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: var(--cms-surface);
+  border-right: 1px solid var(--cms-border);
+  min-height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  height: 32px;
-  background-color: var(--wp-adminbar-bg);
-  color: var(--wp-adminbar-text);
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  font-size: 13px;
-}
-
-.ab-group-left,
-.ab-group-right {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.ab-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--wp-adminbar-text);
-  text-decoration: none;
-  padding: 0 10px;
-  height: 32px;
-  font-size: 13px;
-  transition: background-color 0.15s, color 0.15s;
-}
-
-.ab-item:hover {
-  background-color: #2c3338;
-  color: var(--wp-adminbar-hover);
-}
-
-.ab-item.site-name {
-  font-weight: 600;
-}
-
-.ab-icon-wp {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  background-color: #3858e9;
-  color: #fff;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.ab-avatar-circle {
-  width: 20px;
-  height: 20px;
-  background-color: #646970;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: #fff;
-  font-weight: 600;
-}
-
-/* ─── 2. ADMIN SIDEBAR (ADMINMENU) ─────────────────────────────── */
-.admin-sidebar {
-  position: fixed;
-  top: 32px;
-  left: 0;
   bottom: 0;
-  width: 180px;
-  background-color: var(--wp-menu-bg);
-  z-index: 9990;
-  overflow-y: auto;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 24px 16px 20px;
+  box-sizing: border-box;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s ease;
+  overflow-y: auto;
 }
 
 .sidebar-header {
-  padding: 14px 16px;
-  border-bottom: 1px solid #2c3338;
-}
-
-.sidebar-brand-title {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  padding: 0 8px 24px;
 }
 
-.sidebar-brand-badge {
-  font-size: 10px;
-  background: #2c3338;
-  color: #72aee6;
-  padding: 2px 6px;
-  border-radius: 3px;
+.sidebar-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--cms-text-heading);
+}
+
+.brand-icon-hexagon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 10px var(--cms-primary-glow);
+}
+
+.brand-icon-hexagon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.sidebar-brand-text {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: var(--cms-text-heading);
+}
+
+.sidebar-collapse-toggle {
+  background: none;
+  border: 1px solid var(--cms-border-subtle);
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--cms-text-muted);
+  transition: all 0.15s ease;
+}
+
+.sidebar-collapse-toggle:hover {
+  background: var(--cms-surface-hover);
+  color: var(--cms-text-heading);
+  border-color: var(--cms-border);
+}
+
+/* Nav Groups & Links */
+.sidebar-nav-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.nav-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--cms-text-subtle);
+  padding: 0 12px 6px;
 }
 
 .admin-nav-list {
   list-style: none;
-  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .admin-nav-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 14px;
-  color: var(--wp-menu-text-muted);
+  padding: 10px 14px;
+  border-radius: var(--cms-radius-md);
   text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  transition: background-color 0.15s, color 0.15s;
-  position: relative;
-}
-
-.admin-nav-item:hover {
-  background-color: #135e96;
-  color: #fff;
-}
-
-.admin-nav-item.active {
-  background-color: var(--wp-menu-active-bg);
-  color: var(--wp-menu-active-text);
+  font-size: 13.5px;
   font-weight: 600;
-}
-
-.admin-nav-item.active::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: calc(50% - 6px);
-  border: 6px solid transparent;
-  border-right-color: var(--wp-body-bg);
+  color: var(--cms-text-muted);
+  transition: all 0.15s ease;
+  position: relative;
 }
 
 .admin-nav-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .admin-nav-icon {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   fill: currentColor;
-  opacity: 0.85;
+  transition: transform 0.15s ease;
+}
+
+.admin-nav-item:hover {
+  background-color: var(--cms-surface-hover);
+  color: var(--cms-text-heading);
+}
+
+.admin-nav-item:hover .admin-nav-icon {
+  transform: translateX(1px);
+}
+
+/* Active Nav Item (Shopeers style: light blue pill + blue text) */
+.admin-nav-item.active {
+  background-color: var(--cms-primary-light);
+  color: var(--cms-primary);
+  font-weight: 700;
 }
 
 .admin-nav-item.active .admin-nav-icon {
-  opacity: 1;
+  fill: var(--cms-primary);
 }
 
-.wp-count-pill {
-  background-color: #d63638;
-  color: #fff;
-  border-radius: 10px;
-  padding: 1px 6px;
-  font-size: 10px;
-  font-weight: 600;
+.nav-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--cms-radius-pill);
+  line-height: 1.2;
 }
 
-.wp-count-pill.gray {
-  background-color: #646970;
+.nav-badge.green {
+  background-color: var(--cms-success-bg);
+  color: var(--cms-success-text);
 }
 
-.sidebar-collapse-bar {
-  padding: 12px 16px;
-  border-top: 1px solid #2c3338;
-  color: var(--wp-menu-text-muted);
-  font-size: 12px;
+.nav-badge.blue {
+  background-color: var(--cms-primary-subtle);
+  color: var(--cms-primary);
+}
+
+.nav-badge.gray {
+  background-color: var(--cms-surface-hover);
+  color: var(--cms-text-muted);
+}
+
+/* Sidebar Bottom Studio / Pro Card */
+.sidebar-footer-wrap {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-upgrade-card {
+  background: linear-gradient(145deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+  border-radius: var(--cms-radius-lg);
+  padding: 18px 16px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 16px var(--cms-primary-glow);
+}
+
+.upgrade-card-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  margin-bottom: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.upgrade-card-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: #ffffff;
+}
+
+.upgrade-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.upgrade-card-desc {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.upgrade-card-btn {
+  display: block;
+  width: 100%;
+  background: #ffffff;
+  color: #1e3a8a;
+  border: none;
+  border-radius: var(--cms-radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
   cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
 }
 
-.sidebar-collapse-bar:hover {
-  color: #72aee6;
+.upgrade-card-btn:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
 }
 
-/* ─── 3. MAIN ADMIN WORKSPACE (WPBODY) ─────────────────────────── */
+/* ─── 2. MAIN LAYOUT & MODERN TOP NAVBAR ────────────────────────── */
+.admin-main-wrapper {
+  margin-left: 250px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.25s ease;
+}
+
+.cms-topbar {
+  background-color: var(--cms-surface);
+  border-bottom: 1px solid var(--cms-border);
+  height: 68px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  backdrop-filter: blur(8px);
+}
+
+/* Search bar (Pill shaped with ⌘K badge) */
+.topbar-search-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--cms-surface-subtle);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-pill);
+  padding: 7px 16px;
+  width: 320px;
+  gap: 10px;
+  transition: all 0.15s ease;
+}
+
+.topbar-search-wrap:focus-within {
+  border-color: var(--cms-border-focus);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px var(--cms-primary-glow);
+}
+
+.topbar-search-icon {
+  width: 16px;
+  height: 16px;
+  fill: var(--cms-text-subtle);
+}
+
+.topbar-search-input {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--cms-text-heading);
+  outline: none;
+  width: 100%;
+}
+
+.topbar-search-input::placeholder {
+  color: var(--cms-text-subtle);
+}
+
+.topbar-kbd-badge {
+  font-size: 11px;
+  font-family: var(--cms-font-mono);
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--cms-text-muted);
+}
+
+/* Topbar Actions Right */
+.topbar-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--cms-radius-full);
+  border: 1px solid var(--cms-border);
+  background: var(--cms-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cms-text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.topbar-icon-btn:hover {
+  background: var(--cms-surface-hover);
+  color: var(--cms-text-heading);
+  border-color: #cbd5e1;
+}
+
+.topbar-icon-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.notif-pulse-dot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  background-color: var(--cms-primary);
+  border-radius: 50%;
+  border: 1.5px solid var(--cms-surface);
+}
+
+.user-profile-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 4px 12px;
+  border-radius: var(--cms-radius-pill);
+  background: var(--cms-surface-subtle);
+  border: 1px solid var(--cms-border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.user-profile-widget:hover {
+  background: var(--cms-surface-hover);
+  border-color: #cbd5e1;
+}
+
+.user-profile-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.user-profile-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--cms-text-heading);
+  line-height: 1.2;
+}
+
+.user-profile-role {
+  font-size: 10.5px;
+  color: var(--cms-text-subtle);
+  line-height: 1.2;
+}
+
+.logout-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--cms-radius-pill);
+  border: 1px solid var(--cms-border);
+  background: var(--cms-surface);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cms-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logout-action-btn:hover {
+  background: var(--cms-danger-bg);
+  border-color: #fca5a5;
+  color: var(--cms-danger-text);
+}
+
+/* ─── 3. ADMIN MAIN CONTENT CONTAINER ───────────────────────────── */
 .admin-main {
-  margin-left: 180px;
-  margin-top: 32px;
-  padding: 24px 30px 60px;
-  min-height: calc(100vh - 32px);
+  padding: 28px 32px 60px;
+  flex: 1;
 }
 
-/* Views toggling */
 .admin-view {
   display: none;
 }
 
 .admin-view.active {
   display: block;
+  animation: cmsViewFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Page Header */
-.wp-heading-wrap {
+@keyframes cmsViewFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modern Page Heading Row */
+.cms-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.cms-heading-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: var(--cms-text-heading);
+}
+
+.cms-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Action Filter Pills */
+.filter-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cms-text-heading);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.filter-pill-btn:hover {
+  background: var(--cms-surface-hover);
+  border-color: #cbd5e1;
+}
+
+.filter-pill-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--cms-text-muted);
+}
+
+/* Modern Buttons */
+.btn-primary-blue {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: var(--cms-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--cms-radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 12px var(--cms-primary-glow);
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-primary-blue:hover {
+  background: var(--cms-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
+}
+
+.btn-primary-blue:active {
+  transform: translateY(0);
+}
+
+.btn-secondary-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--cms-surface);
+  color: var(--cms-text-heading);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-secondary-white:hover {
+  background: var(--cms-surface-hover);
+  border-color: #cbd5e1;
+}
+
+/* ─── 4. ROW OF 4 TOP METRIC CARDS (SHOPEERS STYLE) ─────────────── */
+.metric-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.metric-card-modern {
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-lg);
+  padding: 20px;
+  box-shadow: var(--cms-shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.metric-card-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--cms-shadow-hover);
+}
+
+.metric-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.metric-title-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cms-text-muted);
+}
+
+.metric-icon-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--cms-primary-light);
+  color: var(--cms-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-icon-bubble svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+.metric-number-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.metric-stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: var(--cms-text-heading);
+  line-height: 1.1;
+}
+
+.metric-trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--cms-radius-pill);
+}
+
+.metric-trend-badge.up {
+  background: var(--cms-success-bg);
+  color: var(--cms-success-text);
+}
+
+.metric-trend-badge.down {
+  background: var(--cms-danger-bg);
+  color: var(--cms-danger-text);
+}
+
+.metric-comparison-subtext {
+  font-size: 12px;
+  color: var(--cms-text-subtle);
+}
+
+/* ─── 5. MAIN 2-COLUMN ANALYTICS & WIDGETS GRID ─────────────────── */
+.dashboard-main-layout {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Left Column Cards Stack */
+.dashboard-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Right Column Cards Stack */
+.dashboard-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* General Modern Card Container */
+.cms-card {
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-lg);
+  padding: 22px;
+  box-shadow: var(--cms-shadow-card);
+}
+
+.cms-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
-  flex-wrap: wrap;
-  gap: 12px;
 }
 
-.wp-heading-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.card-heading-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--cms-text-heading);
 }
 
-.wp-heading-inline {
-  font-size: 23px;
-  font-weight: 400;
-  color: var(--wp-text-heading);
-  line-height: 1.3;
-}
-
-.page-title-action {
-  display: inline-block;
-  padding: 4px 10px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--wp-primary);
-  background: #f6f7f7;
-  border: 1px solid var(--wp-primary);
-  border-radius: 3px;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.15s ease;
-}
-
-.page-title-action:hover {
-  background: #f0f0f1;
-  color: var(--wp-primary-hover);
-  border-color: var(--wp-primary-hover);
-}
-
-/* Standard WP Notice Banners */
-.notice {
-  background: #ffffff;
-  border: 1px solid var(--wp-border);
-  border-left-width: 4px;
-  box-shadow: 0 1px 1px rgba(0,0,0,.04);
-  margin: 12px 0 20px;
-  padding: 10px 14px;
-  font-size: 13px;
-  position: relative;
-}
-
-.notice-success {
-  border-left-color: var(--wp-success);
-}
-
-.notice-info {
-  border-left-color: #72aee6;
-}
-
-.notice-warning {
-  border-left-color: var(--wp-warning);
-}
-
-.notice-error {
-  border-left-color: var(--wp-error);
-}
-
-.notice p {
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* ─── 4. STANDARD WORDPRESS BUTTONS ────────────────────────────── */
-.button,
-button.button,
-a.button {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 13px;
-  line-height: 2.15384615;
-  min-height: 30px;
-  margin: 0;
-  padding: 0 10px;
-  cursor: pointer;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 3px;
-  white-space: nowrap;
-  background: #f6f7f7;
-  border-color: #8c8f94;
-  color: #2c3338;
-  font-family: var(--wp-font);
-  font-weight: 500;
-  transition: all 0.15s ease;
-}
-
-.button:hover {
-  background: #f0f0f1;
-  border-color: #8c8f94;
-  color: #1d2327;
-}
-
-.button-primary,
-button.button-primary {
-  background: var(--wp-primary);
-  border-color: var(--wp-primary);
-  color: #ffffff;
-}
-
-.button-primary:hover {
-  background: var(--wp-primary-hover);
-  border-color: var(--wp-primary-hover);
-  color: #ffffff;
-}
-
-.button-secondary,
-button.button-secondary {
-  background: #f6f7f7;
-  border-color: var(--wp-primary);
-  color: var(--wp-primary);
-}
-
-.button-secondary:hover {
-  background: #f0f0f1;
-  border-color: var(--wp-primary-hover);
-  color: var(--wp-primary-hover);
-}
-
-.button-link-delete {
-  color: #b32d2e;
+.card-options-btn {
+  background: none;
   border: none;
-  background: transparent;
-  padding: 0 6px;
+  color: var(--cms-text-subtle);
   cursor: pointer;
-  font-size: 13px;
+  padding: 4px;
+  border-radius: 4px;
 }
 
-.button-link-delete:hover {
-  color: #d63638;
-  text-decoration: underline;
+.card-options-btn:hover {
+  color: var(--cms-text-heading);
 }
 
-.button-large {
-  padding: 2px 14px;
-  min-height: 34px;
-  font-size: 14px;
-}
-
-/* ─── 5. WORDPRESS METABOXES / POSTBOXES ───────────────────────── */
-.postbox {
-  background: var(--wp-card-bg);
-  border: 1px solid var(--wp-border);
-  box-shadow: 0 1px 1px rgba(0,0,0,.04);
-  margin-bottom: 20px;
-  border-radius: 2px;
-}
-
-.postbox-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--wp-border-subtle);
-  padding: 10px 14px;
-}
-
-.postbox-header h2 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--wp-text-heading);
-  margin: 0;
-}
-
-.postbox .inside {
-  padding: 14px;
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-/* ─── 6. DASHBOARD WIDGETS & GRIDS ─────────────────────────────── */
-.dashboard-metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.metric-card {
-  background: #ffffff;
-  border: 1px solid var(--wp-border);
-  box-shadow: 0 1px 1px rgba(0,0,0,.04);
-  padding: 16px 18px;
-  border-radius: 2px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.metric-number {
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--wp-text-heading);
-  line-height: 1.1;
-  margin: 4px 0 2px;
-}
-
-.metric-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--wp-text-muted);
-  text-transform: uppercase;
-}
-
-.metric-sub {
-  font-size: 12px;
-  color: var(--wp-success);
-}
-
-.dashboard-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-@media (max-width: 960px) {
-  .dashboard-columns {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Quick Draft Form */
-.quick-draft-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Activity Items */
-.activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.activity-item {
+/* ─── 6. WAVE LINE CHART (TOTAL REACH) ──────────────────────────── */
+.chart-header-metrics {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f0f0f1;
-  font-size: 12.5px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.activity-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.chart-big-number {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: var(--cms-text-heading);
 }
 
-.act-time {
-  color: var(--wp-text-muted);
-  font-size: 11.5px;
-  min-width: 80px;
-}
-
-/* Analytics Chart */
-.chart-bars-wrap {
-  display: flex;
-  align-items: flex-end;
-  height: 140px;
-  gap: 8px;
-  padding-top: 10px;
-  border-bottom: 1px solid var(--wp-border-subtle);
-  margin-top: 10px;
-}
-
-.bar-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.bar-pill {
+.svg-wave-chart-container {
+  position: relative;
   width: 100%;
-  background-color: var(--wp-primary);
-  border-radius: 2px 2px 0 0;
-  transition: background-color 0.15s;
+  height: 190px;
+  margin-bottom: 20px;
 }
 
-.bar-col:hover .bar-pill {
-  background-color: var(--wp-primary-hover);
+.svg-wave-chart {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.bar-date {
-  font-size: 10px;
-  color: var(--wp-text-muted);
+/* Interactive Floating Tooltip Card in Chart */
+.chart-tooltip-pin {
+  position: absolute;
+  top: 28px;
+  left: 48%;
+  background: #ffffff;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
+  padding: 10px 14px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  font-size: 11.5px;
+  pointer-events: none;
+  z-index: 10;
+  min-width: 140px;
 }
 
-/* ─── 7. WORDPRESS LIST TABLE (WP-LIST-TABLE) ──────────────────── */
-.subsubsub {
-  list-style: none;
-  display: flex;
-  gap: 8px;
-  font-size: 13px;
-  margin: 10px 0 14px;
+.tooltip-date-header {
+  font-weight: 700;
+  color: var(--cms-text-heading);
+  margin-bottom: 4px;
 }
 
-.subsubsub li {
-  display: inline;
-}
-
-.subsubsub a {
-  text-decoration: none;
-  color: var(--wp-primary);
-  padding: 2px 4px;
-}
-
-.subsubsub a:hover {
-  color: var(--wp-primary-hover);
-}
-
-.subsubsub a.current {
-  font-weight: 600;
-  color: #000;
-}
-
-.tablenav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.tablenav .actions {
+.tooltip-row {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-bottom: 2px;
+  color: var(--cms-text-body);
 }
 
-.wp-list-table {
+.tooltip-row.muted {
+  color: var(--cms-text-muted);
+}
+
+.tooltip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.tooltip-dot.blue { background: #2563eb; }
+.tooltip-dot.gray { background: #94a3b8; }
+
+/* Sub Metric Bars under chart (Shopeers style) */
+.chart-submetrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cms-border-subtle);
+}
+
+.submetric-box {
+  padding: 10px 12px;
+  border-radius: var(--cms-radius-md);
+  background: var(--cms-surface-subtle);
+  border-left: 3px solid #2563eb;
+}
+
+.submetric-box.green { border-left-color: #10b981; }
+.submetric-box.orange { border-left-color: #f97316; }
+
+.submetric-val-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--cms-text-heading);
+  margin-bottom: 2px;
+}
+
+.submetric-label {
+  font-size: 11.5px;
+  color: var(--cms-text-muted);
+}
+
+/* ─── 7. RIGHT COLUMN: WEEKLY ACTIVITY BARS ─────────────────────── */
+.weekly-bars-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 160px;
+  padding: 10px 6px 0;
+  gap: 12px;
+}
+
+.weekly-day-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.weekly-bar-pill {
+  width: 100%;
+  max-width: 28px;
+  background: #e2e8f0;
+  border-radius: var(--cms-radius-full);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.weekly-day-col:hover .weekly-bar-pill {
+  background: #cbd5e1;
+}
+
+/* Active Highlight Day (Tuesday in screenshot) */
+.weekly-day-col.highlight .weekly-bar-pill {
+  background: var(--cms-primary);
+  box-shadow: 0 4px 12px var(--cms-primary-glow);
+}
+
+.weekly-highlight-badge {
+  background: var(--cms-text-heading);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.weekly-day-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--cms-text-subtle);
+}
+
+.weekly-day-col.highlight .weekly-day-label {
+  color: var(--cms-primary);
+  font-weight: 700;
+}
+
+/* ─── 8. RIGHT COLUMN: SEGMENTED ENGAGEMENT GAUGE ───────────────── */
+.gauge-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0 8px;
+}
+
+.gauge-svg-wrap {
+  width: 190px;
+  height: 105px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.gauge-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.gauge-center-stat {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+
+.gauge-percent-text {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--cms-text-heading);
+  letter-spacing: -0.6px;
+  line-height: 1;
+}
+
+.gauge-subtext {
+  font-size: 12px;
+  color: var(--cms-text-muted);
+  margin-top: 6px;
+  margin-bottom: 14px;
+}
+
+.gauge-action-btn {
+  background: var(--cms-surface-subtle);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-pill);
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cms-text-heading);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.gauge-action-btn:hover {
+  background: var(--cms-surface-hover);
+  border-color: #cbd5e1;
+}
+
+/* ─── 9. RIGHT COLUMN: CREATIVE AI ASSISTANT WIDGET ─────────────── */
+.ai-assistant-card {
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-lg);
+  padding: 20px;
+  box-shadow: var(--cms-shadow-card);
+}
+
+.ai-orb-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  position: relative;
+}
+
+/* 3D Glowing Sphere */
+.floating-3d-orb {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #60a5fa 0%, #2563eb 50%, #1e3a8a 100%);
+  box-shadow: 
+    0 12px 28px rgba(37, 99, 235, 0.4),
+    inset -4px -4px 10px rgba(0, 0, 0, 0.3),
+    inset 4px 4px 10px rgba(255, 255, 255, 0.6);
+  animation: orbHoverFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes orbHoverFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-8px) scale(1.03); }
+}
+
+.ai-prompt-pill-bar {
+  display: flex;
+  align-items: center;
+  background: var(--cms-surface-subtle);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-pill);
+  padding: 6px 8px 6px 14px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ai-prompt-pill-bar:focus-within {
+  border-color: var(--cms-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px var(--cms-primary-glow);
+}
+
+.ai-prompt-input {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--cms-text-heading);
+  outline: none;
+  flex: 1;
+}
+
+.ai-prompt-input::placeholder {
+  color: var(--cms-text-subtle);
+}
+
+.ai-send-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--cms-primary);
+  border: none;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ai-send-btn:hover {
+  background: var(--cms-primary-hover);
+  transform: scale(1.05);
+}
+
+.ai-send-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* ─── 10. MODERN DATA TABLE ("TOP CONTENT & CASE STUDIES") ──────── */
+.cms-table-wrapper {
+  overflow-x: auto;
+}
+
+.cms-table-modern {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
-  border: 1px solid var(--wp-border);
-  box-shadow: 0 1px 1px rgba(0,0,0,.04);
-}
-
-.wp-list-table th,
-.wp-list-table td {
-  padding: 10px 12px;
-  text-align: left;
   font-size: 13px;
+}
+
+.cms-table-modern th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--cms-text-subtle);
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.cms-table-modern td {
+  padding: 14px;
+  border-bottom: 1px solid var(--cms-border-subtle);
   vertical-align: middle;
+  color: var(--cms-text-body);
 }
 
-.wp-list-table th {
-  background: #f6f7f7;
-  font-weight: 600;
-  color: var(--wp-text-heading);
-  border-bottom: 1px solid var(--wp-border);
+.cms-table-modern tbody tr {
+  transition: background-color 0.1s ease;
 }
 
-.wp-list-table tbody tr {
-  border-bottom: 1px solid var(--wp-border-subtle);
-  transition: background-color 0.1s;
+.cms-table-modern tbody tr:hover {
+  background-color: var(--cms-surface-subtle);
 }
 
-.wp-list-table tbody tr:hover {
-  background-color: #f6f7f7;
-}
-
-.wp-list-table td.post-title-cell strong a {
-  color: #1d2327;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.wp-list-table td.post-title-cell strong a:hover {
-  color: var(--wp-primary);
-}
-
-.row-actions {
+.table-id-badge {
   font-size: 12px;
-  color: #a7aaad;
-  margin-top: 4px;
+  font-family: var(--cms-font-mono);
+  color: var(--cms-text-subtle);
+  font-weight: 500;
 }
 
-.row-actions a {
-  color: var(--wp-primary);
+.table-title-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.table-item-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--cms-surface-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cms-text-heading);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.table-item-title-link {
+  font-weight: 700;
+  color: var(--cms-text-heading);
   text-decoration: none;
+  font-size: 13.5px;
 }
 
-.row-actions a:hover {
-  color: var(--wp-primary-hover);
-  text-decoration: underline;
+.table-item-title-link:hover {
+  color: var(--cms-primary);
 }
 
-.row-actions .trash a {
-  color: #b32d2e;
-}
-
-/* Status Badges */
-.status-pill {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
+.table-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--cms-radius-pill);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.status-pill.published {
-  background-color: #edfaef;
-  color: #008a20;
+.table-status-pill.published {
+  background: var(--cms-success-bg);
+  color: var(--cms-success-text);
 }
 
-.status-pill.draft {
-  background-color: #f0f0f1;
-  color: #646970;
+.table-status-pill.draft {
+  background: var(--cms-surface-hover);
+  color: var(--cms-text-muted);
 }
 
-/* ─── 8. FORM CONTROLS & FORM TABLE ────────────────────────────── */
+/* ─── 11. FORMS, INPUTS & EDITOR IN MODERN STYLE ────────────────── */
 input[type=text],
 input[type=search],
 input[type=email],
@@ -707,262 +1239,223 @@ input[type=url],
 input[type=password],
 select,
 textarea {
-  background-color: #fff;
-  border: 1px solid #8c8f94;
-  border-radius: 3px;
-  color: var(--wp-text);
-  font-family: var(--wp-font);
-  font-size: 13px;
-  padding: 6px 8px;
+  background-color: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
+  color: var(--cms-text-heading);
+  font-family: var(--cms-font);
+  font-size: 13.5px;
+  padding: 9px 12px;
   line-height: 1.4;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: all 0.15s ease;
+  width: 100%;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--wp-border-focus);
-  box-shadow: 0 0 0 1px var(--wp-border-focus);
+  border-color: var(--cms-border-focus);
+  box-shadow: 0 0 0 3px var(--cms-primary-glow);
 }
 
-.regular-text {
-  width: 25em;
-  max-width: 100%;
+.large-text { width: 100%; }
+
+/* Notices in modern alert style */
+.notice {
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-left: 4px solid var(--cms-primary);
+  border-radius: var(--cms-radius-md);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  box-shadow: var(--cms-shadow-card);
 }
 
-.large-text {
-  width: 100%;
-}
+.notice-success { border-left-color: var(--cms-success); }
+.notice-info { border-left-color: var(--cms-primary); }
+.notice-warning { border-left-color: var(--cms-warning); }
+.notice-error { border-left-color: var(--cms-danger); }
 
-.form-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.form-table th {
-  width: 200px;
-  padding: 16px 10px 16px 0;
-  vertical-align: top;
-  text-align: left;
+/* Buttons */
+.button,
+button.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--wp-text-heading);
+  border-radius: var(--cms-radius-md);
+  cursor: pointer;
+  border: 1px solid var(--cms-border);
+  background: var(--cms-surface);
+  color: var(--cms-text-heading);
+  font-family: inherit;
+  transition: all 0.15s ease;
+  text-decoration: none;
 }
 
-.form-table td {
-  padding: 14px 0 14px 10px;
-  vertical-align: top;
+.button:hover {
+  background: var(--cms-surface-hover);
+  border-color: #cbd5e1;
 }
 
-.form-table p.description {
-  margin: 4px 0 0;
-  color: var(--wp-text-muted);
-  font-size: 12px;
+.button-primary,
+button.button-primary {
+  background: var(--cms-primary);
+  border-color: var(--cms-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--cms-primary-glow);
 }
 
-/* ─── 9. CONTENT EDITOR VIEW (WP-EDITOR) ───────────────────────── */
+.button-primary:hover {
+  background: var(--cms-primary-hover);
+  border-color: var(--cms-primary-hover);
+  color: #ffffff;
+}
+
+.page-title-action {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--cms-primary);
+  background: var(--cms-primary-light);
+  border: 1px solid var(--cms-primary-subtle);
+  border-radius: var(--cms-radius-md);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.page-title-action:hover {
+  background: var(--cms-primary-subtle);
+}
+
+/* Postboxes */
+.postbox {
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-lg);
+  box-shadow: var(--cms-shadow-card);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.postbox-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--cms-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cms-surface-subtle);
+}
+
+.postbox-header h2 {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--cms-text-heading);
+  margin: 0;
+}
+
+.postbox .inside {
+  padding: 20px;
+}
+
+/* Content Editor */
 .wp-editor-wrap {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 310px;
   gap: 20px;
   align-items: start;
 }
 
-@media (max-width: 900px) {
-  .wp-editor-wrap {
-    grid-template-columns: 1fr;
-  }
-}
-
 .editor-title-input {
-  width: 100%;
-  font-size: 24px;
-  font-weight: 600;
-  padding: 10px 12px;
-  border: 1px solid var(--wp-border);
-  background: #ffffff;
-  margin-bottom: 14px;
-  border-radius: 2px;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 12px 16px;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
+  margin-bottom: 16px;
 }
 
 .editor-toolbar {
-  background: #f6f7f7;
-  border: 1px solid var(--wp-border);
+  background: var(--cms-surface-subtle);
+  border: 1px solid var(--cms-border);
   border-bottom: none;
-  padding: 6px 8px;
+  padding: 8px 12px;
   display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
+  gap: 6px;
+  border-radius: var(--cms-radius-md) var(--cms-radius-md) 0 0;
 }
 
 .ed-btn {
-  background: #ffffff;
-  border: 1px solid var(--wp-border);
-  border-radius: 2px;
-  padding: 3px 8px;
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: 6px;
+  padding: 4px 10px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  color: #2c3338;
 }
 
-.ed-btn:hover {
-  background: #f0f0f1;
-  color: #1d2327;
-}
+.ed-btn:hover { background: var(--cms-surface-hover); }
 
 .wp-content-textarea {
-  width: 100%;
-  min-height: 340px;
-  border: 1px solid var(--wp-border);
-  border-radius: 0 0 2px 2px;
-  padding: 14px;
-  font-family: var(--wp-font-code);
-  font-size: 13px;
-  line-height: 1.6;
-  resize: vertical;
-}
-
-.editor-preview-container {
-  margin-top: 18px;
-  background: #ffffff;
-  border: 1px solid var(--wp-border);
-  border-radius: 2px;
-}
-
-.editor-preview-header {
-  padding: 8px 12px;
-  background: #f6f7f7;
-  border-bottom: 1px solid var(--wp-border);
-  font-weight: 600;
-  font-size: 12px;
-  color: var(--wp-text-muted);
-}
-
-.editor-preview-body {
-  padding: 18px;
-  font-size: 14px;
+  border-radius: 0 0 var(--cms-radius-md) var(--cms-radius-md) !important;
+  font-family: var(--cms-font-mono) !important;
+  min-height: 320px;
   line-height: 1.6;
 }
 
-.editor-preview-body h2 {
-  font-size: 18px;
-  margin: 16px 0 8px;
-}
-
-.editor-preview-body p {
-  margin-bottom: 12px;
-}
-
-.editor-preview-body blockquote {
-  border-left: 4px solid var(--wp-primary);
-  padding-left: 14px;
-  color: var(--wp-text-muted);
-  margin: 12px 0;
-}
-
-/* ─── 10. MEDIA LIBRARY VIEW ───────────────────────────────────── */
-.wp-media-dropzone {
-  background: #ffffff;
-  border: 2px dashed var(--wp-border);
-  border-radius: 2px;
-  text-align: center;
-  padding: 30px 20px;
-  margin-bottom: 20px;
-}
-
-.wp-media-dropzone h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--wp-text-heading);
-  margin-bottom: 6px;
-}
-
-.wp-media-dropzone p {
-  font-size: 12px;
-  color: var(--wp-text-muted);
-  margin-bottom: 14px;
-}
-
+/* Media Library Grid */
 .media-grid-wp {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
 }
 
 .media-thumbnail-card {
-  background: #ffffff;
-  border: 1px solid var(--wp-border);
-  border-radius: 2px;
+  background: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: all 0.15s ease;
 }
 
 .media-thumbnail-card:hover {
-  border-color: var(--wp-primary);
-  box-shadow: 0 0 0 1px var(--wp-primary);
+  transform: translateY(-2px);
+  border-color: var(--cms-primary);
+  box-shadow: var(--cms-shadow-hover);
 }
 
 .media-thumb-preview {
-  height: 95px;
-  background: #f0f0f1;
+  height: 100px;
+  background: var(--cms-surface-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  color: #646970;
+  font-size: 26px;
+  color: var(--cms-text-subtle);
 }
 
 .media-thumb-name {
-  padding: 6px 8px;
-  font-size: 11px;
-  color: #1d2327;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--cms-text-heading);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-top: 1px solid var(--wp-border-subtle);
+  border-top: 1px solid var(--cms-border-subtle);
 }
 
-/* ─── 11. SEO SETTINGS VIEW ────────────────────────────────────── */
-.google-preview-box {
-  background: #ffffff;
-  border: 1px solid #dfe1e5;
-  border-radius: 8px;
-  padding: 16px;
-  max-width: 600px;
-  margin-top: 10px;
-}
-
-.google-breadcrumb {
-  font-size: 12px;
-  color: #202124;
-  margin-bottom: 4px;
-}
-
-.google-title-link {
-  font-size: 18px;
-  color: #1a0dab;
-  font-weight: 400;
-  line-height: 1.3;
-  margin-bottom: 6px;
-  display: block;
-  text-decoration: none;
-}
-
-.google-title-link:hover {
-  text-decoration: underline;
-}
-
-.google-snippet-desc {
-  font-size: 13px;
-  color: #4d5156;
-  line-height: 1.5;
-}
-
-/* ─── 12. TOAST NOTIFICATIONS (WP STYLE) ───────────────────────── */
+/* Modern Toasts */
 .wp-toast-container {
   position: fixed;
   bottom: 24px;
@@ -974,43 +1467,68 @@ textarea:focus {
 }
 
 .wp-toast {
-  background: #1d2327;
+  background: #0f172a;
   color: #ffffff;
-  padding: 10px 16px;
-  border-radius: 4px;
+  padding: 12px 18px;
+  border-radius: var(--cms-radius-md);
   font-size: 13px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
-  gap: 8px;
-  animation: wpToastFadeIn 0.2s ease-out;
+  gap: 10px;
+  animation: toastPop 0.2s ease-out;
 }
 
-@keyframes wpToastFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+@keyframes toastPop {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── 13. RESPONSIVE BREAKPOINTS (WORDPRESS 782PX) ─────────────── */
-@media (max-width: 782px) {
-  #wpadminbar {
-    height: 46px;
+/* ─── 12. RESPONSIVENESS (DESKTOP & MOBILE) ─────────────────────── */
+@media (max-width: 1200px) {
+  .metric-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
+  .dashboard-main-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
   .admin-sidebar {
-    top: 46px;
     transform: translateX(-100%);
-    transition: transform 0.2s ease;
   }
-  
   .admin-sidebar.open {
     transform: translateX(0);
-    box-shadow: 4px 0 16px rgba(0,0,0,0.2);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
   }
-  
-  .admin-main {
+  .admin-main-wrapper {
     margin-left: 0;
-    margin-top: 46px;
-    padding: 16px;
+  }
+  .topbar-search-wrap {
+    width: 200px;
+  }
+  .cms-topbar {
+    padding: 0 16px;
+  }
+  .admin-main {
+    padding: 20px 16px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .metric-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .topbar-search-wrap {
+    display: none;
+  }
+  .chart-submetrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .cms-page-heading {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

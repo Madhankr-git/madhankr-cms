@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard ‹ MadhanKR CMS — WordPress</title>
+  <title>Dashboard ‹ MadhanKR CMS</title>
   <link rel="stylesheet" href="../cms-admin.css" />
   <script>
     // Authentication guard: Protect admin dashboard against unauthenticated visitors
@@ -22,355 +22,683 @@
 </head>
 <body class="admin-app">
 
-  <!-- ─── 1. TOP ADMIN BAR (WPADMINBAR) ──────────────────────────── -->
-  <div id="wpadminbar">
-    <div class="ab-group-left">
-      <a href="#dashboard" class="ab-item" title="CMS Admin">
-        <span class="ab-icon-wp">W</span>
-      </a>
-      <a href="../" target="_blank" class="ab-item site-name" title="View Public Website">
-        <span>MadhanKR Portfolio</span>
-        <span style="font-size: 11px; opacity: 0.8;">↗</span>
-      </a>
-      <a href="#editor" class="ab-item" onclick="switchAdminView('editor')">
-        <span style="font-weight: bold; margin-right: 4px;">+</span> New Post
-      </a>
-    </div>
-
-    <div class="ab-group-right">
-      <span class="ab-item" id="adminUserGreeting">
-        Howdy, <strong id="adminUserDisplayName">Madhan</strong>
-        <span class="ab-avatar-circle" id="adminUserAvatar">M</span>
-      </span>
-      <a href="login.html?action=logout" class="ab-item" id="adminLogoutLink" title="Log Out of Admin" onclick="handleAdminLogout(event)" style="font-size: 12px; color: var(--wp-adminbar-text); opacity: 0.85;">
-        Log Out
-      </a>
-      <button class="button" id="sidebarToggle" style="margin-left: 8px; font-size: 11px; display: none;" aria-label="Toggle Menu">
-        ☰ Menu
-      </button>
-    </div>
-  </div>
-
-  <!-- ─── 2. WORDPRESS ADMIN SIDEBAR (ADMINMENU) ─────────────────── -->
+  <!-- ─── 1. LEFT MODERN SAAS SIDEBAR ─────────────────────────────── -->
   <aside class="admin-sidebar" id="adminSidebar">
     <div>
+      <!-- Brand Header -->
       <div class="sidebar-header">
-        <div class="sidebar-brand-title">
-          <span>Personal CMS</span>
-          <span class="sidebar-brand-badge">v6.4</span>
-        </div>
+        <a href="#dashboard" class="sidebar-brand-link">
+          <div class="brand-icon-hexagon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="sidebar-brand-text">MadhanKR</span>
+        </a>
+        <button class="sidebar-collapse-toggle" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" title="Toggle Sidebar">
+          <svg style="width: 15px; height: 15px; fill: currentColor;" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
       </div>
 
-      <ul class="admin-nav-list">
-        <li>
-          <a class="admin-nav-item active" data-view="dashboard" href="#dashboard">
-            <div class="admin-nav-left">
-              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-              <span>Dashboard</span>
-            </div>
-          </a>
-        </li>
+      <!-- Navigation Groups -->
+      <div class="sidebar-nav-wrap">
+        <div>
+          <div class="nav-group-title">Main Menu</div>
+          <ul class="admin-nav-list">
+            <li>
+              <a class="admin-nav-item active" data-view="dashboard" href="#dashboard">
+                <div class="admin-nav-left">
+                  <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                  <span>Dashboard</span>
+                </div>
+              </a>
+            </li>
 
-        <li>
-          <a class="admin-nav-item" data-view="content" href="#content">
-            <div class="admin-nav-left">
-              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-              <span>Posts / Content</span>
-            </div>
-            <span class="wp-count-pill" id="sidebarArticlesCount">6</span>
-          </a>
-        </li>
+            <li>
+              <a class="admin-nav-item" data-view="content" href="#content">
+                <div class="admin-nav-left">
+                  <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                  <span>Posts & Content</span>
+                </div>
+                <span class="nav-badge green" id="sidebarArticlesCount">6</span>
+              </a>
+            </li>
 
-        <li>
-          <a class="admin-nav-item" data-view="editor" href="#editor">
-            <div class="admin-nav-left">
-              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-              <span>Add New Post</span>
-            </div>
-          </a>
-        </li>
+            <li>
+              <a class="admin-nav-item" data-view="editor" href="#editor">
+                <div class="admin-nav-left">
+                  <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                  <span>Add New Post</span>
+                </div>
+              </a>
+            </li>
 
-        <li>
-          <a class="admin-nav-item" data-view="media" href="#media">
-            <div class="admin-nav-left">
-              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <span>Media Library</span>
-            </div>
-            <span class="wp-count-pill gray" id="sidebarMediaCount">12</span>
-          </a>
-        </li>
+            <li>
+              <a class="admin-nav-item" data-view="media" href="#media">
+                <div class="admin-nav-left">
+                  <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                  <span>Media Library</span>
+                </div>
+                <span class="nav-badge gray" id="sidebarMediaCount">12</span>
+              </a>
+            </li>
+          </ul>
+        </div>
 
-        <li>
-          <a class="admin-nav-item" data-view="seo" href="#seo">
-            <div class="admin-nav-left">
-              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-              <span>SEO Settings</span>
-            </div>
-          </a>
-        </li>
+        <div>
+          <div class="nav-group-title">Preferences & SEO</div>
+          <ul class="admin-nav-list">
+            <li>
+              <a class="admin-nav-item" data-view="seo" href="#seo">
+                <div class="admin-nav-left">
+                  <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                  <span>SEO Settings</span>
+                </div>
+              </a>
+            </li>
 
-        <li>
-          <a class="admin-nav-item" data-view="settings" href="#settings">
-            <div class="admin-nav-left">
-              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-              <span>Settings</span>
-            </div>
-          </a>
-        </li>
-      </ul>
+            <li>
+              <a class="admin-nav-item" data-view="settings" href="#settings">
+                <div class="admin-nav-left">
+                  <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                  <span>Settings & System</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="sidebar-collapse-bar" onclick="document.getElementById('adminSidebar').classList.toggle('open')">
-      <span>◄ Collapse menu</span>
+    <!-- Sidebar Bottom Studio Pro Widget -->
+    <div class="sidebar-footer-wrap">
+      <div class="sidebar-upgrade-card">
+        <div class="upgrade-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        </div>
+        <div class="upgrade-card-title">MadhanKR Studio Pro</div>
+        <div class="upgrade-card-desc">Unlock advanced AI generation tools and real-time portfolio analytics.</div>
+        <button class="upgrade-card-btn" onclick="switchAdminView('settings')">Studio Controls</button>
+      </div>
     </div>
   </aside>
 
-  <!-- ─── 3. MAIN WORKSPACE (WPBODY) ─────────────────────────────── -->
-  <main class="admin-main">
-
-    <!-- ════════════════════════════════════════════════════════════
-         VIEW 1: DASHBOARD OVERVIEW (#dashboard)
-         ════════════════════════════════════════════════════════════ -->
-    <section class="admin-view active" id="view-dashboard">
-      <div class="wp-heading-wrap">
-        <div class="wp-heading-left">
-          <h1 class="wp-heading-inline">Dashboard</h1>
-          <button class="page-title-action" onclick="switchAdminView('editor')">Add New Post</button>
-          <button class="button" onclick="refreshDashboardStats()">⟳ Refresh</button>
-        </div>
-        <span style="font-size: 12px; color: var(--wp-text-muted);">
-          Current View: <strong id="currentViewBreadcrumb">DASHBOARD</strong>
-        </span>
+  <!-- ─── 2. MAIN APP CONTAINER & MODERN TOPBAR ─────────────────────── -->
+  <div class="admin-main-wrapper">
+    
+    <!-- Topbar -->
+    <header class="cms-topbar">
+      <!-- Search pill with ⌘K -->
+      <div class="topbar-search-wrap">
+        <svg class="topbar-search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" class="topbar-search-input" id="topbarGlobalSearch" placeholder="Search anything..." />
+        <span class="topbar-kbd-badge">⌘K</span>
       </div>
 
-      <div class="notice notice-info">
-        <p><strong>Welcome to your WordPress CMS Dashboard.</strong> Review traffic reach, audit recent changes, and publish new content.</p>
+      <!-- Actions Right -->
+      <div class="topbar-actions-right">
+        <!-- Public Website Link -->
+        <a href="../" target="_blank" class="filter-pill-btn" title="View Public Website">
+          <span>Portfolio</span>
+          <span style="font-size: 11px;">↗</span>
+        </a>
+
+        <!-- Light/Dark toggle button -->
+        <button class="topbar-icon-btn" title="Toggle Theme">
+          <svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+        </button>
+
+        <!-- Notification bell -->
+        <button class="topbar-icon-btn" title="Notifications">
+          <span class="notif-pulse-dot"></span>
+          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </button>
+
+        <!-- User profile -->
+        <div class="user-profile-widget" id="adminUserGreeting">
+          <div class="user-profile-avatar" id="adminUserAvatar">M</div>
+          <div class="user-profile-meta">
+            <span class="user-profile-name" id="adminUserDisplayName">Madhan</span>
+            <span class="user-profile-role">Administrator</span>
+          </div>
+        </div>
+
+        <!-- Log Out Action -->
+        <a href="login.html?action=logout" class="logout-action-btn" id="adminLogoutLink" title="Sign out of Admin Session" onclick="handleAdminLogout(event)">
+          <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+          <span>Log Out</span>
+        </a>
+
+        <!-- Mobile menu burger -->
+        <button class="topbar-icon-btn" id="sidebarToggle" style="display: none;" onclick="document.getElementById('adminSidebar').classList.toggle('open')" aria-label="Toggle Menu">
+          ☰
+        </button>
       </div>
+    </header>
 
-      <!-- At a Glance Metric Cards -->
-      <div class="dashboard-metrics-grid">
-        <div class="metric-card">
+    <!-- ─── 3. MAIN WORKSPACE (VIEWS) ───────────────────────────────── -->
+    <main class="admin-main">
+
+      <!-- ════════════════════════════════════════════════════════════
+           VIEW 1: MODERN DASHBOARD OVERVIEW (#dashboard)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="admin-view active" id="view-dashboard">
+        <!-- Page Header -->
+        <div class="cms-page-heading">
           <div>
-            <div class="metric-title">Monthly Impressions</div>
-            <div class="metric-number" id="statMonthlyViews">18.4K</div>
-            <div class="metric-sub">↑ +14.2% from last cycle</div>
+            <h1 class="cms-heading-title">Dashboard</h1>
+            <span style="font-size: 13px; color: var(--cms-text-muted); display: none;">
+              Current: <strong id="currentViewBreadcrumb">DASHBOARD</strong>
+            </span>
           </div>
-          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+
+          <div class="cms-heading-actions">
+            <!-- Date Filter Pill -->
+            <button class="filter-pill-btn">
+              <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
+              <span>Jan 1, 2026 - Feb 1, 2026</span>
+            </button>
+
+            <!-- Timeframe dropdown -->
+            <button class="filter-pill-btn">
+              <span>Last 30 days</span>
+              <span style="font-size: 11px;">⌄</span>
+            </button>
+
+            <!-- New post action -->
+            <button class="btn-secondary-white" onclick="switchAdminView('editor')">
+              <span>+ Add Post</span>
+            </button>
+
+            <!-- Export primary action -->
+            <button class="btn-primary-blue" onclick="exportCmsDataBackup()">
+              <svg style="width: 15px; height: 15px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              <span>Export</span>
+            </button>
+          </div>
         </div>
 
-        <div class="metric-card">
-          <div>
-            <div class="metric-title">Published Posts</div>
-            <div class="metric-number" id="statTotalArticles">6</div>
-            <div class="metric-sub" style="color: var(--wp-text-muted);">Articles & Essays</div>
-          </div>
-          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-        </div>
-
-        <div class="metric-card">
-          <div>
-            <div class="metric-title">Portfolio Projects</div>
-            <div class="metric-number" id="statTotalProjects">6</div>
-            <div class="metric-sub" style="color: var(--wp-text-muted);">Active Case Studies</div>
-          </div>
-          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-        </div>
-
-        <div class="metric-card">
-          <div>
-            <div class="metric-title">Media Files</div>
-            <div class="metric-number" id="statTotalMedia">12</div>
-            <div class="metric-sub" style="color: var(--wp-text-muted);">Images & Vector SVGs</div>
-          </div>
-          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-        </div>
-      </div>
-
-      <!-- Two-column dashboard widgets -->
-      <div class="dashboard-columns">
-        <!-- Column 1 -->
-        <div>
-          <!-- Traffic Analytics Postbox -->
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Site Traffic & Engagement (Last 14 Days)</h2>
-              <span style="font-size: 12px; color: var(--wp-primary); font-weight: 600;">1,240 Avg Daily</span>
-            </div>
-            <div class="inside">
-              <p style="color: var(--wp-text-muted); font-size: 12px; margin-bottom: 8px;">
-                Page impressions across public website routes. Spikes indicate publication releases.
-              </p>
-              <div class="chart-bars-wrap" id="analyticsBars">
-                <!-- Rendered dynamically via cms-admin.js -->
+        <!-- 4 Top Metric Cards (Directly matching Shopeers layout) -->
+        <div class="metric-cards-grid">
+          <!-- Card 1: Page Views -->
+          <div class="metric-card-modern">
+            <div class="metric-top-row">
+              <span class="metric-title-text">Page Views</span>
+              <div class="metric-icon-bubble">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
               </div>
             </div>
+            <div class="metric-number-row">
+              <span class="metric-stat-value" id="statMonthlyViews">16,431</span>
+              <span class="metric-trend-badge up">▲ 15.5%</span>
+            </div>
+            <span class="metric-comparison-subtext">vs. 14,653 last period</span>
           </div>
 
-          <!-- Quick Draft Postbox -->
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Quick Draft</h2>
-              <span style="font-size: 11px; color: var(--wp-text-muted);">Saves as draft</span>
+          <!-- Card 2: Visitors -->
+          <div class="metric-card-modern">
+            <div class="metric-top-row">
+              <span class="metric-title-text">Visitors</span>
+              <div class="metric-icon-bubble">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              </div>
             </div>
-            <div class="inside">
-              <form id="quickDraftForm" onsubmit="handleQuickDraftSubmit(event)" class="quick-draft-fields">
+            <div class="metric-number-row">
+              <span class="metric-stat-value">6,225</span>
+              <span class="metric-trend-badge up">▲ 8.4%</span>
+            </div>
+            <span class="metric-comparison-subtext">vs. 5,732 last period</span>
+          </div>
+
+          <!-- Card 3: Clicks / Reach -->
+          <div class="metric-card-modern">
+            <div class="metric-top-row">
+              <span class="metric-title-text">Click / Reach</span>
+              <div class="metric-icon-bubble">
+                <svg viewBox="0 0 24 24"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.02-.24-.02-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.43 1.06.43h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg>
+              </div>
+            </div>
+            <div class="metric-number-row">
+              <span class="metric-stat-value">2,832</span>
+              <span class="metric-trend-badge down">▼ 10.5%</span>
+            </div>
+            <span class="metric-comparison-subtext">vs. 3,294 last period</span>
+          </div>
+
+          <!-- Card 4: Published Content -->
+          <div class="metric-card-modern">
+            <div class="metric-top-row">
+              <span class="metric-title-text">Published Posts</span>
+              <div class="metric-icon-bubble">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+              </div>
+            </div>
+            <div class="metric-number-row">
+              <span class="metric-stat-value" id="statTotalArticles">6</span>
+              <span class="metric-trend-badge up">▲ 4.4%</span>
+            </div>
+            <span class="metric-comparison-subtext">Articles & Case Studies</span>
+          </div>
+        </div>
+
+        <!-- Hidden stats elements preserved for JS compatibility -->
+        <span id="statTotalProjects" style="display: none;">6</span>
+        <span id="statTotalMedia" style="display: none;">12</span>
+
+        <!-- Main 2-Column Analytics & Widgets Grid -->
+        <div class="dashboard-main-layout">
+          
+          <!-- LEFT COLUMN (~65% width) -->
+          <div class="dashboard-left-col">
+            
+            <!-- 1. Total Reach Wave Curve SVG Chart Card -->
+            <div class="cms-card">
+              <div class="cms-card-header">
                 <div>
-                  <label style="font-weight: 600; display: block; margin-bottom: 4px;">Title</label>
-                  <input type="text" id="quickDraftTitle" class="large-text" placeholder="What’s on your mind?" required />
+                  <h2 class="card-heading-title">Total Reach & Engagement</h2>
+                </div>
+                <button class="card-options-btn" title="Options">•••</button>
+              </div>
+
+              <div class="chart-header-metrics">
+                <span class="chart-big-number">$446.7K</span>
+                <span class="metric-trend-badge up">▲ 24.4% vs. last period</span>
+              </div>
+
+              <!-- SVG Smooth Wave Curve with Gradient Fill -->
+              <div class="svg-wave-chart-container">
+                <svg class="svg-wave-chart" viewBox="0 0 600 180" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="blueWaveGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.32" />
+                      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.0" />
+                    </linearGradient>
+                    <linearGradient id="cyanWaveGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.2" />
+                      <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.0" />
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Background Grid Lines -->
+                  <line x1="0" y1="30" x2="600" y2="30" stroke="#f1f5f9" stroke-width="1" />
+                  <line x1="0" y1="75" x2="600" y2="75" stroke="#f1f5f9" stroke-width="1" />
+                  <line x1="0" y1="120" x2="600" y2="120" stroke="#f1f5f9" stroke-width="1" />
+                  <line x1="0" y1="165" x2="600" y2="165" stroke="#e2e8f0" stroke-width="1" />
+
+                  <!-- Secondary dotted baseline wave -->
+                  <path d="M 0,130 Q 80,140 150,110 T 300,105 T 450,125 T 600,100" fill="none" stroke="#94a3b8" stroke-dasharray="4 4" stroke-width="1.8" opacity="0.6" />
+
+                  <!-- Primary wave area fill -->
+                  <path d="M 0,135 Q 75,130 140,85 T 280,75 T 400,115 T 480,45 T 600,60 L 600,165 L 0,165 Z" fill="url(#blueWaveGrad)" />
+
+                  <!-- Primary wave curve stroke -->
+                  <path d="M 0,135 Q 75,130 140,85 T 280,75 T 400,115 T 480,45 T 600,60" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
+
+                  <!-- Interactive Data Point Dot -->
+                  <circle cx="295" cy="88" r="5" fill="#2563eb" stroke="#ffffff" stroke-width="2.5" />
+                  <line x1="295" y1="20" x2="295" y2="165" stroke="#cbd5e1" stroke-dasharray="3 3" stroke-width="1" />
+                </svg>
+
+                <!-- Floating Tooltip Box matching Shopeers screenshot -->
+                <div class="chart-tooltip-pin">
+                  <div class="tooltip-date-header">Jan 18, 2026</div>
+                  <div class="tooltip-row">
+                    <span class="tooltip-dot blue"></span>
+                    <span><strong>$12,324</strong> this month</span>
+                  </div>
+                  <div class="tooltip-row muted">
+                    <span class="tooltip-dot gray"></span>
+                    <span>$5,563 last month</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sub Metric Breakdown Bars (Shopeers layout) -->
+              <div class="chart-submetrics-grid">
+                <div class="submetric-box">
+                  <div class="submetric-val-row">
+                    <svg style="width: 15px; height: 15px; fill: #2563eb;" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span>2,884</span>
+                  </div>
+                  <span class="submetric-label">Articles & Essays</span>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                  <div>
-                    <label style="font-weight: 600; display: block; margin-bottom: 4px;">Category</label>
-                    <select id="quickDraftCategory" style="width: 100%;">
-                      <option value="Design">Design</option>
-                      <option value="AI & Workflows">AI & Workflows</option>
-                      <option value="Engineering">Engineering</option>
-                      <option value="Philosophy">Philosophy</option>
-                    </select>
+                <div class="submetric-box green">
+                  <div class="submetric-val-row">
+                    <svg style="width: 15px; height: 15px; fill: #10b981;" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                    <span>1,432</span>
+                  </div>
+                  <span class="submetric-label">Portfolio Projects</span>
+                </div>
+
+                <div class="submetric-box orange">
+                  <div class="submetric-val-row">
+                    <svg style="width: 15px; height: 15px; fill: #f97316;" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <span>562</span>
+                  </div>
+                  <span class="submetric-label">Media Assets</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Top Performing Content Table Card (Shopeers "Best Selling Products" style) -->
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <div>
+                  <h2 class="card-heading-title">Top Performing Content</h2>
+                </div>
+                <button class="card-options-btn" title="Options">•••</button>
+              </div>
+
+              <div class="cms-table-wrapper">
+                <table class="cms-table-modern">
+                  <thead>
+                    <tr>
+                      <th style="width: 70px;">ID</th>
+                      <th>TITLE</th>
+                      <th style="width: 110px;">REACH</th>
+                      <th style="width: 110px;">ENGAGEMENT</th>
+                      <th style="width: 90px;">STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="table-id-badge">#83009</td>
+                      <td>
+                        <div class="table-title-cell">
+                          <div class="table-item-icon-box">✦</div>
+                          <a href="#editor" class="table-item-title-link" onclick="editContentItem('art-1')">AI Can Make It Faster. Can It Make It Meaningful?</a>
+                        </div>
+                      </td>
+                      <td><strong>2,310</strong> reads</td>
+                      <td><span style="color: #059669; font-weight: 700;">$124.8K eq</span></td>
+                      <td><span class="table-status-pill published">★ 5.0</span></td>
+                    </tr>
+
+                    <tr>
+                      <td class="table-id-badge">#83001</td>
+                      <td>
+                        <div class="table-title-cell">
+                          <div class="table-item-icon-box">❖</div>
+                          <a href="#editor" class="table-item-title-link" onclick="editContentItem('art-2')">The Typography of Calm: Why Whitespace Matters</a>
+                        </div>
+                      </td>
+                      <td><strong>1,230</strong> reads</td>
+                      <td><span style="color: #059669; font-weight: 700;">$92.6K eq</span></td>
+                      <td><span class="table-status-pill published">★ 4.8</span></td>
+                    </tr>
+
+                    <tr>
+                      <td class="table-id-badge">#83004</td>
+                      <td>
+                        <div class="table-title-cell">
+                          <div class="table-item-icon-box">▲</div>
+                          <a href="#editor" class="table-item-title-link" onclick="editContentItem('art-3')">Building for Low Bandwidth: Accessibility in Design</a>
+                        </div>
+                      </td>
+                      <td><strong>812</strong> reads</td>
+                      <td><span style="color: #059669; font-weight: 700;">$74.0K eq</span></td>
+                      <td><span class="table-status-pill published">★ 4.7</span></td>
+                    </tr>
+
+                    <tr>
+                      <td class="table-id-badge">#83002</td>
+                      <td>
+                        <div class="table-title-cell">
+                          <div class="table-item-icon-box">■</div>
+                          <a href="#editor" class="table-item-title-link" onclick="editContentItem('art-4')">Curiosity-Driven Development: Lessons from Prototypes</a>
+                        </div>
+                      </td>
+                      <td><strong>645</strong> reads</td>
+                      <td><span style="color: #059669; font-weight: 700;">$62.8K eq</span></td>
+                      <td><span class="table-status-pill published">★ 4.5</span></td>
+                    </tr>
+
+                    <tr>
+                      <td class="table-id-badge">#83005</td>
+                      <td>
+                        <div class="table-title-cell">
+                          <div class="table-item-icon-box">●</div>
+                          <a href="#editor" class="table-item-title-link" onclick="editContentItem('art-5')">Why Every Designer Needs a Digital Garden</a>
+                        </div>
+                      </td>
+                      <td><strong>572</strong> reads</td>
+                      <td><span style="color: #059669; font-weight: 700;">$48.7K eq</span></td>
+                      <td><span class="table-status-pill published">★ 4.5</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 3. Quick Draft Box (Preserved for workflow) -->
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Quick Draft Post</h2>
+                <span style="font-size: 12px; color: var(--cms-text-subtle);">Saves to local drafts</span>
+              </div>
+              <form id="quickDraftForm" onsubmit="handleQuickDraftSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+                <input type="text" id="quickDraftTitle" placeholder="Post title or idea..." required />
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                  <select id="quickDraftCategory">
+                    <option value="Design">Design</option>
+                    <option value="AI & Workflows">AI & Workflows</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Philosophy">Philosophy</option>
+                  </select>
+                  <button type="submit" class="btn-primary-blue" style="justify-content: center;">Save Draft Post</button>
+                </div>
+                <textarea id="quickDraftContent" rows="3" placeholder="Outline key thoughts..." required></textarea>
+              </form>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN (~35% width) -->
+          <div class="dashboard-right-col">
+
+            <!-- 1. Most Day Active Weekly Bar Chart Card -->
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Most Day Active</h2>
+                <button class="card-options-btn" title="Options">•••</button>
+              </div>
+
+              <!-- Vertical Bars with Tuesday highlighted (Shopeers style) -->
+              <div class="weekly-bars-container" id="analyticsBars">
+                <div class="weekly-day-col">
+                  <div class="weekly-bar-pill" style="height: 48%;"></div>
+                  <span class="weekly-day-label">Sun</span>
+                </div>
+                <div class="weekly-day-col">
+                  <div class="weekly-bar-pill" style="height: 65%;"></div>
+                  <span class="weekly-day-label">Mon</span>
+                </div>
+                <!-- Highlighted Active Tuesday -->
+                <div class="weekly-day-col highlight">
+                  <span class="weekly-highlight-badge">8,162</span>
+                  <div class="weekly-bar-pill" style="height: 94%;"></div>
+                  <span class="weekly-day-label">Tue</span>
+                </div>
+                <div class="weekly-day-col">
+                  <div class="weekly-bar-pill" style="height: 52%;"></div>
+                  <span class="weekly-day-label">Wed</span>
+                </div>
+                <div class="weekly-day-col">
+                  <div class="weekly-bar-pill" style="height: 70%;"></div>
+                  <span class="weekly-day-label">Thu</span>
+                </div>
+                <div class="weekly-day-col">
+                  <div class="weekly-bar-pill" style="height: 42%;"></div>
+                  <span class="weekly-day-label">Fri</span>
+                </div>
+                <div class="weekly-day-col">
+                  <div class="weekly-bar-pill" style="height: 58%;"></div>
+                  <span class="weekly-day-label">Sat</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Repeat Customer / Engagement Gauge Card -->
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Repeat Reader Rate</h2>
+                <button class="card-options-btn" title="Options">•••</button>
+              </div>
+
+              <div class="gauge-wrapper">
+                <div class="gauge-svg-wrap">
+                  <svg class="gauge-svg" viewBox="0 0 160 90">
+                    <defs>
+                      <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#10b981" />
+                        <stop offset="50%" stop-color="#06b6d4" />
+                        <stop offset="100%" stop-color="#2563eb" />
+                      </linearGradient>
+                    </defs>
+                    <!-- Background dashed grey arc -->
+                    <path d="M 20 80 A 60 60 0 0 1 140 80" fill="none" stroke="#e2e8f0" stroke-width="12" stroke-dasharray="4 6" stroke-linecap="round" />
+                    <!-- Active gradient segmented arc (68%) -->
+                    <path d="M 20 80 A 60 60 0 0 1 125 40" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-dasharray="4 6" stroke-linecap="round" />
+                  </svg>
+                  <div class="gauge-center-stat">
+                    <div class="gauge-percent-text">68%</div>
                   </div>
                 </div>
 
-                <div>
-                  <label style="font-weight: 600; display: block; margin-bottom: 4px;">Content</label>
-                  <textarea id="quickDraftContent" rows="3" class="large-text" placeholder="Write draft thoughts or outline..." required></textarea>
-                </div>
-
-                <div>
-                  <button type="submit" class="button button-primary">Save Draft</button>
-                </div>
-              </form>
+                <div class="gauge-subtext">On track for 80% audience target</div>
+                <button class="gauge-action-btn" onclick="switchAdminView('seo')">Show details</button>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Column 2 -->
-        <div>
-          <!-- Activity Postbox -->
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Recent Activity</h2>
-              <span style="font-size: 11px; color: var(--wp-text-muted);">Audit log</span>
+            <!-- 3. AI Creative Assistant Card with 3D Glowing Sphere -->
+            <div class="ai-assistant-card">
+              <div class="cms-card-header" style="margin-bottom: 8px;">
+                <h2 class="card-heading-title">AI Assistant</h2>
+                <button class="card-options-btn" title="Expand">↗</button>
+              </div>
+
+              <div class="ai-orb-display">
+                <!-- 3D Blue Sphere from Shopeers screenshot -->
+                <div class="floating-3d-orb"></div>
+              </div>
+
+              <!-- Prompt Input Pill -->
+              <div class="ai-prompt-pill-bar">
+                <svg style="width: 15px; height: 15px; fill: var(--cms-text-subtle);" viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
+                <input type="text" class="ai-prompt-input" id="aiPromptInput" placeholder="Ask anything..." onkeydown="if(event.key==='Enter') triggerAiPrompt()" />
+                <button class="ai-send-btn" onclick="triggerAiPrompt()" title="Send Prompt">
+                  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                </button>
+              </div>
             </div>
-            <div class="inside">
-              <div class="activity-list" id="dashboardActivityList">
+
+            <!-- 4. Recent Activity Log (Preserved for functional state) -->
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Recent Activity</h2>
+                <span style="font-size: 11px; color: var(--cms-text-subtle);">Live audit log</span>
+              </div>
+              <div id="dashboardActivityList" style="display: flex; flex-direction: column; gap: 8px;">
                 <!-- Populated dynamically via cms-admin.js -->
               </div>
             </div>
-          </div>
 
-          <!-- System Overview Postbox -->
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>At a Glance</h2>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           VIEW 2: CONTENT MANAGER (#content)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="admin-view" id="view-content">
+        <div class="cms-page-heading">
+          <div>
+            <h1 class="cms-heading-title">Posts & Case Studies</h1>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Manage, edit, and organize all published portfolio case studies and journal essays.</p>
+          </div>
+          <button class="btn-primary-blue" onclick="switchAdminView('editor')">+ Add New Post</button>
+        </div>
+
+        <div class="cms-card" style="margin-bottom: 20px;">
+          <!-- Filter Tabs -->
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--cms-border); padding-bottom: 14px; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <ul style="list-style: none; display: flex; gap: 8px;" id="contentTabs">
+              <li>
+                <button class="filter-pill-btn current cat-btn active" data-type="articles">
+                  Articles & Essays <span class="nav-badge blue" id="tabArticlesBadge">6</span>
+                </button>
+              </li>
+              <li>
+                <button class="filter-pill-btn cat-btn" data-type="projects">
+                  Case Studies <span class="nav-badge gray" id="tabProjectsBadge">6</span>
+                </button>
+              </li>
+            </ul>
+
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <select id="contentStatusFilter" style="width: auto; height: 38px;">
+                <option value="all">All Dates & Statuses</option>
+                <option value="published">Published</option>
+                <option value="draft">Drafts</option>
+              </select>
+              <input type="search" id="contentSearchInput" placeholder="Filter articles..." style="width: 220px; height: 38px;" />
             </div>
-            <div class="inside">
-              <ul style="list-style: disc; margin-left: 20px; line-height: 1.8; color: var(--wp-text);">
-                <li>6 Published Posts</li>
-                <li>6 Portfolio Case Studies</li>
-                <li>12 Media Assets Uploaded</li>
-                <li>Running on Personal Portfolio CMS 6.4</li>
-                <li>Theme: Custom Portfolio Identity</li>
-                <li>Storage: 42% allocated (64 MB of 150 MB)</li>
-              </ul>
+          </div>
+
+          <!-- Table Container -->
+          <div class="cms-table-wrapper">
+            <table class="cms-table-modern">
+              <thead>
+                <tr>
+                  <th style="width: 36px;"><input type="checkbox" /></th>
+                  <th>TITLE</th>
+                  <th style="width: 150px;">CATEGORY</th>
+                  <th style="width: 110px;">STATUS</th>
+                  <th style="width: 120px;">DATE</th>
+                  <th style="width: 90px;">VIEWS</th>
+                  <th style="width: 100px;">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="contentTableBody">
+                <!-- Rendered dynamically via cms-admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           VIEW 3: CONTENT EDITOR (#editor)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="admin-view" id="view-editor">
+        <div class="cms-page-heading">
+          <div>
+            <h1 class="cms-heading-title">Post Editor</h1>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Author essays and portfolio case studies with live reader preview.</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-secondary-white" onclick="switchAdminView('content')">← All Posts</button>
+            <button class="btn-secondary-white" onclick="saveEditorPost('draft')">Save Draft</button>
+            <button class="btn-primary-blue" onclick="saveEditorPost('published')">Publish / Update</button>
+          </div>
+        </div>
+
+        <div class="wp-editor-wrap">
+          <!-- Main Content Area -->
+          <div>
+            <input type="text" class="editor-title-input" id="editorTitleInput" value="AI Can Make It Faster. Can It Make It Meaningful?" placeholder="Enter post title..." oninput="syncEditorPreview()" />
+
+            <div class="editor-toolbar">
+              <button type="button" class="ed-btn" onclick="applyFormat('bold')"><b>B</b></button>
+              <button type="button" class="ed-btn" onclick="applyFormat('italic')"><em>I</em></button>
+              <button type="button" class="ed-btn" onclick="applyFormat('h2')">H2</button>
+              <button type="button" class="ed-btn" onclick="applyFormat('h3')">H3</button>
+              <button type="button" class="ed-btn" onclick="applyFormat('quote')">❝ Quote</button>
+              <button type="button" class="ed-btn" onclick="applyFormat('code')">&lt;/&gt;</button>
+              <button type="button" class="ed-btn" onclick="applyFormat('bullet')">• List</button>
+              <span style="margin-left: auto; font-size: 11.5px; color: var(--cms-text-subtle);" id="editorStats">Words: 248 · Characters: 1,840</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VIEW 2: CONTENT MANAGER (#content)
-         ════════════════════════════════════════════════════════════ -->
-    <section class="admin-view" id="view-content">
-      <div class="wp-heading-wrap">
-        <div class="wp-heading-left">
-          <h1 class="wp-heading-inline">Posts & Content</h1>
-          <button class="page-title-action" onclick="switchAdminView('editor')">Add New</button>
-        </div>
-      </div>
-
-      <!-- WP subsubsub view tabs -->
-      <ul class="subsubsub" id="contentTabs">
-        <li>
-          <a href="#" class="current cat-btn active" data-type="articles">
-            Articles & Blog <span class="count" id="tabArticlesBadge">(6)</span>
-          </a> |
-        </li>
-        <li>
-          <a href="#" class="cat-btn" data-type="projects">
-            Portfolio Projects <span class="count" id="tabProjectsBadge">(6)</span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- Table nav filter bar -->
-      <div class="tablenav">
-        <div class="actions">
-          <select id="contentStatusFilter">
-            <option value="all">All Dates & Statuses</option>
-            <option value="published">Published</option>
-            <option value="draft">Drafts</option>
-          </select>
-          <button class="button">Filter</button>
-        </div>
-
-        <div style="display: flex; gap: 6px;">
-          <input type="search" id="contentSearchInput" placeholder="Search posts..." />
-          <button class="button">Search Posts</button>
-        </div>
-      </div>
-
-      <!-- WP List Table -->
-      <table class="wp-list-table">
-        <thead>
-          <tr>
-            <th style="width: 32px;"><input type="checkbox" /></th>
-            <th>Title</th>
-            <th style="width: 140px;">Category</th>
-            <th style="width: 100px;">Status</th>
-            <th style="width: 120px;">Date</th>
-            <th style="width: 90px;">Views</th>
-          </tr>
-        </thead>
-        <tbody id="contentTableBody">
-          <!-- Rendered dynamically via cms-admin.js -->
-        </tbody>
-      </table>
-    </section>
-
-    <!-- ════════════════════════════════════════════════════════════
-         VIEW 3: CONTENT EDITOR (#editor)
-         ════════════════════════════════════════════════════════════ -->
-    <section class="admin-view" id="view-editor">
-      <div class="wp-heading-wrap">
-        <div class="wp-heading-left">
-          <h1 class="wp-heading-inline">Edit Post</h1>
-          <button class="page-title-action" onclick="switchAdminView('content')">Back to All Posts</button>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button class="button" onclick="saveEditorPost('draft')">Save Draft</button>
-          <button class="button button-primary" onclick="saveEditorPost('published')">Publish / Update</button>
-        </div>
-      </div>
-
-      <div class="wp-editor-wrap">
-        <!-- Main Column -->
-        <div>
-          <input type="text" class="editor-title-input" id="editorTitleInput" value="AI Can Make It Faster. Can It Make It Meaningful?" placeholder="Add title" oninput="syncEditorPreview()" />
-
-          <div class="editor-toolbar">
-            <button type="button" class="ed-btn" onclick="applyFormat('bold')">B</button>
-            <button type="button" class="ed-btn" onclick="applyFormat('italic')"><em>I</em></button>
-            <button type="button" class="ed-btn" onclick="applyFormat('h2')">H2</button>
-            <button type="button" class="ed-btn" onclick="applyFormat('h3')">H3</button>
-            <button type="button" class="ed-btn" onclick="applyFormat('quote')">❝ Quote</button>
-            <button type="button" class="ed-btn" onclick="applyFormat('code')">&lt;/&gt;</button>
-            <button type="button" class="ed-btn" onclick="applyFormat('bullet')">• Bullet list</button>
-            <span style="margin-left: auto; font-size: 11px; color: var(--wp-text-muted);" id="editorStats">Words: 248 · Characters: 1,840</span>
-          </div>
-
-          <textarea class="wp-content-textarea" id="editorMarkdown" oninput="syncEditorPreview()">## The Acceleration Illusion
+            <textarea class="wp-content-textarea" id="editorMarkdown" oninput="syncEditorPreview()">## The Acceleration Illusion
 
 Over the past two years, creative tooling has compressed the time between idea and artifact from days to seconds. We can synthesize dozens of visual directions in the span of a single coffee break. Yet with each reduction in friction, a quieter question surfaces: **does speed correlate with substance?**
 
@@ -384,52 +712,48 @@ When I incorporate AI models into my workflow, I treat them not as autonomous cr
 
 When we combine mechanical efficiency with human intentionality, we don’t dilute craft—we elevate it.</textarea>
 
-          <!-- Live Preview Postbox -->
-          <div class="editor-preview-container">
-            <div class="editor-preview-header">
-              Live Reader Preview
-            </div>
-            <div class="editor-preview-body" id="editorLivePreview">
-              <!-- Rendered preview -->
+            <!-- Live Reader Preview -->
+            <div class="cms-card" style="margin-top: 20px;">
+              <div class="cms-card-header">
+                <h3 class="card-heading-title">Live Reader Preview</h3>
+                <span style="font-size: 11.5px; color: var(--cms-text-subtle);">Client layout simulation</span>
+              </div>
+              <div id="editorLivePreview" style="font-size: 14.5px; line-height: 1.7; color: var(--cms-text-body);">
+                <!-- Rendered preview dynamically -->
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Sidebar Metaboxes -->
-        <div>
-          <!-- Publish Metabox -->
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Publish Settings</h2>
-            </div>
-            <div class="inside">
-              <div style="margin-bottom: 12px;">
-                <label style="font-weight: 600; display: block; margin-bottom: 4px;">Status:</label>
-                <select id="editorStatusSelect" style="width: 100%;">
+          <!-- Editor Sidebar Settings -->
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h3 class="card-heading-title">Publish Settings</h3>
+              </div>
+              <div style="margin-bottom: 14px;">
+                <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 12.5px;">Status</label>
+                <select id="editorStatusSelect">
                   <option value="published">Published</option>
                   <option value="draft">Draft</option>
                 </select>
               </div>
 
-              <div style="margin-bottom: 12px;">
-                <label style="font-weight: 600; display: block; margin-bottom: 4px;">Estimated Read Time:</label>
-                <input type="text" id="editorReadTimeInput" value="6 min read" readonly style="width: 100%; background: #f6f7f7;" />
+              <div style="margin-bottom: 16px;">
+                <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 12.5px;">Read Time</label>
+                <input type="text" id="editorReadTimeInput" value="6 min read" readonly style="background: var(--cms-surface-subtle);" />
               </div>
 
-              <div style="padding-top: 10px; border-top: 1px solid var(--wp-border-subtle); display: flex; justify-content: space-between; align-items: center;">
-                <button class="button-link-delete" onclick="if(confirm('Move to trash?')) switchAdminView('content')">Move to Trash</button>
-                <button class="button button-primary" onclick="saveEditorPost('published')">Update</button>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--cms-border-subtle);">
+                <button class="logout-action-btn" onclick="if(confirm('Delete draft?')) switchAdminView('content')">Delete</button>
+                <button class="btn-primary-blue" onclick="saveEditorPost('published')">Save</button>
               </div>
             </div>
-          </div>
 
-          <!-- Category Metabox -->
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Category</h2>
-            </div>
-            <div class="inside">
-              <select id="editorCategorySelect" style="width: 100%;">
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h3 class="card-heading-title">Category</h3>
+              </div>
+              <select id="editorCategorySelect">
                 <option value="AI & Workflows">AI & Workflows</option>
                 <option value="Design">Design</option>
                 <option value="Engineering">Engineering</option>
@@ -438,72 +762,72 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VIEW 4: MEDIA LIBRARY (#media)
-         ════════════════════════════════════════════════════════════ -->
-    <section class="admin-view" id="view-media">
-      <div class="wp-heading-wrap">
-        <div class="wp-heading-left">
-          <h1 class="wp-heading-inline">Media Library</h1>
-          <button class="page-title-action" onclick="triggerMediaUploadSim()">Add New Media File</button>
-        </div>
-      </div>
-
-      <!-- Upload Dropzone -->
-      <div class="wp-media-dropzone" id="mediaDropzone" onclick="triggerMediaUploadSim()">
-        <h3>Drop files anywhere to upload</h3>
-        <p>Supports SVG, PNG, WebP, and JPEG files up to 25MB.</p>
-        <button class="button button-secondary">Select Files</button>
-        <div id="uploadProgressBarWrap" style="display: none; width: 50%; margin: 14px auto 0; height: 6px; background: #dcdcde;">
-          <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--wp-primary); transition: width 0.2s;"></div>
-        </div>
-      </div>
-
-      <!-- Filter bar -->
-      <div class="tablenav">
-        <div class="actions" id="mediaFilterPills">
-          <button class="button cat-btn active" data-cat="all">All Media <span id="mediaTotalBadge">(12)</span></button>
-          <button class="button cat-btn" data-cat="SVG Geometry">SVG Geometry</button>
-          <button class="button cat-btn" data-cat="UI Screenshots">UI Screenshots</button>
-          <button class="button cat-btn" data-cat="Art & Concept">Art & Concept</button>
-          <button class="button cat-btn" data-cat="Brand Assets">Brand Assets</button>
-        </div>
-
-        <div>
-          <input type="search" id="mediaSearchInput" placeholder="Search media items..." />
-        </div>
-      </div>
-
-      <!-- Media Thumbnail Grid -->
-      <div class="media-grid-wp" id="mediaGridContainer">
-        <!-- Rendered dynamically via cms-admin.js -->
-      </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════════════════
-         VIEW 5: SEO SETTINGS (#seo)
-         ════════════════════════════════════════════════════════════ -->
-    <section class="admin-view" id="view-seo">
-      <div class="wp-heading-wrap">
-        <div class="wp-heading-left">
-          <h1 class="wp-heading-inline">SEO Settings</h1>
-          <button class="button button-primary" onclick="saveCurrentSeoSettings()">Save Changes</button>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start;">
-        <!-- Left: Settings Form -->
-        <div class="postbox">
-          <div class="postbox-header">
-            <h2>General SEO Configuration</h2>
+      <!-- ════════════════════════════════════════════════════════════
+           VIEW 4: MEDIA LIBRARY (#media)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="admin-view" id="view-media">
+        <div class="cms-page-heading">
+          <div>
+            <h1 class="cms-heading-title">Media Library</h1>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Vector assets, images, and mock graphics repository.</p>
           </div>
-          <div class="inside">
-            <div style="margin-bottom: 16px;">
-              <label style="font-weight: 600; display: block; margin-bottom: 4px;">Target Page</label>
-              <select id="seoPageSelect" style="width: 100%;" onchange="loadSeoForPage(this.value)">
+          <button class="btn-primary-blue" onclick="triggerMediaUploadSim()">+ Upload Media</button>
+        </div>
+
+        <!-- Dropzone -->
+        <div class="cms-card" id="mediaDropzone" onclick="triggerMediaUploadSim()" style="text-align: center; border: 2px dashed var(--cms-border); cursor: pointer; padding: 36px 20px; margin-bottom: 24px;">
+          <div style="width: 48px; height: 48px; margin: 0 auto 12px; background: var(--cms-primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--cms-primary);">
+            <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--cms-text-heading); margin-bottom: 4px;">Drop files anywhere to upload</h3>
+          <p style="font-size: 12.5px; color: var(--cms-text-muted);">Supports SVG, PNG, WebP, and JPEG files up to 25MB.</p>
+          <div id="uploadProgressBarWrap" style="display: none; width: 50%; margin: 16px auto 0; height: 6px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+            <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--cms-primary); transition: width 0.2s;"></div>
+          </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div id="mediaFilterPills" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="filter-pill-btn active" data-cat="all">All Media <span id="mediaTotalBadge" class="nav-badge blue">(12)</span></button>
+            <button class="filter-pill-btn" data-cat="SVG Geometry">SVG Geometry</button>
+            <button class="filter-pill-btn" data-cat="UI Screenshots">UI Screenshots</button>
+            <button class="filter-pill-btn" data-cat="Art & Concept">Art & Concept</button>
+            <button class="filter-pill-btn" data-cat="Brand Assets">Brand Assets</button>
+          </div>
+          <input type="search" id="mediaSearchInput" placeholder="Search media..." style="width: 220px; height: 38px;" />
+        </div>
+
+        <!-- Grid Container -->
+        <div class="media-grid-wp" id="mediaGridContainer">
+          <!-- Populated dynamically via cms-admin.js -->
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           VIEW 5: SEO SETTINGS (#seo)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="admin-view" id="view-seo">
+        <div class="cms-page-heading">
+          <div>
+            <h1 class="cms-heading-title">SEO & Metadata Suite</h1>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Search engine rankings, social OpenGraph tags, and snippet simulation.</p>
+          </div>
+          <button class="btn-primary-blue" onclick="saveCurrentSeoSettings()">Save SEO Settings</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: start;">
+          <!-- Left: Settings Form -->
+          <div class="cms-card">
+            <div class="cms-card-header">
+              <h2 class="card-heading-title">Page Configuration</h2>
+            </div>
+
+            <div style="margin-bottom: 18px;">
+              <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Target Route</label>
+              <select id="seoPageSelect" onchange="loadSeoForPage(this.value)">
                 <option value="homepage">Homepage (index.html)</option>
                 <option value="journal">Journal Listing (journal.html)</option>
                 <option value="work">Portfolio Works (work.html)</option>
@@ -512,181 +836,170 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
               </select>
             </div>
 
-            <div style="margin-bottom: 16px;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <label style="font-weight: 600;">SEO Title</label>
-                <span style="font-size: 11px; color: var(--wp-text-muted);" id="seoTitleCounter">52 / 60 chars</span>
+            <div style="margin-bottom: 18px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <label style="font-weight: 600; font-size: 13px;">Page Meta Title</label>
+                <span id="seoTitleCounter" style="font-size: 11.5px; color: var(--cms-text-subtle);">52 / 60 chars</span>
               </div>
-              <input type="text" class="large-text" id="seoTitleInput" value="MadhanKR — Digital Designer & Creative Developer" oninput="updateSeoPreviews()" />
+              <input type="text" id="seoTitleInput" value="MadhanKR — Digital Designer & Creative Developer" oninput="updateSeoPreviews()" />
             </div>
 
-            <div style="margin-bottom: 16px;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <label style="font-weight: 600;">Meta Description</label>
-                <span style="font-size: 11px; color: var(--wp-text-muted);" id="seoDescCounter">142 / 160 chars</span>
+            <div style="margin-bottom: 18px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <label style="font-weight: 600; font-size: 13px;">Meta Description</label>
+                <span id="seoDescCounter" style="font-size: 11.5px; color: var(--cms-text-subtle);">142 / 160 chars</span>
               </div>
-              <textarea class="large-text" id="seoDescInput" rows="3" oninput="updateSeoPreviews()">Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.</textarea>
+              <textarea id="seoDescInput" rows="3" oninput="updateSeoPreviews()">Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.</textarea>
             </div>
 
-            <div style="margin-bottom: 16px;">
-              <label style="font-weight: 600; display: block; margin-bottom: 4px;">Canonical URL</label>
-              <input type="text" class="large-text" id="seoCanonicalInput" value="https://madhankumarrajagopal.netlify.app/" oninput="updateSeoPreviews()" />
+            <div style="margin-bottom: 18px;">
+              <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Canonical URL</label>
+              <input type="text" id="seoCanonicalInput" value="https://madhankumarrajagopal.netlify.app/" oninput="updateSeoPreviews()" />
             </div>
 
-            <div style="margin-bottom: 16px;">
-              <label style="font-weight: 600; display: block; margin-bottom: 4px;">Focus Keywords</label>
-              <input type="text" class="large-text" id="seoKeywordsInput" value="UI/UX Design, Creative Developer, EdTech, AI Workflows, Portfolio, MadhanKR" />
+            <div style="margin-bottom: 18px;">
+              <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Focus Keywords</label>
+              <input type="text" id="seoKeywordsInput" value="UI/UX Design, Creative Developer, EdTech, AI Workflows, Portfolio, MadhanKR" />
             </div>
 
-            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--wp-border-subtle);">
-              <label style="font-weight: 600; display: block; margin-bottom: 8px;">Robots Meta Tag</label>
-              <div style="display: flex; gap: 16px;">
-                <label><input type="checkbox" id="seoIndexCheck" checked /> index</label>
-                <label><input type="checkbox" id="seoFollowCheck" checked /> follow</label>
-                <label><input type="checkbox" id="seoArchiveCheck" checked /> archive</label>
-              </div>
+            <div style="padding-top: 14px; border-top: 1px solid var(--cms-border-subtle); display: flex; gap: 20px;">
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" id="seoIndexCheck" checked /> index</label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" id="seoFollowCheck" checked /> follow</label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" id="seoArchiveCheck" checked /> archive</label>
             </div>
           </div>
-        </div>
 
-        <!-- Right: Google Snippet Preview -->
-        <div>
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Google Search Preview</h2>
-            </div>
-            <div class="inside">
+          <!-- Right: Previews -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Google Search Preview</h2>
+              </div>
               <div class="google-preview-box">
                 <div class="google-breadcrumb" id="prevGoogleUrl">https://madhankumarrajagopal.netlify.app</div>
                 <a href="#" class="google-title-link" id="prevGoogleTitle">MadhanKR — Digital Designer & Creative Developer</a>
                 <div class="google-snippet-desc" id="prevGoogleDesc">Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.</div>
               </div>
             </div>
-          </div>
 
-          <div class="postbox">
-            <div class="postbox-header">
-              <h2>Social Share Preview (Twitter / Open Graph)</h2>
-            </div>
-            <div class="inside">
-              <div style="border: 1px solid #dfe1e5; border-radius: 6px; overflow: hidden;">
-                <div style="height: 120px; background: #2c3338; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">
-                  Open Graph Image Preview
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Social Share Card Preview</h2>
+              </div>
+              <div style="border: 1px solid var(--cms-border); border-radius: var(--cms-radius-md); overflow: hidden; background: #ffffff;">
+                <div style="height: 120px; background: linear-gradient(135deg, #1e293b, #0f172a); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">
+                  OpenGraph Social Card Image
                 </div>
-                <div style="padding: 10px;">
+                <div style="padding: 12px;">
                   <strong style="font-size: 13px; display: block;" id="prevTwitterTitle">MadhanKR — Digital Designer & Creative Developer</strong>
-                  <p style="font-size: 11px; color: var(--wp-text-muted); margin-top: 4px;" id="prevTwitterDesc">Portfolio & personal journal of MadhanKR.</p>
+                  <p style="font-size: 11.5px; color: var(--cms-text-muted); margin-top: 4px;" id="prevTwitterDesc">Portfolio & personal journal of MadhanKR.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VIEW 6: SITE SETTINGS (#settings)
-         ════════════════════════════════════════════════════════════ -->
-    <section class="admin-view" id="view-settings">
-      <div class="wp-heading-wrap">
-        <div class="wp-heading-left">
-          <h1 class="wp-heading-inline">General Settings</h1>
-        </div>
-      </div>
-
-      <div class="postbox">
-        <div class="postbox-header">
-          <h2>Site Identity & Options</h2>
-        </div>
-        <div class="inside">
-          <table class="form-table">
-            <tbody>
-              <tr>
-                <th scope="row"><label for="settingSiteName">Site Title</label></th>
-                <td>
-                  <input type="text" id="settingSiteName" class="regular-text" value="MADHANKR" />
-                </td>
-              </tr>
-
-              <tr>
-                <th scope="row"><label for="settingSiteTagline">Tagline</label></th>
-                <td>
-                  <input type="text" id="settingSiteTagline" class="regular-text" value="Digital Designer × Creative Developer" />
-                  <p class="description">In a few words, explain what this site is about.</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th scope="row"><label for="settingContactEmail">Administration Email Address</label></th>
-                <td>
-                  <input type="email" id="settingContactEmail" class="regular-text" value="madhan@example.com" />
-                  <p class="description">This address is used for admin purposes.</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th scope="row">Site Preferences</th>
-                <td>
-                  <fieldset>
-                    <label style="display: block; margin-bottom: 6px;">
-                      <input type="checkbox" id="settingMaintenanceMode" />
-                      Enable maintenance mode on public website
-                    </label>
-                    <label style="display: block;">
-                      <input type="checkbox" id="settingAllowComments" checked />
-                      Allow readers to submit inquiries and comments
-                    </label>
-                  </fieldset>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--wp-border-subtle);">
-            <button class="button button-primary button-large" onclick="saveAllSiteSettings()">Save Changes</button>
+      <!-- ════════════════════════════════════════════════════════════
+           VIEW 6: SETTINGS & SYSTEM (#settings)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="admin-view" id="view-settings">
+        <div class="cms-page-heading">
+          <div>
+            <h1 class="cms-heading-title">System Settings & Data</h1>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Site metadata, navigation menu items, and JSON backup tools.</p>
           </div>
+          <button class="btn-primary-blue" onclick="saveAllSiteSettings()">Save All Changes</button>
         </div>
-      </div>
 
-      <!-- Navigation Builder & Backup Tools -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="postbox">
-          <div class="postbox-header">
-            <h2>Public Navigation Menu Items</h2>
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+          <div class="cms-card">
+            <div class="cms-card-header">
+              <h2 class="card-heading-title">Site Identity & Contact</h2>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Site Title</label>
+                <input type="text" id="settingSiteName" value="MADHANKR" />
+              </div>
+              <div>
+                <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Tagline</label>
+                <input type="text" id="settingSiteTagline" value="Digital Designer × Creative Developer" />
+              </div>
+              <div>
+                <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Contact Email</label>
+                <input type="email" id="settingContactEmail" value="madhan@example.com" />
+              </div>
+              <div style="padding-top: 12px; border-top: 1px solid var(--cms-border-subtle);">
+                <label style="display: block; margin-bottom: 8px; font-size: 13px;"><input type="checkbox" id="settingMaintenanceMode" /> Enable maintenance mode on public website</label>
+                <label style="display: block; font-size: 13px;"><input type="checkbox" id="settingAllowComments" checked /> Allow inquiries & comments</label>
+              </div>
+            </div>
           </div>
-          <div class="inside">
-            <p style="font-size: 12px; color: var(--wp-text-muted); margin-bottom: 12px;">
-              Reorder or toggle visibility of navigation links on public pages.
-            </p>
-            <div id="navItemsBuilder" style="display: flex; flex-direction: column; gap: 8px;">
-              <!-- Populated dynamically via cms-admin.js -->
+
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Public Navigation Items</h2>
+              </div>
+              <p style="font-size: 12px; color: var(--cms-text-muted); margin-bottom: 12px;">Toggle or reorder navigation links on the public portfolio.</p>
+              <div id="navItemsBuilder" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Populated dynamically via cms-admin.js -->
+              </div>
+            </div>
+
+            <div class="cms-card">
+              <div class="cms-card-header">
+                <h2 class="card-heading-title">Data Backup & Recovery</h2>
+              </div>
+              <p style="font-size: 12px; color: var(--cms-text-muted); margin-bottom: 14px;">Export or reset local JSON snapshots of mock content records.</p>
+              <div style="display: flex; gap: 10px;">
+                <button class="btn-secondary-white" onclick="exportCmsDataBackup()">Export JSON</button>
+                <button class="logout-action-btn" onclick="resetCmsDataToDefaults()">Reset Defaults</button>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div class="postbox">
-          <div class="postbox-header">
-            <h2>Data Backup & Recovery</h2>
-          </div>
-          <div class="inside">
-            <p style="font-size: 12px; color: var(--wp-text-muted); margin-bottom: 14px;">
-              Export full JSON snapshot of all articles, portfolio items, and media records.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <button class="button" onclick="exportCmsDataBackup()">Export All Content (JSON)</button>
-              <button class="button" style="color: #b32d2e;" onclick="resetCmsDataToDefaults()">Reset to Default Mock Data</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </main>
+  </div>
 
-  </main>
-
-  <!-- WordPress Toast Container -->
+  <!-- Modern Toast Container -->
   <div class="wp-toast-container" id="wpToastContainer"></div>
 
   <script src="../cms-data.js"></script>
   <script src="../cms-admin.js"></script>
+
+  <script>
+    // Sidebar collapse state toggle
+    function toggleSidebarCollapse() {
+      const sidebar = document.getElementById('adminSidebar');
+      const wrapper = document.querySelector('.admin-main-wrapper');
+      if (!sidebar) return;
+
+      const isCollapsed = sidebar.classList.toggle('collapsed');
+      if (isCollapsed) {
+        sidebar.style.width = '78px';
+        sidebar.style.minWidth = '78px';
+        if (wrapper) wrapper.style.marginLeft = '78px';
+        document.querySelectorAll('.admin-nav-item span, .nav-group-title, .sidebar-brand-text, .sidebar-upgrade-card').forEach(el => el.style.display = 'none');
+      } else {
+        sidebar.style.width = '250px';
+        sidebar.style.minWidth = '250px';
+        if (wrapper) wrapper.style.marginLeft = '250px';
+        document.querySelectorAll('.admin-nav-item span, .nav-group-title, .sidebar-brand-text, .sidebar-upgrade-card').forEach(el => el.style.display = '');
+      }
+    }
+
+    // Interactive AI prompt trigger
+    function triggerAiPrompt() {
+      const input = document.getElementById('aiPromptInput');
+      if (!input || !input.value.trim()) return;
+      const prompt = input.value.trim();
+      input.value = '';
+      showToast(`AI Assistant: Analyzing "${prompt.slice(0, 24)}..."`);
+    }
+  </script>
 </body>
 </html>

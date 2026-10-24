@@ -193,13 +193,21 @@ function renderAnalyticsChart() {
   const chartWrap = document.getElementById('analyticsBars');
   if (!chartWrap) return;
 
-  const heights = [35, 45, 60, 40, 85, 95, 70, 50, 65, 80, 110, 90, 130, 155];
-  const days = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', 'TODAY'];
+  const daysData = [
+    { day: 'Sun', height: 48, count: '3,410', highlight: false },
+    { day: 'Mon', height: 65, count: '5,120', highlight: false },
+    { day: 'Tue', height: 95, count: '8,162', highlight: true },
+    { day: 'Wed', height: 52, count: '4,280', highlight: false },
+    { day: 'Thu', height: 72, count: '5,940', highlight: false },
+    { day: 'Fri', height: 44, count: '3,610', highlight: false },
+    { day: 'Sat', height: 58, count: '4,830', highlight: false }
+  ];
 
-  chartWrap.innerHTML = heights.map((h, i) => `
-    <div class="bar-col" title="Day ${days[i]}: ${h * 12} page impressions">
-      <div class="bar-pill" style="height: ${h}px;"></div>
-      <span class="bar-date">${days[i]}</span>
+  chartWrap.innerHTML = daysData.map(item => `
+    <div class="weekly-day-col ${item.highlight ? 'highlight' : ''}" title="${item.day}: ${item.count} active visits">
+      ${item.highlight ? `<span class="weekly-highlight-badge">${item.count}</span>` : ''}
+      <div class="weekly-bar-pill" style="height: ${item.height}%;"></div>
+      <span class="weekly-day-label">${item.day}</span>
     </div>
   `).join('');
 }
@@ -209,10 +217,16 @@ function renderActivityList() {
   if (!listEl || !window.CMSData) return;
 
   const activities = window.CMSData.getActivityLog();
-  listEl.innerHTML = activities.slice(0, 5).map(act => `
-    <div class="activity-item">
-      <span class="act-time">${act.timestamp}</span>
-      <div><strong>${act.action}:</strong> ${act.target} by <em>${act.user || 'MadhanKR'}</em></div>
+  listEl.innerHTML = activities.slice(0, 4).map(act => `
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--cms-border-subtle); font-size: 12.5px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--cms-primary); flex-shrink: 0;"></span>
+        <div>
+          <strong style="color: var(--cms-text-heading);">${act.action}:</strong> 
+          <span style="color: var(--cms-text-body);">${act.target}</span>
+        </div>
+      </div>
+      <span style="font-size: 11px; color: var(--cms-text-subtle); white-space: nowrap; margin-left: 10px;">${act.timestamp}</span>
     </div>
   `).join('');
 }

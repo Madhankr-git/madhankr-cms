@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Log In ‹ MadhanKR CMS — WordPress</title>
+  <title>Sign In ‹ MadhanKR CMS</title>
   <link rel="stylesheet" href="../cms-admin.css" />
   <style>
     /* ══════════════════════════════════════════════════════════════
-       MADHANKR PERSONAL CMS — WORDPRESS ADMIN LOGIN STYLES
-       Faithfully reproduces the standard WordPress wp-login.php
-       aesthetic, color scheme, typography, and responsive layout.
+       MADHANKR PERSONAL CMS — MODERN SAAS LOGIN STYLES
+       Modern, clean studio aesthetic matching the dashboard design:
+       Soft gray canvas (#f4f6fa), rounded card (16px radius),
+       vibrant royal blue accents (#2563eb), and crisp typography.
        ══════════════════════════════════════════════════════════════ */
     
     body.login-page {
-      background-color: var(--wp-body-bg, #f0f0f1);
-      color: var(--wp-text, #2c3338);
-      font-family: var(--wp-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif);
+      background-color: var(--cms-canvas, #f4f6fa);
+      color: var(--cms-text-body, #334155);
+      font-family: var(--cms-font, 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
       margin: 0;
       padding: 0;
       min-height: 100vh;
@@ -24,13 +25,13 @@
       justify-content: center;
       align-items: center;
       box-sizing: border-box;
-      -webkit-font-smoothing: subpixel-antialiased;
+      -webkit-font-smoothing: antialiased;
     }
 
     .login-container {
       width: 100%;
-      max-width: 380px;
-      padding: 32px 16px 40px;
+      max-width: 400px;
+      padding: 32px 20px 48px;
       margin: 0 auto;
       box-sizing: border-box;
     }
@@ -45,80 +46,86 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 54px;
-      height: 54px;
-      background-color: var(--wp-adminbar-bg, #1d2327);
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
       color: #ffffff;
-      border-radius: 50%;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 12px;
+      border-radius: 14px;
+      margin-bottom: 14px;
       text-decoration: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-      transition: transform 0.15s ease, background-color 0.15s ease;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
       user-select: none;
     }
 
     .login-logo:hover {
-      background-color: var(--wp-primary, #2271b1);
       transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .login-logo svg {
+      width: 26px;
+      height: 26px;
+      fill: #ffffff;
     }
 
     .login-site-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--wp-text-heading, #1d2327);
-      margin: 0 0 4px;
-      letter-spacing: -0.2px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--cms-text-heading, #0f172a);
+      margin: 0 0 6px;
+      letter-spacing: -0.4px;
     }
 
     .login-site-subtitle {
-      font-size: 12.5px;
-      color: var(--wp-text-muted, #646970);
+      font-size: 13px;
+      color: var(--cms-text-muted, #64748b);
       margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .login-badge {
       display: inline-block;
-      padding: 1px 6px;
-      background: #e2e4e7;
-      color: #2c3338;
-      border-radius: 3px;
+      padding: 2px 8px;
+      background: #e2e8f0;
+      color: #1e293b;
+      border-radius: var(--cms-radius-pill, 9999px);
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* Notice & Alert Banners */
     .login-notice-area {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .login-notice-area .notice {
       margin: 0;
       display: none;
+      border-radius: var(--cms-radius-md, 12px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
     }
 
     .login-notice-area .notice.show {
       display: block;
-      animation: wpNoticeFadeIn 0.2s ease-out;
+      animation: noticeFadeIn 0.2s ease-out;
     }
 
-    @keyframes wpNoticeFadeIn {
-      from { opacity: 0; transform: translateY(-3px); }
+    @keyframes noticeFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     /* Main Login Card */
     .login-card {
-      background: var(--wp-card-bg, #ffffff);
-      border: 1px solid var(--wp-border, #c3c4c7);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-      border-radius: 4px;
-      padding: 26px 24px;
+      background: var(--cms-surface, #ffffff);
+      border: 1px solid var(--cms-border, #e8ecf2);
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.02), 0 8px 24px rgba(15, 23, 42, 0.04);
+      border-radius: var(--cms-radius-lg, 16px);
+      padding: 28px 26px;
       margin-bottom: 20px;
       box-sizing: border-box;
     }
@@ -134,21 +141,21 @@
     .login-label {
       display: block;
       font-size: 13px;
-      font-weight: 600;
-      color: var(--wp-text-heading, #1d2327);
-      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--cms-text-heading, #0f172a);
+      margin-bottom: 7px;
     }
 
     .login-input {
       width: 100%;
-      height: 40px;
-      padding: 6px 12px;
+      height: 42px;
+      padding: 8px 14px;
       font-size: 14px;
       line-height: 1.4;
-      color: var(--wp-text, #2c3338);
-      background-color: #ffffff;
-      border: 1px solid #8c8f94;
-      border-radius: 3px;
+      color: var(--cms-text-heading, #0f172a);
+      background-color: var(--cms-surface, #ffffff);
+      border: 1px solid var(--cms-border, #e8ecf2);
+      border-radius: var(--cms-radius-md, 12px);
       outline: none;
       box-sizing: border-box;
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -156,21 +163,22 @@
     }
 
     .login-input:focus {
-      border-color: var(--wp-primary, #2271b1);
-      box-shadow: 0 0 0 1px var(--wp-primary, #2271b1);
+      border-color: var(--cms-primary, #2563eb);
+      box-shadow: 0 0 0 3px var(--cms-primary-glow, rgba(37, 99, 235, 0.18));
     }
 
     .login-input.input-error {
-      border-color: var(--wp-error, #d63638) !important;
-      box-shadow: 0 0 0 1px var(--wp-error, #d63638) !important;
+      border-color: var(--cms-danger, #ef4444) !important;
+      box-shadow: 0 0 0 3px var(--cms-danger-bg, #fef2f2) !important;
     }
 
     .field-hint-error {
       display: none;
-      color: var(--wp-error, #d63638);
+      color: var(--cms-danger, #ef4444);
       font-size: 12px;
-      margin-top: 5px;
+      margin-top: 6px;
       line-height: 1.4;
+      font-weight: 600;
     }
 
     .field-hint-error.show {
@@ -186,42 +194,38 @@
     }
 
     .password-input-wrap .login-input {
-      padding-right: 78px;
+      padding-right: 80px;
     }
 
     .password-toggle-btn {
       position: absolute;
-      right: 6px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: var(--wp-primary, #2271b1);
+      color: var(--cms-primary, #2563eb);
       cursor: pointer;
-      padding: 5px 8px;
+      padding: 6px 8px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      border-radius: 2px;
+      gap: 5px;
+      border-radius: var(--cms-radius-xs, 6px);
       transition: color 0.15s, background-color 0.15s;
       font-family: inherit;
       line-height: 1;
     }
 
     .password-toggle-btn:hover {
-      color: var(--wp-primary-hover, #135e96);
-      background-color: #f0f0f1;
-    }
-
-    .password-toggle-btn:focus-visible {
-      outline: 1px solid var(--wp-primary, #2271b1);
+      color: var(--cms-primary-hover, #1d4ed8);
+      background-color: var(--cms-primary-light, #eff6ff);
     }
 
     .password-toggle-btn svg {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       fill: currentColor;
     }
 
@@ -230,15 +234,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 16px 0 18px;
+      margin: 16px 0 20px;
     }
 
     .remember-me-label {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       font-size: 13px;
-      color: var(--wp-text, #2c3338);
+      font-weight: 600;
+      color: var(--cms-text-body, #334155);
       cursor: pointer;
       user-select: none;
     }
@@ -246,35 +251,42 @@
     .remember-me-label input[type="checkbox"] {
       width: 16px;
       height: 16px;
-      border: 1px solid #8c8f94;
-      border-radius: 3px;
+      border: 1px solid var(--cms-border, #e8ecf2);
+      border-radius: 4px;
       cursor: pointer;
       margin: 0;
-      accent-color: var(--wp-primary, #2271b1);
+      accent-color: var(--cms-primary, #2563eb);
     }
 
     /* Submit Button */
     .login-submit-btn {
       width: 100%;
-      height: 42px;
+      height: 44px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       cursor: pointer;
-      border-radius: 3px;
+      border-radius: var(--cms-radius-md, 12px);
       box-sizing: border-box;
-      background: var(--wp-primary, #2271b1);
-      border-color: var(--wp-primary, #2271b1);
+      background: var(--cms-primary, #2563eb);
+      border: none;
       color: #ffffff;
-      transition: background-color 0.15s, border-color 0.15s;
+      box-shadow: 0 4px 14px var(--cms-primary-glow, rgba(37, 99, 235, 0.28));
+      transition: all 0.15s ease;
+      font-family: inherit;
     }
 
     .login-submit-btn:hover {
-      background: var(--wp-primary-hover, #135e96);
-      border-color: var(--wp-primary-hover, #135e96);
+      background: var(--cms-primary-hover, #1d4ed8);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .login-submit-btn:active {
+      transform: translateY(0);
     }
 
     .login-submit-btn:disabled {
@@ -284,19 +296,19 @@
 
     .login-spinner {
       display: none;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(255, 255, 255, 0.4);
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
       border-top-color: #ffffff;
       border-radius: 50%;
-      animation: wpLoginSpin 0.7s linear infinite;
+      animation: loginSpin 0.7s linear infinite;
     }
 
     .login-submit-btn.loading .login-spinner {
       display: inline-block;
     }
 
-    @keyframes wpLoginSpin {
+    @keyframes loginSpin {
       to { transform: rotate(360deg); }
     }
 
@@ -306,34 +318,35 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 4px;
-      font-size: 12.5px;
-      color: var(--wp-text-muted, #646970);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cms-text-muted, #64748b);
     }
 
     .login-footer-links a {
-      color: var(--wp-text-muted, #646970);
+      color: var(--cms-text-muted, #64748b);
       text-decoration: none;
       transition: color 0.15s;
     }
 
     .login-footer-links a:hover {
-      color: var(--wp-primary, #2271b1);
+      color: var(--cms-primary, #2563eb);
     }
 
     /* Demo Hint Box */
     .demo-hint-box {
-      margin-top: 14px;
-      padding: 10px 12px;
-      background: #f6f7f7;
-      border: 1px solid var(--wp-border-subtle, #dcdcde);
-      border-radius: 3px;
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: var(--cms-surface-subtle, #f8fafc);
+      border: 1px solid var(--cms-border, #e8ecf2);
+      border-radius: var(--cms-radius-md, 12px);
       font-size: 12px;
-      color: var(--wp-text-muted, #646970);
+      color: var(--cms-text-muted, #64748b);
       line-height: 1.5;
     }
 
     .demo-hint-box strong {
-      color: var(--wp-text-heading, #1d2327);
+      color: var(--cms-text-heading, #0f172a);
     }
 
     /* Modal dialog for lost password */
@@ -344,45 +357,46 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(15, 23, 42, 0.6);
       z-index: 100000;
       align-items: center;
       justify-content: center;
       padding: 16px;
       box-sizing: border-box;
+      backdrop-filter: blur(4px);
     }
 
     .login-modal.open {
       display: flex;
-      animation: wpModalFadeIn 0.2s ease-out;
+      animation: modalFadeIn 0.2s ease-out;
     }
 
-    @keyframes wpModalFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .login-modal-box {
       background: #ffffff;
-      border: 1px solid var(--wp-border, #c3c4c7);
-      border-radius: 4px;
+      border: 1px solid var(--cms-border);
+      border-radius: var(--cms-radius-lg, 16px);
       padding: 24px;
       max-width: 400px;
       width: 100%;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
       box-sizing: border-box;
     }
 
     .login-modal-box h3 {
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
       margin: 0 0 10px;
-      color: var(--wp-text-heading, #1d2327);
+      color: var(--cms-text-heading, #0f172a);
     }
 
     .login-modal-box p {
-      font-size: 13px;
-      color: var(--wp-text, #2c3338);
+      font-size: 13.5px;
+      color: var(--cms-text-body, #334155);
       line-height: 1.5;
       margin: 0 0 18px;
     }
@@ -390,10 +404,10 @@
     /* Responsive adjustments */
     @media (max-width: 480px) {
       .login-container {
-        padding: 20px 14px 28px;
+        padding: 24px 16px 32px;
       }
       .login-card {
-        padding: 20px 16px;
+        padding: 22px 18px;
       }
       .login-footer-links {
         flex-direction: column;
@@ -410,10 +424,12 @@
     
     <!-- 1. Header / Logo -->
     <header class="login-header">
-      <a href="../" class="login-logo" title="MadhanKR Portfolio">W</a>
-      <h1 class="login-site-title">WordPress CMS Admin</h1>
+      <a href="../" class="login-logo" title="MadhanKR Studio">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </a>
+      <h1 class="login-site-title">MadhanKR CMS</h1>
       <p class="login-site-subtitle">
-        <span>MadhanKR Portfolio</span>
+        <span>Admin Dashboard</span>
         <span class="login-badge">v6.4</span>
       </p>
     </header>
@@ -497,23 +513,23 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="button button-primary button-large login-submit-btn" id="loginSubmitBtn">
+        <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
           <span class="login-spinner" aria-hidden="true"></span>
           <span id="loginSubmitBtnText">Sign in</span>
         </button>
 
       </form>
 
-      <!-- Local Demo Hint Box -->
+      <!-- Local Portal Note -->
       <div class="demo-hint-box">
-        <div><strong>Admin Portal Access:</strong></div>
-        <div>Enter your Gmail address (e.g. <code>madhankr2kdec@gmail.com</code> or <code>madhan@example.com</code>) and any password (6+ chars) to sign in.</div>
+        <div><strong>Administrator Access:</strong></div>
+        <div>Enter your Gmail address (e.g. <code>madhankr2kdec@gmail.com</code> or <code>madhan@example.com</code>) and chosen password (6+ chars) to sign in.</div>
       </div>
     </main>
 
     <!-- 4. Footer Links -->
     <footer class="login-footer-links">
-      <a href="../">← Go to MadhanKR Portfolio</a>
+      <a href="../">← Back to Portfolio</a>
       <a href="#lost-password" onclick="openLostPasswordModal(event)">Lost your password?</a>
     </footer>
 
@@ -527,7 +543,7 @@
         In local development mode, admin access can be accessed using your registered Gmail address: <strong>madhankr2kdec@gmail.com</strong> or <strong>madhan@example.com</strong> with your chosen password.
       </p>
       <div style="text-align: right;">
-        <button class="button button-primary" onclick="closeLostPasswordModal()">Got it</button>
+        <button class="btn-primary-blue" onclick="closeLostPasswordModal()">Got it</button>
       </div>
     </div>
   </div>
@@ -554,15 +570,12 @@
         if (session) {
           const parsed = JSON.parse(session);
           if (parsed && parsed.authenticated) {
-            // Already logged in, redirect directly to admin dashboard
             const params = new URLSearchParams(window.location.search);
             const returnUrl = params.get('return') || './';
             window.location.replace(returnUrl);
           }
         }
-      } catch (err) {
-        // Storage access fallback
-      }
+      } catch (err) {}
     }
 
     // Handle URL parameters (e.g. loggedout=true)
@@ -616,14 +629,13 @@
       });
     }
 
-    // Show error notice in standard WP style
+    // Show error notice in modern card style
     function showErrorNotice(message) {
       const notice = document.getElementById('loginErrorNotice');
       const messageEl = document.getElementById('loginErrorMessage');
       messageEl.innerHTML = '<strong>Error:</strong> ' + message;
       notice.classList.add('show');
 
-      // Hide info notice if displayed
       const infoNotice = document.getElementById('loginInfoNotice');
       infoNotice.classList.remove('show');
     }
@@ -633,7 +645,6 @@
       notice.classList.remove('show');
     }
 
-    // Show info notice
     function showInfoNotice(message) {
       const notice = document.getElementById('loginInfoNotice');
       const messageEl = document.getElementById('loginInfoMessage');
@@ -703,7 +714,6 @@
       submitBtn.classList.add('loading');
       submitBtnText.textContent = 'Signing in...';
 
-      // Simulate authentication verification
       setTimeout(() => {
         try {
           const sessionPayload = {
@@ -724,11 +734,9 @@
             localStorage.removeItem(AUTH_SESSION_KEY);
           }
 
-          // Determine redirect destination
           const params = new URLSearchParams(window.location.search);
           let destination = params.get('return') || './';
           
-          // Safety: Prevent open redirects
           if (destination.startsWith('http://') || destination.startsWith('https://')) {
             try {
               const parsedDest = new URL(destination, window.location.origin);
@@ -745,12 +753,11 @@
           submitBtn.disabled = false;
           submitBtn.classList.remove('loading');
           submitBtnText.textContent = 'Sign in';
-          showErrorNotice('An error occurred during local sign in. Please try again.');
+          showErrorNotice('An error occurred during sign in. Please try again.');
         }
-      }, 350);
+      }, 300);
     }
 
-    // Lost Password Modal Handlers
     function openLostPasswordModal(e) {
       if (e) e.preventDefault();
       document.getElementById('lostPasswordModal').classList.add('open');
