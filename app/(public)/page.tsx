@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getPublishedArticles } from '@/lib/db/articles';
 import { getAllProjects } from '@/lib/db/projects';
 import PublicContactForm from '@/components/public/PublicContactForm';
+import HomeBlogList from '@/components/public/HomeBlogList';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 export const revalidate = 3600; // Background fallback revalidation
 
@@ -34,9 +36,9 @@ export default async function HomePage() {
             </p>
 
             <div className="hero-actions">
-              <Link href="/work" className="cta-btn" id="heroExploreWorksBtn">
+              <Link href="/work" className="cta-btn" id="heroExploreWorksBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 <span>Explore Works</span>
-                <span className="btn-arrow">→</span>
+                <ArrowRight size={14} />
               </Link>
               <Link href="/contact" className="ghost-btn" id="heroContactBtn">
                 <span>Get In Touch</span>
@@ -133,8 +135,9 @@ export default async function HomePage() {
                   <span className="p-badge">{project.category}</span>
                   <span className="p-badge">{project.role}</span>
                 </div>
-                <Link href={`/work/${project.slug}`} className="p-card-link">
-                  Explore Case <span className="arrow-sym">→</span>
+                <Link href={`/work/${project.slug}`} className="p-card-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span>Explore Case</span>
+                  <ArrowRight size={13} />
                 </Link>
               </div>
             </article>
@@ -142,9 +145,9 @@ export default async function HomePage() {
         </div>
 
         <div style={{ marginTop: '52px', display: 'flex', justifyContent: 'center' }}>
-          <Link href="/work" className="cta-btn" id="exploreAllWorkBtn">
+          <Link href="/work" className="cta-btn" id="exploreAllWorkBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             <span>Explore All Case Studies &amp; Filter Projects</span>
-            <span className="btn-arrow">→</span>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -242,30 +245,12 @@ export default async function HomePage() {
           <h2 className="section-title">NOTES &amp; IDEAS</h2>
         </div>
 
-        <div className="blog-manifest" id="blogList">
-          {articles.slice(0, 4).map((article, idx) => (
-            <article key={article.id} className="b-entry">
-              <div className="b-meta">
-                <span className={`b-shape ${article.motif || 'sq'}`} />
-                <span className="b-date">IDEA 0{idx + 1}</span>
-              </div>
-              <div className="b-content">
-                <h3 className="b-title">{article.title}</h3>
-                <p className="b-summary">{article.summary}</p>
-              </div>
-              <div className="b-action">
-                <Link href={`/journal/${article.slug}`} className="b-btn">
-                  READ <span>↗</span>
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+        <HomeBlogList initialArticles={articles} />
 
         <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'center' }}>
-          <Link href="/journal" className="cta-btn" id="exploreAllJournalBtn">
+          <Link href="/journal" className="cta-btn" id="exploreAllJournalBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             <span>Explore All Journal Entries &amp; Search</span>
-            <span className="btn-arrow">→</span>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </section>

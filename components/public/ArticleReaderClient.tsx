@@ -3,17 +3,29 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import { getArticleBySlug } from '@/lib/db/articles';
+import { Copy, Check, Heart, ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface ArticleReaderClientProps {
   article: Article;
   htmlContent: string;
 }
 
-export default function ArticleReaderClient({ article, htmlContent }: ArticleReaderClientProps) {
+export default function ArticleReaderClient({ article: initialArticle, htmlContent }: ArticleReaderClientProps) {
+  const [article, setArticle] = useState<Article>(initialArticle);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(article.likes || 142);
+  const [likeCount, setLikeCount] = useState(initialArticle.likes || 142);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    getArticleBySlug(initialArticle.slug).then((fresh) => {
+      if (fresh) {
+        setArticle(fresh);
+        if (fresh.likes !== undefined) setLikeCount(fresh.likes);
+      }
+    });
+  }, [initialArticle.slug]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -136,10 +148,20 @@ export default function ArticleReaderClient({ article, htmlContent }: ArticleRea
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px'
+                  gap: '6px'
                 }}
               >
-                <span>{copied ? '✓ COPIED' : '⎘ COPY LINK'}</span>
+                {copied ? (
+                  <>
+                    <Check size={13} />
+                    <span>COPIED</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy size={13} />
+                    <span>COPY LINK</span>
+                  </>
+                )}
               </button>
 
               <button
@@ -158,14 +180,78 @@ export default function ArticleReaderClient({ article, htmlContent }: ArticleRea
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px'
+                  gap: '6px'
                 }}
               >
-                <span>♥ {likeCount}</span>
+                <Heart size={13} style={{ fill: liked ? 'var(--dark-solid)' : 'none' }} />
+                <span>{likeCount}</span>
               </button>
             </div>
           </div>
         </header>
+
+        {/* Featured Cover Image with Geometric Motif Badge */}
+        {article.cover_image && (
+          <div
+            className="article-featured-cover"
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxHeight: '460px',
+              marginBottom: '44px',
+              border: '2px solid var(--dark-solid)',
+              boxShadow: '8px 8px 0px var(--sky-solid)',
+              overflow: 'hidden',
+              backgroundColor: 'var(--bg-deep)'
+            }}
+          >
+            <img
+              src={article.cover_image}
+              alt={article.title}
+              style={{
+                width: '100%',
+                maxHeight: '460px',
+                objectFit: 'cover',
+                display: 'block'
+              }}
+            />
+            {/* Geometric Shape Style Reference Badge */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '16px',
+                right: '16px',
+                background: 'rgba(10, 15, 29, 0.88)',
+                backdropFilter: 'blur(8px)',
+                border: '1.5px solid var(--sky-border)',
+                borderRadius: '4px',
+                padding: '8px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
+                zIndex: 2
+              }}
+            >
+              <div
+                className={`p-motif ${article.motif === 'circ' ? 'motif-circle' : article.motif === 'semi' ? 'motif-semi' : 'motif-square'}`}
+                style={{ transform: 'scale(0.55)', margin: 0 }}
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '9px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--sky-blue)',
+                  fontWeight: 700,
+                  textTransform: 'uppercase'
+                }}
+              >
+                {article.motif === 'circ' ? 'CIRCULAR' : article.motif === 'semi' ? 'SEMI-RADIAL' : 'PRISMATIC'}
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Article Body */}
         <div
@@ -196,12 +282,13 @@ export default function ArticleReaderClient({ article, htmlContent }: ArticleRea
 
         {/* Post Bottom Navigation */}
         <div style={{ marginTop: '54px', paddingTop: '32px', borderTop: '1.5px solid var(--sky-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Link href="/journal" className="ghost-btn">
-            ← Back to Journal
+          <Link href="/journal" className="ghost-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <ArrowLeft size={13} />
+            <span>Back to Journal</span>
           </Link>
-          <Link href="/contact" className="cta-btn">
+          <Link href="/contact" className="cta-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             <span>Send a Note / Response</span>
-            <span className="btn-arrow">→</span>
+            <ArrowRight size={13} />
           </Link>
         </div>
       </article>

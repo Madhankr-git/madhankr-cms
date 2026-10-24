@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
 
 export default function PublicContactForm() {
   const [formData, setFormData] = useState({
@@ -93,14 +94,16 @@ export default function PublicContactForm() {
       </div>
 
       {status === 'success' && (
-        <div style={{ padding: '12px 16px', background: '#dcfce7', border: '1px solid #86efac', color: '#166534', fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 600 }}>
-          ✓ {feedback}
+        <div style={{ padding: '12px 16px', background: '#dcfce7', border: '1px solid #86efac', color: '#166534', fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <CheckCircle2 size={15} style={{ flexShrink: 0 }} />
+          <span>{feedback}</span>
         </div>
       )}
 
       {status === 'error' && (
-        <div style={{ padding: '12px 16px', background: '#fee2e2', border: '1px solid #fca5a5', color: '#991b1b', fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 600 }}>
-          ✕ {feedback}
+        <div style={{ padding: '12px 16px', background: '#fee2e2', border: '1px solid #fca5a5', color: '#991b1b', fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <AlertCircle size={15} style={{ flexShrink: 0 }} />
+          <span>{feedback}</span>
         </div>
       )}
 
@@ -108,7 +111,9 @@ export default function PublicContactForm() {
         <span className="btn-text">
           {status === 'submitting' ? 'TRANSMITTING...' : 'TRANSMIT INQUIRY'}
         </span>
-        <span className="btn-icon">→</span>
+        <span className="btn-icon">
+          <ArrowRight size={14} />
+        </span>
       </button>
     </form>
   );

@@ -10,11 +10,14 @@ export interface Article {
   content: string;
   category: string;
   categorySlug: string;
+  category_slug?: string;
   readTime: string;
+  read_time?: string;
   status: 'draft' | 'published' | 'archived';
   featured: boolean;
   motif: 'sq' | 'semi' | 'circ';
   tags: string[];
+  cover_image?: string;
   views: number;
   likes: number;
   published_at?: string;

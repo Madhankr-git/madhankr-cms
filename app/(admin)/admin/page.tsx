@@ -6,6 +6,7 @@ import { getAllArticles } from '@/lib/db/articles';
 import { getAllProjects } from '@/lib/db/projects';
 import { getActivities } from '@/lib/db/settings';
 import { Article, Project, ActivityItem } from '@/lib/types';
+import { Plus, Sparkles, TrendingUp, Send, CheckCircle2 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -39,14 +40,14 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', fontFamily: 'var(--cms-font)' }}>
       {/* Page Title & Status Banner */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: '26px', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', marginBottom: '4px' }}>
+          <h1 style={{ fontSize: '26px', fontWeight: 900, color: 'var(--cms-text-heading)', letterSpacing: '-0.03em', marginBottom: '4px' }}>
             Dashboard Overview
           </h1>
-          <p style={{ fontSize: '13.5px', color: '#64748b' }}>
+          <p style={{ fontSize: '13.5px', color: 'var(--cms-text-muted)' }}>
             Real-time reader analytics, publishing telemetry &amp; Supabase database status
           </p>
         </div>
@@ -55,17 +56,21 @@ export default function AdminDashboardPage() {
           <Link
             href="/admin/editor"
             style={{
-              background: '#2563eb',
+              background: 'var(--cms-primary)',
               color: '#ffffff',
               padding: '10px 18px',
               borderRadius: '8px',
               fontSize: '13px',
               fontWeight: 700,
               textDecoration: 'none',
-              boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)'
+              boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
             }}
           >
-            + Create Article
+            <Plus size={15} />
+            <span>Create Article</span>
           </Link>
         </div>
       </div>
@@ -258,7 +263,7 @@ export default function AdminDashboardPage() {
                 justifyContent: 'center',
                 fontSize: '14px'
               }}>
-                ✦
+                <Sparkles size={16} color="#ffffff" />
               </div>
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 800 }}>AI Editorial Partner</div>
@@ -290,23 +295,28 @@ export default function AdminDashboardPage() {
                   padding: '7px 10px',
                   color: '#ffffff',
                   fontSize: '12px',
-                  outline: 'none'
+                  outline: 'none',
+                  fontFamily: 'var(--cms-font)'
                 }}
               />
               <button
                 type="submit"
                 style={{
-                  background: '#2563eb',
+                  background: 'var(--cms-primary)',
                   border: 'none',
                   borderRadius: '6px',
                   padding: '7px 12px',
                   color: '#ffffff',
                   fontSize: '12px',
                   fontWeight: 700,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}
               >
-                Send
+                <Send size={12} />
+                <span>Send</span>
               </button>
             </form>
           </div>

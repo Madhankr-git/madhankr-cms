@@ -3,35 +3,37 @@
 import React from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from './AdminAuthContext';
+import { Search, Plus, LogOut } from 'lucide-react';
 
 export default function AdminTopbar() {
   const { user, logout } = useAdminAuth();
 
   return (
-    <header style={{
-      height: '70px',
-      background: '#ffffff',
-      borderBottom: '1px solid #e2e8f0',
+    <header className="cms-topbar" style={{
+      height: '68px',
+      background: 'var(--cms-surface)',
+      borderBottom: '1px solid var(--cms-border)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       padding: '0 32px',
       position: 'sticky',
       top: 0,
-      zIndex: 100
+      zIndex: 90,
+      fontFamily: 'var(--cms-font)'
     }}>
       {/* Search Input Pill */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
-        background: '#f8fafc',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px',
-        padding: '8px 16px',
+        background: 'var(--cms-surface-subtle)',
+        border: '1px solid var(--cms-border)',
+        borderRadius: 'var(--cms-radius-pill)',
+        padding: '7px 16px',
         width: '320px'
       }}>
-        <span style={{ color: '#94a3b8', fontSize: '14px' }}>🔍</span>
+        <Search size={15} color="var(--cms-text-subtle)" />
         <input
           type="text"
           placeholder="Search articles, projects, settings..."
@@ -40,16 +42,17 @@ export default function AdminTopbar() {
             background: 'transparent',
             outline: 'none',
             fontSize: '13px',
+            fontFamily: 'var(--cms-font)',
             width: '100%',
-            color: '#0f172a'
+            color: 'var(--cms-text-heading)'
           }}
         />
         <span style={{
           fontSize: '10px',
-          fontFamily: 'var(--font-mono)',
-          color: '#94a3b8',
-          background: '#ffffff',
-          border: '1px solid #cbd5e1',
+          fontFamily: 'var(--cms-font-mono)',
+          color: 'var(--cms-text-subtle)',
+          background: 'var(--cms-surface)',
+          border: '1px solid var(--cms-border)',
           padding: '2px 6px',
           borderRadius: '4px'
         }}>
@@ -62,7 +65,7 @@ export default function AdminTopbar() {
         <Link
           href="/admin/editor"
           style={{
-            background: '#2563eb',
+            background: 'var(--cms-primary)',
             color: '#ffffff',
             border: 'none',
             padding: '8px 16px',
@@ -73,35 +76,36 @@ export default function AdminTopbar() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            boxShadow: '0 2px 6px rgba(37, 99, 235, 0.25)'
+            boxShadow: '0 2px 6px rgba(37, 99, 235, 0.25)',
+            fontFamily: 'var(--cms-font)'
           }}
         >
-          <span>+</span>
+          <Plus size={15} />
           <span>New Post</span>
         </Link>
 
         {/* User Info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderLeft: '1px solid #e2e8f0', paddingLeft: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderLeft: '1px solid var(--cms-border)', paddingLeft: '20px' }}>
           <div style={{
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            background: '#2563eb',
+            background: 'var(--cms-primary)',
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '13px',
             fontWeight: 800,
-            fontFamily: 'var(--font-mono)'
+            fontFamily: 'var(--cms-font-mono)'
           }}>
             MK
           </div>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a', lineHeight: 1.2 }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--cms-text-heading)', lineHeight: 1.2 }}>
               {user?.name || 'MadhanKR'}
             </div>
-            <div style={{ fontSize: '10.5px', color: '#64748b' }}>
+            <div style={{ fontSize: '10.5px', color: 'var(--cms-text-muted)', fontWeight: 500 }}>
               Super Admin
             </div>
           </div>
@@ -113,17 +117,22 @@ export default function AdminTopbar() {
           onClick={() => logout()}
           style={{
             background: 'transparent',
-            border: '1px solid #e2e8f0',
+            border: '1px solid var(--cms-border)',
             padding: '7px 14px',
             borderRadius: '6px',
             fontSize: '12px',
             fontWeight: 600,
-            color: '#ef4444',
+            color: 'var(--cms-danger)',
             cursor: 'pointer',
-            transition: 'all 0.2s'
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.2s',
+            fontFamily: 'var(--cms-font)'
           }}
         >
-          Sign Out
+          <LogOut size={13} />
+          <span>Sign Out</span>
         </button>
       </div>
     </header>

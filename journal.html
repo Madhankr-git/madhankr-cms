@@ -269,6 +269,15 @@
 </head>
 <body>
 
+  <!-- ─── FLOATING SCROLL-DRIVEN BACKGROUND SHAPES ─────────── -->
+  <div class="scroll-shapes-container" aria-hidden="true">
+    <div class="bg-shape bg-circle" id="bgCircle1"></div>
+    <div class="bg-shape bg-semi" id="bgSemi1"></div>
+    <div class="bg-shape bg-square" id="bgSquare1"></div>
+    <div class="bg-shape bg-semi-h" id="bgSemi2"></div>
+    <div class="bg-shape bg-circle-sm" id="bgCircle2"></div>
+  </div>
+
   <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
   <header class="public-header">
     <a href="index.html" class="public-brand">
@@ -437,5 +446,10 @@
   <script src="cms-data.js"></script>
   <script src="public-layout.js"></script>
   <script src="journal.js"></script>
+  <!-- GSAP & Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

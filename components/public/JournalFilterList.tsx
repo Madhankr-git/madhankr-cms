@@ -1,26 +1,47 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import { getAllArticles } from '@/lib/db/articles';
+import { Search, X, ArrowRight, ArrowUpRight } from 'lucide-react';
 
 interface JournalFilterListProps {
   initialArticles: Article[];
 }
 
 export default function JournalFilterList({ initialArticles }: JournalFilterListProps) {
+  const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  useEffect(() => {
+    getAllArticles().then((latest) => {
+      if (latest && latest.length > 0) {
+        setArticles(latest.filter((a) => a.status === 'published'));
+      }
+    });
+  }, []);
+
+  // Extract unique categories dynamically from articles so newly created categories immediately appear
+  const uniqueCategoryMap = new Map<string, string>();
+  articles.forEach((article) => {
+    if (article.categorySlug && article.category) {
+      if (!uniqueCategoryMap.has(article.categorySlug)) {
+        uniqueCategoryMap.set(article.categorySlug, article.category);
+      }
+    }
+  });
+
   const categories = [
     { key: 'all', label: 'ALL ESSAYS' },
-    { key: 'ai-workflows', label: 'AI & WORKFLOWS' },
-    { key: 'design', label: 'DESIGN' },
-    { key: 'engineering', label: 'ENGINEERING' },
-    { key: 'philosophy', label: 'PHILOSOPHY' },
+    ...Array.from(uniqueCategoryMap.entries()).map(([key, label]) => ({
+      key,
+      label: label.toUpperCase(),
+    })),
   ];
 
-  const filtered = initialArticles.filter((article) => {
+  const filtered = articles.filter((article) => {
     const matchesCategory = selectedCategory === 'all' || article.categorySlug === selectedCategory;
     const matchesSearch =
       article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -58,7 +79,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
           border: '1.5px solid var(--sky-border)',
           padding: '10px 16px'
         }}>
-          <span className="search-icon" style={{ color: 'var(--sky-blue)', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>⌕</span>
+          <Search size={16} style={{ color: 'var(--sky-blue)', flexShrink: 0 }} />
           <input
             type="text"
             placeholder="Search essays by keyword, tag, or topic..."
@@ -78,9 +99,9 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
             <button
               type="button"
               onClick={() => setSearchTerm('')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--grey-text)' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--grey-text)', display: 'flex', alignItems: 'center' }}
             >
-              ✕
+              <X size={15} />
             </button>
           )}
         </div>
@@ -163,28 +184,91 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
                       {featured.title}
                     </h2>
 
-                    <p style={{ fontSize: '16px', lineHeight: 1.7, color: 'var(--text-muted)', marginBottom: '24px' }}>
+                    <p style={{ fontSize: '16px', lineHeight: 1.7, color: 'var(--text-muted)', marginBottom: '20px' }}>
                       {featured.summary}
                     </p>
+
+                    {/* Topic Taxonomy / Keywords */}
+                    {featured.tags && featured.tags.length > 0 && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '24px' }}>
+                        {featured.tags.map((tag, tIdx) => (
+                          <span
+                            key={tIdx}
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              color: 'var(--sky-blue)',
+                              background: 'rgba(2, 132, 199, 0.08)',
+                              border: '1px solid var(--sky-border)',
+                              borderRadius: '2px',
+                              padding: '3px 8px',
+                              letterSpacing: '0.04em'
+                            }}
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <Link href={`/journal/${featured.slug}`} className="cta-btn" id="spotlightReadBtn">
+                    <Link href={`/journal/${featured.slug}`} className="cta-btn" id="spotlightReadBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                       <span>Read Essay</span>
-                      <span className="btn-arrow">→</span>
+                      <ArrowRight size={14} />
                     </Link>
                   </div>
                 </div>
 
                 <div style={{
-                  background: 'var(--bg-card)',
+                  background: 'var(--bg-deep)',
                   borderLeft: '1.5px solid var(--sky-border)',
+                  position: 'relative',
+                  minHeight: '260px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '40px'
+                  overflow: 'hidden'
                 }}>
-                  <div className={`p-motif ${featured.motif === 'circ' ? 'motif-circle' : featured.motif === 'semi' ? 'motif-semi' : 'motif-square'}`} style={{ transform: 'scale(1.4)' }} />
+                  {featured.cover_image ? (
+                    <>
+                      <img
+                        src={featured.cover_image}
+                        alt={featured.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          minHeight: '280px',
+                          display: 'block'
+                        }}
+                      />
+                      {/* Geometric shape style reference badge */}
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '16px',
+                        right: '16px',
+                        background: 'rgba(10, 15, 29, 0.88)',
+                        backdropFilter: 'blur(8px)',
+                        border: '1.5px solid var(--sky-border)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
+                        zIndex: 2
+                      }}>
+                        <div className={`p-motif ${featured.motif === 'circ' ? 'motif-circle' : featured.motif === 'semi' ? 'motif-semi' : 'motif-square'}`} style={{ transform: 'scale(0.55)', margin: 0 }} />
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'var(--sky-blue)', fontWeight: 700, textTransform: 'uppercase' }}>
+                          {featured.motif === 'circ' ? 'CIRCULAR' : featured.motif === 'semi' ? 'SEMI-RADIAL' : 'PRISMATIC'}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className={`p-motif ${featured.motif === 'circ' ? 'motif-circle' : featured.motif === 'semi' ? 'motif-semi' : 'motif-square'}`} style={{ transform: 'scale(1.4)' }} />
+                  )}
                 </div>
               </article>
             </div>
@@ -200,22 +284,43 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
                 {regularList.map((article, idx) => (
                   <article key={article.id} className="b-entry">
                     <div className="b-meta">
-                      <span className={`b-shape ${article.motif || 'sq'}`} />
                       <span className="b-date">NOTE 0{idx + 1}</span>
+                      {article.cover_image ? (
+                        <div className="b-thumb-wrap">
+                          <img src={article.cover_image} alt={article.title} className="b-thumb-img" />
+                          <span className="b-thumb-shape-badge" title={`Motif: ${article.motif || 'sq'}`}>
+                            <span className={`b-shape ${article.motif || 'sq'}`} />
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="b-shape-only">
+                          <span className={`b-shape ${article.motif || 'sq'}`} />
+                        </div>
+                      )}
                     </div>
                     <div className="b-content">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--sky-blue)', fontWeight: 700, letterSpacing: '0.12em' }}>
+                      <div className="b-top-row">
+                        <span className="b-cat-tag">
                           {article.category.toUpperCase()}
                         </span>
-                        <span style={{ fontSize: '11px', color: 'var(--grey-text)' }}>• {article.readTime}</span>
+                        <span className="b-read-time">• {article.readTime}</span>
                       </div>
                       <h3 className="b-title">{article.title}</h3>
                       <p className="b-summary">{article.summary}</p>
+                      {article.tags && article.tags.length > 0 && (
+                        <div className="b-tags-list">
+                          {article.tags.map((tag, tIdx) => (
+                            <span key={tIdx} className="b-tag-pill">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                     <div className="b-action">
-                      <Link href={`/journal/${article.slug}`} className="b-btn">
-                        READ <span>↗</span>
+                      <Link href={`/journal/${article.slug}`} className="b-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <span>READ</span>
+                        <ArrowUpRight size={13} />
                       </Link>
                     </div>
                   </article>

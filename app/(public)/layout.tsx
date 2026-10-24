@@ -2,7 +2,7 @@ import React from 'react';
 import '@/styles/public.css';
 import PublicHeader from '@/components/public/PublicHeader';
 import PublicFooter from '@/components/public/PublicFooter';
-import CmsQuickPill from '@/components/public/CmsQuickPill';
+import GsapAnimationEngine from '@/components/public/GsapAnimationEngine';
 
 export default function PublicLayout({
   children,
@@ -11,12 +11,15 @@ export default function PublicLayout({
 }) {
   return (
     <div className="public-site-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <GsapAnimationEngine />
+
       {/* Floating scroll background shapes */}
       <div className="scroll-shapes-container" aria-hidden="true">
-        <div className="bg-shape bg-semi" />
-        <div className="bg-shape bg-square" />
-        <div className="bg-shape bg-circ" />
-        <div className="bg-shape bg-diamond" />
+        <div className="bg-shape bg-circle" id="bgCircle1" />
+        <div className="bg-shape bg-semi" id="bgSemi1" />
+        <div className="bg-shape bg-square" id="bgSquare1" />
+        <div className="bg-shape bg-semi-h" id="bgSemi2" />
+        <div className="bg-shape bg-circle-sm" id="bgCircle2" />
       </div>
 
       <PublicHeader />
@@ -26,7 +29,6 @@ export default function PublicLayout({
       </main>
 
       <PublicFooter />
-      <CmsQuickPill />
     </div>
   );
 }

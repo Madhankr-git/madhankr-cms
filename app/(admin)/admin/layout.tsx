@@ -19,10 +19,10 @@ function AdminShell({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f4f6fa', fontFamily: 'var(--font-mono)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f4f6fa', fontFamily: 'var(--cms-font)' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ width: '36px', height: '36px', border: '3px solid #2563eb', borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 16px', animation: 'spin 0.8s linear infinite' }} />
-          <div style={{ fontSize: '13px', color: '#64748b' }}>Authenticating CMS Studio...</div>
+          <div style={{ fontSize: '13px', color: '#64748b', fontWeight: 600 }}>Authenticating CMS Studio...</div>
         </div>
       </div>
     );
@@ -33,11 +33,11 @@ function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f6fa' }}>
+    <div className="admin-app" style={{ display: 'flex', minHeight: '100vh', background: 'var(--cms-canvas)', fontFamily: 'var(--cms-font)' }}>
       <AdminSidebar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      <div className="admin-main-wrapper">
         <AdminTopbar />
-        <main style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
+        <main className="admin-main">
           {children}
         </main>
       </div>

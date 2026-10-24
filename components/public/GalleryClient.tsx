@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { ExternalLink, X } from 'lucide-react';
 
 interface GalleryItem {
   id: string;
@@ -192,7 +193,10 @@ export default function GalleryClient() {
                 paddingTop: '12px'
               }}>
                 <span>{item.year}</span>
-                <span style={{ color: 'var(--sky-blue)' }}>EXPAND ↗</span>
+                <span style={{ color: 'var(--sky-blue)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span>EXPAND</span>
+                  <ExternalLink size={12} />
+                </span>
               </div>
             </div>
           </article>
@@ -238,10 +242,13 @@ export default function GalleryClient() {
                 width: '36px',
                 height: '36px',
                 cursor: 'pointer',
-                fontWeight: 900
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
+              aria-label="Close dialog"
             >
-              ✕
+              <X size={18} />
             </button>
 
             <div style={{ height: '220px', background: 'var(--bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px', border: '1px solid var(--sky-border)' }}>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMediaAssets, uploadMedia, deleteMedia } from '@/lib/db/media';
 import { MediaAsset } from '@/lib/types';
+import { UploadCloud, Image as ImageIcon, Plus, Check, Copy, Trash2, Folder } from 'lucide-react';
 
 export default function MediaLibraryPage() {
   const [assets, setAssets] = useState<MediaAsset[]>([]);
@@ -46,7 +47,7 @@ export default function MediaLibraryPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: 'var(--cms-font)' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
@@ -54,7 +55,7 @@ export default function MediaLibraryPage() {
             Media Library
           </h1>
           <p style={{ fontSize: '13.5px', color: '#64748b' }}>
-            Manage assets stored in Supabase Storage <code style={{ background: '#e2e8f0', padding: '2px 6px', borderRadius: '4px' }}>cms-media</code> bucket
+            Manage assets stored in Supabase Storage <code style={{ background: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontFamily: 'var(--cms-font-mono)' }}>cms-media</code> bucket
           </p>
         </div>
 
@@ -66,9 +67,13 @@ export default function MediaLibraryPage() {
           fontSize: '13px',
           fontWeight: 700,
           cursor: 'pointer',
-          boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)'
+          boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px'
         }}>
-          {uploading ? 'Uploading...' : '+ Upload Asset'}
+          <Plus size={15} />
+          <span>{uploading ? 'Uploading...' : 'Upload Asset'}</span>
           <input
             type="file"
             multiple
@@ -85,9 +90,12 @@ export default function MediaLibraryPage() {
         border: '2px dashed #cbd5e1',
         borderRadius: '12px',
         padding: '36px',
-        textAlign: 'center'
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}>
-        <div style={{ fontSize: '32px', marginBottom: '8px' }}>📁</div>
+        <UploadCloud size={40} style={{ color: '#2563eb', marginBottom: '12px' }} />
         <div style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a', marginBottom: '4px' }}>
           Drag &amp; drop files here, or click to upload
         </div>
@@ -95,7 +103,9 @@ export default function MediaLibraryPage() {
           Supports PNG, JPG, WebP, SVG vectors up to 25MB each.
         </p>
         <label style={{
-          display: 'inline-block',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
           padding: '8px 18px',
           background: '#f1f5f9',
           border: '1px solid #cbd5e1',
@@ -104,7 +114,8 @@ export default function MediaLibraryPage() {
           fontWeight: 700,
           cursor: 'pointer'
         }}>
-          Browse Local Files
+          <Folder size={14} />
+          <span>Browse Local Files</span>
           <input
             type="file"
             multiple
@@ -140,10 +151,9 @@ export default function MediaLibraryPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#94a3b8',
-              fontSize: '28px'
+              color: '#94a3b8'
             }}>
-              🖼️
+              <ImageIcon size={36} style={{ strokeWidth: 1.5 }} />
             </div>
             <div style={{ padding: '14px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
@@ -168,10 +178,24 @@ export default function MediaLibraryPage() {
                     color: copiedId === asset.id ? '#166534' : '#0f172a',
                     fontSize: '11px',
                     fontWeight: 700,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px'
                   }}
                 >
-                  {copiedId === asset.id ? '✓ Copied' : 'Copy URL'}
+                  {copiedId === asset.id ? (
+                    <>
+                      <Check size={12} />
+                      <span>Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={12} />
+                      <span>Copy URL</span>
+                    </>
+                  )}
                 </button>
                 <button
                   type="button"
@@ -184,10 +208,14 @@ export default function MediaLibraryPage() {
                     color: '#ef4444',
                     fontSize: '11px',
                     fontWeight: 700,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
+                  title="Delete asset"
                 >
-                  ✕
+                  <Trash2 size={13} />
                 </button>
               </div>
             </div>

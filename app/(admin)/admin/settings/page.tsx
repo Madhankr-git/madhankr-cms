@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { getSiteSettings, saveSiteSettings, logActivity } from '@/lib/db/settings';
 import { SiteSettings } from '@/lib/types';
+import { Download, Save, CheckCircle2 } from 'lucide-react';
 
 export default function SiteSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -22,7 +23,7 @@ export default function SiteSettingsPage() {
         title: 'Site Settings Updated',
         detail: 'Global branding and contact parameters saved'
       });
-      setToastMsg('✓ Site settings updated successfully.');
+      setToastMsg('Site settings updated successfully.');
       setTimeout(() => setToastMsg(''), 3000);
     }
   };
@@ -42,24 +43,30 @@ export default function SiteSettingsPage() {
     a.click();
   };
 
-  if (!settings) return <div style={{ padding: '32px' }}>Loading settings...</div>;
+  if (!settings) return <div style={{ padding: '32px', fontFamily: 'var(--cms-font)' }}>Loading settings...</div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: 'var(--cms-font)' }}>
       {toastMsg && (
         <div style={{
           position: 'fixed',
           top: '24px',
           right: '24px',
-          background: '#166534',
+          background: '#0f172a',
           color: '#ffffff',
           borderRadius: '8px',
           padding: '12px 20px',
           fontSize: '13px',
           fontWeight: 700,
-          zIndex: 1000
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          border: '1px solid #22c55e',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
         }}>
-          {toastMsg}
+          <CheckCircle2 size={16} style={{ color: '#22c55e' }} />
+          <span>{toastMsg}</span>
         </div>
       )}
 
@@ -78,16 +85,21 @@ export default function SiteSettingsPage() {
           type="button"
           onClick={handleExportBackup}
           style={{
-            background: '#f1f5f9',
+            background: '#ffffff',
             border: '1px solid #cbd5e1',
             borderRadius: '6px',
             padding: '8px 16px',
             fontSize: '12px',
             fontWeight: 700,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            color: '#334155'
           }}
         >
-          ⬇ Export JSON Backup
+          <Download size={14} />
+          <span>Export JSON Backup</span>
         </button>
       </div>
 
@@ -190,10 +202,14 @@ export default function SiteSettingsPage() {
               fontWeight: 700,
               border: 'none',
               cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Save All Settings
+            <Save size={15} />
+            <span>Save All Settings</span>
           </button>
         </div>
       </form>

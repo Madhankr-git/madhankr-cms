@@ -6,6 +6,7 @@ import { getAllArticles, saveArticle, deleteArticle } from '@/lib/db/articles';
 import { getAllProjects, saveProject, deleteProject } from '@/lib/db/projects';
 import { logActivity } from '@/lib/db/settings';
 import { Article, Project } from '@/lib/types';
+import { CheckCircle2, Plus, ExternalLink, Edit3, Trash2, Search, FileText, Layers } from 'lucide-react';
 
 export default function ContentManagerPage() {
   const [tab, setTab] = useState<'articles' | 'projects'>('articles');
@@ -96,7 +97,7 @@ export default function ContentManagerPage() {
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: 'var(--cms-font)' }}>
       {/* Toast Alert */}
       {toastMessage && (
         <div style={{
@@ -111,9 +112,13 @@ export default function ContentManagerPage() {
           fontSize: '13px',
           fontWeight: 600,
           boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-          zIndex: 1000
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
         }}>
-          ✓ {toastMessage}
+          <CheckCircle2 size={16} style={{ color: '#22c55e', flexShrink: 0 }} />
+          <span>{toastMessage}</span>
         </div>
       )}
 
@@ -138,10 +143,14 @@ export default function ContentManagerPage() {
             fontSize: '13px',
             fontWeight: 700,
             textDecoration: 'none',
-            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)'
+            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px'
           }}
         >
-          + Write New Post
+          <Plus size={15} />
+          <span>Write New Post</span>
         </Link>
       </div>
 
@@ -192,7 +201,8 @@ export default function ContentManagerPage() {
           </button>
         </div>
 
-        <div style={{ width: '280px' }}>
+        <div style={{ position: 'relative', width: '280px' }}>
+          <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
           <input
             type="text"
             placeholder="Search content..."
@@ -200,11 +210,12 @@ export default function ContentManagerPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
               width: '100%',
-              padding: '8px 12px',
+              padding: '8px 12px 8px 32px',
               borderRadius: '6px',
               border: '1px solid #cbd5e1',
               fontSize: '13px',
-              outline: 'none'
+              outline: 'none',
+              fontFamily: 'var(--cms-font)'
             }}
           />
         </div>
@@ -227,11 +238,26 @@ export default function ContentManagerPage() {
               {filteredArticles.map((art) => (
                 <tr key={art.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                   <td style={{ padding: '16px 20px' }}>
-                    <div style={{ fontWeight: 700, fontSize: '14px', color: '#0f172a', marginBottom: '2px' }}>
-                      {art.title}
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#64748b', fontFamily: 'var(--font-mono)' }}>
-                      /journal/{art.slug} · <span style={{ color: '#2563eb' }}>{art.category}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                      {art.cover_image && (
+                        <div style={{ position: 'relative', width: '48px', height: '36px', borderRadius: '4px', overflow: 'hidden', border: '1px solid #cbd5e1', flexShrink: 0, backgroundColor: '#f1f5f9' }}>
+                          <img src={art.cover_image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <span style={{ position: 'absolute', bottom: '2px', right: '2px', width: '6px', height: '6px', background: '#2563eb', borderRadius: art.motif === 'circ' ? '50%' : '1px' }} />
+                        </div>
+                      )}
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '14px', color: '#0f172a', marginBottom: '2px' }}>
+                          {art.title}
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#64748b', fontFamily: 'var(--font-mono)' }}>
+                          /journal/{art.slug} · <span style={{ color: '#2563eb', fontWeight: 600 }}>{art.category}</span>
+                          {art.tags && art.tags.length > 0 && (
+                            <span style={{ color: '#94a3b8', marginLeft: '6px' }}>
+                              · {art.tags.slice(0, 3).map((t) => `#${t}`).join(' ')}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
@@ -254,7 +280,7 @@ export default function ContentManagerPage() {
                     {art.views?.toLocaleString() || 0}
                   </td>
                   <td style={{ padding: '16px 20px', textAlign: 'right' }}>
-                    <div style={{ display: 'inline-flex', gap: '8px' }}>
+                    <div style={{ display: 'inline-flex', gap: '8px', alignItems: 'center' }}>
                       <button
                         type="button"
                         onClick={() => handleToggleArticleStatus(art)}
@@ -280,10 +306,14 @@ export default function ContentManagerPage() {
                           color: '#2563eb',
                           fontSize: '11.5px',
                           fontWeight: 700,
-                          textDecoration: 'none'
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        Edit
+                        <Edit3 size={12} />
+                        <span>Edit</span>
                       </Link>
                       <Link
                         href={`/journal/${art.slug}`}
@@ -296,10 +326,14 @@ export default function ContentManagerPage() {
                           color: '#0f172a',
                           fontSize: '11.5px',
                           fontWeight: 600,
-                          textDecoration: 'none'
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        View ↗
+                        <span>View</span>
+                        <ExternalLink size={12} />
                       </Link>
                       <button
                         type="button"
@@ -312,10 +346,14 @@ export default function ContentManagerPage() {
                           color: '#ef4444',
                           fontSize: '11.5px',
                           fontWeight: 700,
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        Delete
+                        <Trash2 size={12} />
+                        <span>Delete</span>
                       </button>
                     </div>
                   </td>
@@ -351,7 +389,7 @@ export default function ContentManagerPage() {
                     {p.year}
                   </td>
                   <td style={{ padding: '16px 20px', textAlign: 'right' }}>
-                    <div style={{ display: 'inline-flex', gap: '8px' }}>
+                    <div style={{ display: 'inline-flex', gap: '8px', alignItems: 'center' }}>
                       <Link
                         href={`/work/${p.slug}`}
                         target="_blank"
@@ -363,10 +401,14 @@ export default function ContentManagerPage() {
                           color: '#0f172a',
                           fontSize: '11.5px',
                           fontWeight: 600,
-                          textDecoration: 'none'
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        View ↗
+                        <span>View</span>
+                        <ExternalLink size={12} />
                       </Link>
                       <button
                         type="button"
@@ -379,10 +421,14 @@ export default function ContentManagerPage() {
                           color: '#ef4444',
                           fontSize: '11.5px',
                           fontWeight: 700,
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        Delete
+                        <Trash2 size={12} />
+                        <span>Delete</span>
                       </button>
                     </div>
                   </td>

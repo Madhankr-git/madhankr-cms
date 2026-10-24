@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { X } from 'lucide-react';
 
 export default function PublicHeader() {
   const pathname = usePathname();
@@ -97,14 +98,16 @@ export default function PublicHeader() {
                 style={{
                   background: 'none',
                   border: 'none',
-                  fontSize: '24px',
                   cursor: 'pointer',
                   color: 'var(--text-main)',
-                  fontWeight: 900
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '4px'
                 }}
                 aria-label="Close menu"
               >
-                ✕
+                <X size={22} />
               </button>
             </div>
 

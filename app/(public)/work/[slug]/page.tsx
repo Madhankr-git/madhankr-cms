@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllProjects, getProjectBySlug } from '@/lib/db/projects';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface ProjectPageProps {
   params: {
@@ -148,12 +149,13 @@ export default async function CaseStudyPage({ params }: ProjectPageProps) {
 
       {/* Bottom Navigation */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '32px', borderTop: '1.5px solid var(--sky-border)' }}>
-        <Link href="/work" className="ghost-btn">
-          ← Back to All Works
+        <Link href="/work" className="ghost-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <ArrowLeft size={13} />
+          <span>Back to All Works</span>
         </Link>
-        <Link href="/contact" className="cta-btn">
+        <Link href="/contact" className="cta-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <span>Discuss Similar Project</span>
-          <span className="btn-arrow">→</span>
+          <ArrowRight size={14} />
         </Link>
       </div>
     </article>

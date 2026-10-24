@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import '@/styles/cms-admin.css';
 import { AdminAuthProvider, useAdminAuth } from '@/components/admin/AdminAuthContext';
+import { AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 function LoginCard() {
   const [email, setEmail] = useState('');
@@ -56,7 +57,8 @@ function LoginCard() {
       alignItems: 'center',
       justifyContent: 'center',
       background: '#f4f6fa',
-      padding: '24px'
+      padding: '24px',
+      fontFamily: 'var(--cms-font)'
     }}>
       <div style={{
         width: '100%',
@@ -81,7 +83,7 @@ function LoginCard() {
             color: '#ffffff',
             fontWeight: 900,
             fontSize: '20px',
-            fontFamily: 'var(--font-mono)',
+            fontFamily: 'var(--cms-font-mono)',
             boxShadow: '0 8px 20px rgba(37, 99, 235, 0.3)'
           }}>
             MK
@@ -107,7 +109,7 @@ function LoginCard() {
             alignItems: 'center',
             gap: '8px'
           }}>
-            <span>⚠️</span>
+            <AlertCircle size={16} style={{ color: '#ef4444', flexShrink: 0 }} />
             <span>{errorMsg}</span>
           </div>
         )}
@@ -198,10 +200,15 @@ function LoginCard() {
               fontWeight: 700,
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
               boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)',
-              transition: 'background 0.2s ease'
+              transition: 'background 0.2s ease',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
             }}
           >
-            {isSubmitting ? 'Signing in...' : 'Sign In to Dashboard →'}
+            <span>{isSubmitting ? 'Signing in...' : 'Sign In to Dashboard'}</span>
+            {!isSubmitting && <ArrowRight size={15} />}
           </button>
         </form>
 

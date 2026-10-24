@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About MadhanKR — Background, Philosophy & Skills',
@@ -131,12 +132,13 @@ export default function AboutPage() {
 
       {/* Action CTA */}
       <div style={{ paddingTop: '36px', borderTop: '1.5px solid var(--sky-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link href="/work" className="ghost-btn">
-          ← View Portfolio Works
+        <Link href="/work" className="ghost-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <ArrowLeft size={13} />
+          <span>View Portfolio Works</span>
         </Link>
-        <Link href="/contact" className="cta-btn">
+        <Link href="/contact" className="cta-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <span>Get in Touch</span>
-          <span className="btn-arrow">→</span>
+          <ArrowRight size={14} />
         </Link>
       </div>
     </div>

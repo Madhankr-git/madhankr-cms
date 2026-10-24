@@ -3,9 +3,14 @@
 // KINETIC GSAP ENGINE WITH SCROLL-DRIVEN MECHANICAL MOTION
 // ══════════════════════════════════════════════════════════════════
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+if (typeof gsap !== 'undefined') {
+  if (typeof ScrollTrigger !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  }
+}
 
-document.addEventListener('DOMContentLoaded', () => {
+function startEngine() {
+  if (typeof gsap === 'undefined') return;
   initHeroIntro();
   initScrollShapesParallax();
   initKineticScrubMarquee();
@@ -14,10 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
   initAboutTotemScroll();
   initBurgerNav();
   initContactForm();
-});
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.refresh();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startEngine);
+} else {
+  startEngine();
+}
 
 /* ─── 1. HERO MECHANICAL ENTRANCE ───────────────────────────── */
 function initHeroIntro() {
+  if (!document.querySelector('.hero-badge') && !document.getElementById('scSquare')) return;
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
   tl.fromTo(
@@ -125,84 +140,92 @@ function initHeroIntro() {
 
 /* ─── 2. FLOATING BACKGROUND GEOMETRIC PARALLAX (SCROLL-DRIVEN) ─ */
 function initScrollShapesParallax() {
-  // Semi-Circle: Rotates and slides down
-  gsap.to('#bgSemi1', {
-    scrollTrigger: {
-      trigger: 'body',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1.5
-    },
-    y: 650,
-    rotate: 360,
-    ease: 'none'
-  });
+  if (!document.getElementById('bgSemi1') && !document.getElementById('bgSquare1') && !document.getElementById('bgCircle1')) return;
 
-  // Solid Square: Spins and glides horizontally
-  gsap.to('#bgSquare1', {
-    scrollTrigger: {
-      trigger: 'body',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1.2
-    },
-    y: 800,
-    x: -120,
-    rotate: -180,
-    ease: 'none'
-  });
+  if (document.getElementById('bgSemi1')) {
+    gsap.to('#bgSemi1', {
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.5
+      },
+      y: 650,
+      rotate: 360,
+      ease: 'none'
+    });
+  }
 
-  // Solid Circle: Scales up and down with scroll
-  gsap.to('#bgCircle1', {
-    scrollTrigger: {
-      trigger: 'body',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1
-    },
-    y: 900,
-    scale: 1.6,
-    ease: 'none'
-  });
+  if (document.getElementById('bgSquare1')) {
+    gsap.to('#bgSquare1', {
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.2
+      },
+      y: 800,
+      x: -120,
+      rotate: -180,
+      ease: 'none'
+    });
+  }
 
-  // Bottom Semi-circle
-  gsap.to('#bgSemi2', {
-    scrollTrigger: {
-      trigger: 'body',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1.4
-    },
-    y: -400,
-    rotate: 270,
-    ease: 'none'
-  });
+  if (document.getElementById('bgCircle1')) {
+    gsap.to('#bgCircle1', {
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1
+      },
+      y: 900,
+      scale: 1.6,
+      ease: 'none'
+    });
+  }
 
-  // Small circle floating
-  gsap.to('#bgCircle2', {
-    scrollTrigger: {
-      trigger: 'body',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.8
-    },
-    y: 500,
-    x: -80,
-    ease: 'none'
-  });
+  if (document.getElementById('bgSemi2')) {
+    gsap.to('#bgSemi2', {
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.4
+      },
+      y: -400,
+      rotate: 270,
+      ease: 'none'
+    });
+  }
+
+  if (document.getElementById('bgCircle2')) {
+    gsap.to('#bgCircle2', {
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8
+      },
+      y: 500,
+      x: -80,
+      ease: 'none'
+    });
+  }
 }
 
 /* ─── 3. SCRUBBED KINETIC TICKER (Scrolls With Page Scroll) ──── */
 function initKineticScrubMarquee() {
   const track = document.getElementById('stripTrack');
-  if (!track) return;
+  const strip = document.getElementById('kineticStrip');
+  if (!track || !strip) return;
 
   // Move marquee track based on page scroll position
   gsap.to(track, {
     x: '-35%',
     ease: 'none',
     scrollTrigger: {
-      trigger: '#kineticStrip',
+      trigger: strip,
       start: 'top bottom',
       end: 'bottom top',
       scrub: 0.6
@@ -212,43 +235,49 @@ function initKineticScrubMarquee() {
 
 /* ─── 4. GEOMETRIC SYSTEM MORPH ON SCROLL ─────────────────────── */
 function initGeometricShowcaseScroll() {
-  // Square morph: rotates 90° continuously as user scrolls past
-  gsap.to('#geoSqDisplay', {
-    scrollTrigger: {
-      trigger: '.shapes-showcase-section',
-      start: 'top 85%',
-      end: 'bottom 20%',
-      scrub: 1
-    },
-    rotate: 180,
-    scale: 1.15,
-    ease: 'none'
-  });
+  const showcase = document.querySelector('.shapes-showcase-section');
+  if (!showcase) return;
 
-  // Semi-Circle morph: Flips 180° on scroll
-  gsap.to('#geoSemiDisplay', {
-    scrollTrigger: {
-      trigger: '.shapes-showcase-section',
-      start: 'top 85%',
-      end: 'bottom 20%',
-      scrub: 1.2
-    },
-    rotate: 180,
-    scale: 1.2,
-    ease: 'none'
-  });
+  if (document.getElementById('geoSqDisplay')) {
+    gsap.to('#geoSqDisplay', {
+      scrollTrigger: {
+        trigger: showcase,
+        start: 'top 85%',
+        end: 'bottom 20%',
+        scrub: 1
+      },
+      rotate: 180,
+      scale: 1.15,
+      ease: 'none'
+    });
+  }
 
-  // Circle morph: Scales dynamically with scroll
-  gsap.to('#geoCircleDisplay', {
-    scrollTrigger: {
-      trigger: '.shapes-showcase-section',
-      start: 'top 85%',
-      end: 'bottom 20%',
-      scrub: 1
-    },
-    scale: 1.3,
-    ease: 'none'
-  });
+  if (document.getElementById('geoSemiDisplay')) {
+    gsap.to('#geoSemiDisplay', {
+      scrollTrigger: {
+        trigger: showcase,
+        start: 'top 85%',
+        end: 'bottom 20%',
+        scrub: 1.2
+      },
+      rotate: 180,
+      scale: 1.2,
+      ease: 'none'
+    });
+  }
+
+  if (document.getElementById('geoCircleDisplay')) {
+    gsap.to('#geoCircleDisplay', {
+      scrollTrigger: {
+        trigger: showcase,
+        start: 'top 85%',
+        end: 'bottom 20%',
+        scrub: 1
+      },
+      scale: 1.3,
+      ease: 'none'
+    });
+  }
 }
 
 /* ─── 5. PORTFOLIO SCROLL MOTION & STAGGER ───────────────────── */

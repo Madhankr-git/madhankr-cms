@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Project } from '@/lib/types';
+import { ArrowRight, ExternalLink, X } from 'lucide-react';
 
 interface WorkFilterGridProps {
   initialProjects: Project[];
@@ -94,17 +95,19 @@ export default function WorkFilterGrid({ initialProjects }: WorkFilterGridProps)
                 <span className="p-badge">{project.category}</span>
                 <span className="p-badge">{project.client}</span>
               </div>
-              <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
-                <span className="p-card-link" style={{ cursor: 'pointer' }}>
-                  Quick Preview <span className="arrow-sym">→</span>
+              <div style={{ display: 'flex', gap: '16px', marginTop: '16px', alignItems: 'center' }}>
+                <span className="p-card-link" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span>Quick Preview</span>
+                  <ArrowRight size={13} />
                 </span>
                 <Link
                   href={`/work/${project.slug}`}
                   className="p-card-link"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ color: 'var(--sky-blue)' }}
+                  style={{ color: 'var(--sky-blue)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                 >
-                  Full Case Study ↗
+                  <span>Full Case Study</span>
+                  <ExternalLink size={12} />
                 </Link>
               </div>
             </div>
@@ -158,13 +161,11 @@ export default function WorkFilterGrid({ initialProjects }: WorkFilterGridProps)
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '18px',
-                fontWeight: 800
+                justifyContent: 'center'
               }}
               aria-label="Close Case Study"
             >
-              ✕
+              <X size={18} />
             </button>
 
             <div>
@@ -240,10 +241,10 @@ export default function WorkFilterGrid({ initialProjects }: WorkFilterGridProps)
               <Link
                 href={`/work/${selectedProject.slug}`}
                 className="cta-btn"
-                style={{ fontSize: '12px', padding: '12px 24px' }}
+                style={{ fontSize: '12px', padding: '12px 24px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
                 <span>View Full Dedicated Page</span>
-                <span className="btn-arrow">→</span>
+                <ArrowRight size={14} />
               </Link>
               <button
                 type="button"

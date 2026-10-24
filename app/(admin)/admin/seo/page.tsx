@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { getSeoSettings, saveSeoSettings, logActivity } from '@/lib/db/settings';
 import { SeoSettingsMap, PageSeoConfig } from '@/lib/types';
+import { Save, CheckCircle2, Globe } from 'lucide-react';
 
 export default function SeoSuitePage() {
   const [seo, setSeo] = useState<SeoSettingsMap | null>(null);
@@ -50,31 +51,37 @@ export default function SeoSuitePage() {
       } catch (e) {
         console.error('[CMS SEO] Revalidation network error:', e);
       }
-      setToastMsg('✓ SEO settings updated and cache purged!');
+      setToastMsg('SEO settings updated and cache purged!');
       setTimeout(() => setToastMsg(''), 3000);
     }
   };
 
-  if (!seo) return <div style={{ padding: '32px' }}>Loading SEO suite...</div>;
+  if (!seo) return <div style={{ padding: '32px', fontFamily: 'var(--cms-font)' }}>Loading SEO suite...</div>;
 
   const current = seo[activePage];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: 'var(--cms-font)' }}>
       {toastMsg && (
         <div style={{
           position: 'fixed',
           top: '24px',
           right: '24px',
-          background: '#166534',
+          background: '#0f172a',
           color: '#ffffff',
           borderRadius: '8px',
           padding: '12px 20px',
           fontSize: '13px',
           fontWeight: 700,
-          zIndex: 1000
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          border: '1px solid #22c55e',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
         }}>
-          {toastMsg}
+          <CheckCircle2 size={16} style={{ color: '#22c55e' }} />
+          <span>{toastMsg}</span>
         </div>
       )}
 
@@ -101,10 +108,14 @@ export default function SeoSuitePage() {
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)'
+            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px'
           }}
         >
-          Save &amp; Revalidate
+          <Save size={15} />
+          <span>Save &amp; Revalidate</span>
         </button>
       </div>
 

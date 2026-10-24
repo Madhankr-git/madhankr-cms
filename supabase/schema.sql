@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS public.articles (
   featured BOOLEAN DEFAULT FALSE,
   motif TEXT DEFAULT 'sq' CHECK (motif IN ('sq', 'semi', 'circ')),
   tags TEXT[] DEFAULT '{}',
+  cover_image TEXT,
   views INTEGER DEFAULT 0,
   likes INTEGER DEFAULT 0,
   published_at TIMESTAMPTZ,

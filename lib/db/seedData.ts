@@ -115,6 +115,7 @@ When I incorporate AI models into my workflow, I treat them not as autonomous cr
 
 When we combine mechanical efficiency with human intentionality, we don't dilute craft—we elevate it.`,
     tags: ['AI Workflows', 'Design Philosophy', 'Future of Craft', 'Creative Direction'],
+    cover_image: 'https://ffduaazilqxyjwcbuqkw.supabase.co/storage/v1/object/public/cms-media/uploads/1792867693247-ai-bg-abstract.webp',
     views: 3420,
     likes: 184,
     published_at: '2026-10-20T10:00:00.000Z'
