@@ -60,7 +60,13 @@ const server = http.createServer((req, res) => {
     return res.end('404 Asset Not Found');
   }
 
-  // 2. Admin Route Group: /admin, /admin/content, /admin/editor/:id, /admin/media, /admin/seo, /admin/settings
+  // 2. Login Route: /login, /login.html, /admin/login, /admin/login.html
+  if (pathname === '/login' || pathname === '/login.html' || pathname === '/admin/login' || pathname === '/admin/login.html') {
+    const loginPage = path.join(ROOT_DIR, 'admin', 'login.html');
+    return serveFile(res, loginPage, 'text/html; charset=utf-8');
+  }
+
+  // 3. Admin Route Group: /admin, /admin/content, /admin/editor/:id, /admin/media, /admin/seo, /admin/settings
   if (pathname === '/admin' || pathname === '/admin/' || pathname.startsWith('/admin/')) {
     const adminIndex = path.join(ROOT_DIR, 'admin', 'index.html');
     return serveFile(res, adminIndex, 'text/html; charset=utf-8');

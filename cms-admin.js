@@ -2,7 +2,52 @@
 // MADHANKR PERSONAL CMS — ADMIN LOGIC & INTERACTION ENGINE
 // ══════════════════════════════════════════════════════════════════
 
+const AUTH_SESSION_KEY = 'madhankr_admin_session';
+
+function getAdminSession() {
+  try {
+    const raw = localStorage.getItem(AUTH_SESSION_KEY) || sessionStorage.getItem(AUTH_SESSION_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return data && data.authenticated ? data : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function isUserAuthenticated() {
+  return !!getAdminSession();
+}
+
+function initAdminAuth() {
+  const session = getAdminSession();
+  if (!session) {
+    const returnTarget = encodeURIComponent(window.location.hash || '');
+    window.location.replace('login.html' + (returnTarget ? '?return=' + returnTarget : ''));
+    return;
+  }
+
+  if (session.email) {
+    const emailName = session.email.split('@')[0];
+    const displayName = session.displayName || (emailName.charAt(0).toUpperCase() + emailName.slice(1));
+    const nameEl = document.getElementById('adminUserDisplayName');
+    const avatarEl = document.getElementById('adminUserAvatar');
+    if (nameEl) nameEl.textContent = displayName;
+    if (avatarEl) avatarEl.textContent = displayName.charAt(0).toUpperCase();
+  }
+}
+
+function handleAdminLogout(e) {
+  if (e) e.preventDefault();
+  try {
+    localStorage.removeItem(AUTH_SESSION_KEY);
+    sessionStorage.removeItem(AUTH_SESSION_KEY);
+  } catch (err) {}
+  window.location.href = 'login.html?loggedout=true';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initAdminAuth();
   initAdminRouter();
   initSidebar();
   initDashboardView();
@@ -782,3 +827,6 @@ window.moveNavItem = moveNavItem;
 window.saveAllSiteSettings = saveAllSiteSettings;
 window.exportCmsDataBackup = exportCmsDataBackup;
 window.resetCmsDataToDefaults = resetCmsDataToDefaults;
+window.handleAdminLogout = handleAdminLogout;
+window.getAdminSession = getAdminSession;
+window.isUserAuthenticated = isUserAuthenticated;

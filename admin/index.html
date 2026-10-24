@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard ‹ MadhanKR CMS — WordPress</title>
   <link rel="stylesheet" href="../cms-admin.css" />
+  <script>
+    // Authentication guard: Protect admin dashboard against unauthenticated visitors
+    (function() {
+      try {
+        var session = localStorage.getItem('madhankr_admin_session') || sessionStorage.getItem('madhankr_admin_session');
+        if (!session) {
+          var returnTarget = encodeURIComponent(window.location.hash || '');
+          window.location.replace('login.html' + (returnTarget ? '?return=' + returnTarget : ''));
+        }
+      } catch (err) {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
 </head>
 <body class="admin-app">
 
@@ -24,10 +38,13 @@
     </div>
 
     <div class="ab-group-right">
-      <span class="ab-item">
-        Howdy, <strong>Madhan</strong>
-        <span class="ab-avatar-circle">M</span>
+      <span class="ab-item" id="adminUserGreeting">
+        Howdy, <strong id="adminUserDisplayName">Madhan</strong>
+        <span class="ab-avatar-circle" id="adminUserAvatar">M</span>
       </span>
+      <a href="login.html?action=logout" class="ab-item" id="adminLogoutLink" title="Log Out of Admin" onclick="handleAdminLogout(event)" style="font-size: 12px; color: var(--wp-adminbar-text); opacity: 0.85;">
+        Log Out
+      </a>
       <button class="button" id="sidebarToggle" style="margin-left: 8px; font-size: 11px; display: none;" aria-label="Toggle Menu">
         ☰ Menu
       </button>
