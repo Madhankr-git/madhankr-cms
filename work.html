@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selected Works & Case Studies — MadhanKR</title>
+  <meta name="description" content="In-depth product design, UI/UX, and creative web engineering case studies by MadhanKR." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public-layout.css" />
+  <style>
+    .work-hero {
+      padding: 130px var(--pad-x) 40px;
+      border-bottom: 1.5px solid var(--sky-border);
+    }
+    .work-filter-bar {
+      margin-top: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 18px 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.05);
+    }
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px;
+      padding: 48px var(--pad-x) 100px;
+    }
+    @media (max-width: 900px) {
+      .work-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Interactive Case Study Drawer Modal */
+    .case-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .case-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .case-drawer {
+      width: min(720px, 94vw);
+      height: 100dvh;
+      background: var(--bg-surface);
+      border-left: 2px solid var(--dark-solid);
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.15);
+      padding: 48px clamp(24px, 4vw, 48px);
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .case-modal-overlay.open .case-drawer {
+      transform: translateX(0);
+    }
+    .drawer-close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      background: var(--bg-card);
+      border: 1px solid var(--sky-border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+    .drawer-close-btn:hover {
+      background: var(--dark-solid);
+      color: var(--white);
+    }
+
+    /* Metric stat boxes inside case study */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .metric-card {
+      background: var(--bg-deep);
+      border: 1.5px solid var(--sky-border);
+      padding: 16px 20px;
+    }
+    .metric-num {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--sky-blue);
+      letter-spacing: -0.03em;
+    }
+    .metric-lbl {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
+  <header class="public-header">
+    <a href="index.html" class="public-brand">
+      <div class="brand-marks">
+        <span class="b-mark sq"></span>
+        <span class="b-mark semi"></span>
+        <span class="b-mark circ"></span>
+      </div>
+      <span>MADHANKR</span>
+    </a>
+
+    <ul class="public-nav-list">
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link active"><span class="p-idx">01</span> Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link"><span class="p-idx">02</span> Journal</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link"><span class="p-idx">04</span> About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link"><span class="p-idx">05</span> Contact</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="contact.html" class="public-header-cta">
+        <span class="cta-dot"></span>
+        <span>Let’s Talk</span>
+      </a>
+      <button class="public-burger-btn" id="publicBurger" aria-label="Toggle navigation menu">
+        <span class="line top"></span>
+        <span class="line mid"></span>
+        <span class="line bot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Public Mobile Drawer -->
+  <nav class="public-mobile-drawer" id="publicDrawer">
+    <div class="public-drawer-inner">
+      <div class="public-brand">
+        <span class="b-mark sq"></span>
+        <span>MADHANKR</span>
+      </div>
+
+      <ul class="drawer-links-list">
+        <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="drawer-nav-link active"><span class="p-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="drawer-nav-link"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="gallery.html" class="drawer-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="drawer-nav-link"><span class="p-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="drawer-nav-link"><span class="p-idx">05</span> Contact</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid var(--sky-border);">
+        <span class="b-mark sq" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark circ" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark semi" style="width: 18px; height: 9px;"></span>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="drawer-overlay" id="publicOverlay"></div>
+
+  <!-- ─── WORK HERO ────────────────────────────────────────────── -->
+  <section class="work-hero">
+    <div class="breadcrumb-wrap">
+      <a href="index.html">[ HOME ]</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">[ SELECTED WORKS & CASES ]</span>
+    </div>
+
+    <div class="section-tag-box">
+      <span class="section-num">02</span>
+      <span class="section-bracket">[ PORTFOLIO ARCHITECTURE ]</span>
+    </div>
+
+    <h1 class="section-title">WORKS & CASE STUDIES</h1>
+    <p class="hero-manifesto" style="margin-bottom: 24px;">
+      Deep dives into user experience, EdTech educational interfaces, interactive web apps, and generative AI creative direction.
+    </p>
+
+    <!-- Filters & Search -->
+    <div class="work-filter-bar">
+      <div class="category-pills" id="workCatPills">
+        <button class="cat-btn active" data-category="all">All Projects <span class="cat-badge">(6)</span></button>
+        <button class="cat-btn" data-category="ui-ux">UI/UX & Product <span class="cat-badge">(1)</span></button>
+        <button class="cat-btn" data-category="web-apps">Web Apps <span class="cat-badge">(2)</span></button>
+        <button class="cat-btn" data-category="ai-experiments">AI & Experiments <span class="cat-badge">(2)</span></button>
+        <button class="cat-btn" data-category="branding">Branding <span class="cat-badge">(1)</span></button>
+      </div>
+
+      <div class="search-box" style="flex: 0 1 300px;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="workSearchInput" placeholder="Filter by client, tech..." />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WORK GRID ────────────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="work-grid" id="workGrid">
+      <!-- Dynamically rendered via work.js -->
+    </div>
+  </section>
+
+  <!-- ─── INTERACTIVE CASE STUDY DRAWER MODAL ───────────────────── -->
+  <div class="case-modal-overlay" id="caseModalOverlay" onclick="closeCaseModal(event)">
+    <div class="case-drawer" onclick="event.stopPropagation()">
+      <button class="drawer-close-btn" onclick="closeCaseModalDirect()" title="Close case study">✕</button>
+
+      <div>
+        <div class="breadcrumb-wrap" style="margin-bottom: 16px;">
+          <span class="breadcrumb-current" id="caseDrawerTag">UI/UX · EDTECH</span>
+          <span class="breadcrumb-sep">·</span>
+          <span id="caseDrawerYear">2026</span>
+        </div>
+
+        <h2 id="caseDrawerTitle" style="font-size: clamp(28px, 3.5vw, 42px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 12px;">
+          EdTech Platform Experiences
+        </h2>
+
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--sky-blue); font-weight: 800; margin-bottom: 24px;" id="caseDrawerClient">
+          IIT Hyderabad, IIT Dharwad & NIT Calicut Collaborations
+        </div>
+
+        <p id="caseDrawerSummary" style="font-size: 16px; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; border-left: 3px solid var(--sky-solid); padding-left: 16px;">
+          Designed user interfaces for learning platforms connected with premier institutes.
+        </p>
+
+        <!-- Metric Badges -->
+        <h4 style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--text-main); font-weight: 800;">
+          [ VERIFIED IMPACT METRICS ]
+        </h4>
+        <div class="metric-grid" id="caseDrawerMetrics">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Problem & Solution -->
+        <div style="margin: 32px 0;">
+          <h4 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">The Design Challenge</h4>
+          <p id="caseDrawerChallenge" style="color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+            Academic portals are notorious for dense, confusing navigations and fragmented assignment tracking.
+          </p>
+
+          <h4 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">The Architectural Solution</h4>
+          <p id="caseDrawerSolution" style="color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+            Re-architected the information architecture using modular cards and clear submission flows.
+          </p>
+
+          <h4 style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--text-main); font-weight: 800; margin-bottom: 12px;">
+            [ TOOLING & TECHNOLOGY STACK ]
+          </h4>
+          <div class="art-tags" id="caseDrawerTech">
+            <!-- Tech badges -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Drawer Footer Actions -->
+      <div style="padding-top: 24px; border-top: 1.5px solid var(--sky-border); display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+        <button class="ghost-btn" onclick="closeCaseModalDirect()">Close Overview</button>
+        <a href="contact.html" class="cta-btn" style="font-size: 12px; padding: 14px 24px;">
+          <span>Discuss Similar Project</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="cms-data.js"></script>
+  <script src="public-layout.js"></script>
+  <script src="work.js"></script>
+</body>
+</html>

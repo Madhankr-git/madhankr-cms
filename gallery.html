@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visual Experiments & Creative Lab — MadhanKR</title>
+  <meta name="description" content="Visual work, solid geometric system experiments, generative AI imagery, and UI concepts by MadhanKR." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public-layout.css" />
+  <style>
+    .gallery-hero {
+      padding: 130px var(--pad-x) 40px;
+      border-bottom: 1.5px solid var(--sky-border);
+    }
+    .gallery-filter-bar {
+      margin-top: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 18px 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.05);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 32px;
+      padding: 48px var(--pad-x) 100px;
+    }
+    @media (max-width: 640px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .gallery-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s, box-shadow 0.2s;
+    }
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sky-blue);
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
+    }
+    .gal-visual-box {
+      width: 100%;
+      height: 260px;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1.5px solid var(--sky-border);
+      overflow: hidden;
+    }
+    .gal-card-info {
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+    .gal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .gal-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-text);
+      margin-top: 14px;
+      border-top: 1px solid var(--sky-border);
+      padding-top: 12px;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 10, 15, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 1500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-modal {
+      background: var(--bg-surface);
+      border: 2px solid var(--sky-solid);
+      max-width: 960px;
+      width: 100%;
+      max-height: 90vh;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    @media (max-width: 800px) {
+      .lightbox-modal {
+        grid-template-columns: 1fr;
+        max-height: 94vh;
+        overflow-y: auto;
+      }
+    }
+    .lb-visual-area {
+      background: var(--bg-card);
+      border-right: 1.5px solid var(--sky-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      min-height: 360px;
+    }
+    .lb-sidebar {
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .lb-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--dark-solid);
+      color: var(--white);
+      border: none;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      z-index: 10;
+    }
+    .color-chip {
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--sky-border);
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
+  <header class="public-header">
+    <a href="index.html" class="public-brand">
+      <div class="brand-marks">
+        <span class="b-mark sq"></span>
+        <span class="b-mark semi"></span>
+        <span class="b-mark circ"></span>
+      </div>
+      <span>MADHANKR</span>
+    </a>
+
+    <ul class="public-nav-list">
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link"><span class="p-idx">01</span> Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link"><span class="p-idx">02</span> Journal</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link active"><span class="p-idx">03</span> Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link"><span class="p-idx">04</span> About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link"><span class="p-idx">05</span> Contact</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="contact.html" class="public-header-cta">
+        <span class="cta-dot"></span>
+        <span>Let’s Talk</span>
+      </a>
+      <button class="public-burger-btn" id="publicBurger" aria-label="Toggle navigation menu">
+        <span class="line top"></span>
+        <span class="line mid"></span>
+        <span class="line bot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Public Mobile Drawer -->
+  <nav class="public-mobile-drawer" id="publicDrawer">
+    <div class="public-drawer-inner">
+      <div class="public-brand">
+        <span class="b-mark sq"></span>
+        <span>MADHANKR</span>
+      </div>
+
+      <ul class="drawer-links-list">
+        <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="drawer-nav-link"><span class="p-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="drawer-nav-link"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="gallery.html" class="drawer-nav-link active"><span class="p-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="drawer-nav-link"><span class="p-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="drawer-nav-link"><span class="p-idx">05</span> Contact</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid var(--sky-border);">
+        <span class="b-mark sq" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark circ" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark semi" style="width: 18px; height: 9px;"></span>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="drawer-overlay" id="publicOverlay"></div>
+
+  <!-- ─── GALLERY HERO ─────────────────────────────────────────── -->
+  <section class="gallery-hero">
+    <div class="breadcrumb-wrap">
+      <a href="index.html">[ HOME ]</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">[ CREATIVE LAB & EXPERIMENTS ]</span>
+    </div>
+
+    <div class="section-tag-box">
+      <span class="section-num">03</span>
+      <span class="section-bracket">[ VISUAL STUDY ]</span>
+    </div>
+
+    <h1 class="section-title">CREATIVE LAB</h1>
+    <p class="hero-manifesto" style="margin-bottom: 24px;">
+      Playground for generative AI cinematic stills, solid geometric totem balance, interface interactions, and rapid visual prototypes.
+    </p>
+
+    <!-- Filter Bar -->
+    <div class="gallery-filter-bar">
+      <div class="category-pills" id="galleryFilterPills">
+        <button class="cat-btn active" data-category="all">All Experiments <span class="cat-badge">(6)</span></button>
+        <button class="cat-btn" data-category="Geometric Systems">Geometric Systems</button>
+        <button class="cat-btn" data-category="Generative AI">Generative AI</button>
+        <button class="cat-btn" data-category="Motion & 3D">Motion & 3D</button>
+        <button class="cat-btn" data-category="UI Experiments">UI Experiments</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── GALLERY GRID ─────────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Dynamically populated via gallery.js -->
+    </div>
+  </section>
+
+  <!-- ─── LIGHTBOX MODAL ───────────────────────────────────────── -->
+  <div class="lightbox-overlay" id="galleryLightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-modal" onclick="event.stopPropagation()">
+      <button class="lb-close-btn" onclick="closeLightboxDirect()" title="Close viewer">✕</button>
+
+      <div class="lb-visual-area" id="lightboxVisual">
+        <!-- Geometric showcase -->
+      </div>
+
+      <div class="lb-sidebar">
+        <div>
+          <div class="art-meta" style="margin-bottom: 12px;">
+            <span class="art-motif sq"></span>
+            <span id="lbCategory">GEOMETRIC SYSTEMS</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);" id="lbYear">2026</span>
+          </div>
+
+          <h2 id="lbTitle" style="font-size: 26px; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 12px;">
+            Geometric Totem Studies
+          </h2>
+
+          <p id="lbDescription" style="font-size: 14.5px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+            Systematic visual deconstruction of primary shapes in equilibrium.
+          </p>
+
+          <div style="background: var(--bg-deep); border: 1.5px solid var(--sky-border); padding: 16px 20px; margin-bottom: 24px;">
+            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.2em; margin-bottom: 8px;">
+              [ TECHNICAL SPECIFICATION ]
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-main); margin-bottom: 4px;">
+              Tools: <strong id="lbTools" style="color: var(--text-main);">CSS Grid & Solid SVG</strong>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-main);">
+              Aspect Ratio: <strong id="lbAspect" style="color: var(--text-main);">1/1 Square</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1.5px solid var(--sky-border); padding-top: 20px;">
+          <div style="display: flex; gap: 8px;">
+            <button class="icon-action-btn" onclick="cycleLightbox(-1)" title="Previous experiment">← Prev</button>
+            <button class="icon-action-btn" onclick="cycleLightbox(1)" title="Next experiment">Next →</button>
+          </div>
+          <button class="ghost-btn" style="font-size: 11px; padding: 10px 14px;" onclick="closeLightboxDirect()">
+            <span>Close Overview</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="cms-data.js"></script>
+  <script src="public-layout.js"></script>
+  <script src="gallery.js"></script>
+</body>
+</html>

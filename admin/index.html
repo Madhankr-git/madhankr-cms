@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard ‹ MadhanKR CMS — WordPress</title>
+  <link rel="stylesheet" href="../cms-admin.css" />
+</head>
+<body class="admin-app">
+
+  <!-- ─── 1. TOP ADMIN BAR (WPADMINBAR) ──────────────────────────── -->
+  <div id="wpadminbar">
+    <div class="ab-group-left">
+      <a href="#dashboard" class="ab-item" title="CMS Admin">
+        <span class="ab-icon-wp">W</span>
+      </a>
+      <a href="../" target="_blank" class="ab-item site-name" title="View Public Website">
+        <span>MadhanKR Portfolio</span>
+        <span style="font-size: 11px; opacity: 0.8;">↗</span>
+      </a>
+      <a href="#editor" class="ab-item" onclick="switchAdminView('editor')">
+        <span style="font-weight: bold; margin-right: 4px;">+</span> New Post
+      </a>
+    </div>
+
+    <div class="ab-group-right">
+      <span class="ab-item">
+        Howdy, <strong>Madhan</strong>
+        <span class="ab-avatar-circle">M</span>
+      </span>
+      <button class="button" id="sidebarToggle" style="margin-left: 8px; font-size: 11px; display: none;" aria-label="Toggle Menu">
+        ☰ Menu
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── 2. WORDPRESS ADMIN SIDEBAR (ADMINMENU) ─────────────────── -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div>
+      <div class="sidebar-header">
+        <div class="sidebar-brand-title">
+          <span>Personal CMS</span>
+          <span class="sidebar-brand-badge">v6.4</span>
+        </div>
+      </div>
+
+      <ul class="admin-nav-list">
+        <li>
+          <a class="admin-nav-item active" data-view="dashboard" href="#dashboard">
+            <div class="admin-nav-left">
+              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+              <span>Dashboard</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a class="admin-nav-item" data-view="content" href="#content">
+            <div class="admin-nav-left">
+              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+              <span>Posts / Content</span>
+            </div>
+            <span class="wp-count-pill" id="sidebarArticlesCount">6</span>
+          </a>
+        </li>
+
+        <li>
+          <a class="admin-nav-item" data-view="editor" href="#editor">
+            <div class="admin-nav-left">
+              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+              <span>Add New Post</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a class="admin-nav-item" data-view="media" href="#media">
+            <div class="admin-nav-left">
+              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <span>Media Library</span>
+            </div>
+            <span class="wp-count-pill gray" id="sidebarMediaCount">12</span>
+          </a>
+        </li>
+
+        <li>
+          <a class="admin-nav-item" data-view="seo" href="#seo">
+            <div class="admin-nav-left">
+              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              <span>SEO Settings</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a class="admin-nav-item" data-view="settings" href="#settings">
+            <div class="admin-nav-left">
+              <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              <span>Settings</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-collapse-bar" onclick="document.getElementById('adminSidebar').classList.toggle('open')">
+      <span>◄ Collapse menu</span>
+    </div>
+  </aside>
+
+  <!-- ─── 3. MAIN WORKSPACE (WPBODY) ─────────────────────────────── -->
+  <main class="admin-main">
+
+    <!-- ════════════════════════════════════════════════════════════
+         VIEW 1: DASHBOARD OVERVIEW (#dashboard)
+         ════════════════════════════════════════════════════════════ -->
+    <section class="admin-view active" id="view-dashboard">
+      <div class="wp-heading-wrap">
+        <div class="wp-heading-left">
+          <h1 class="wp-heading-inline">Dashboard</h1>
+          <button class="page-title-action" onclick="switchAdminView('editor')">Add New Post</button>
+          <button class="button" onclick="refreshDashboardStats()">⟳ Refresh</button>
+        </div>
+        <span style="font-size: 12px; color: var(--wp-text-muted);">
+          Current View: <strong id="currentViewBreadcrumb">DASHBOARD</strong>
+        </span>
+      </div>
+
+      <div class="notice notice-info">
+        <p><strong>Welcome to your WordPress CMS Dashboard.</strong> Review traffic reach, audit recent changes, and publish new content.</p>
+      </div>
+
+      <!-- At a Glance Metric Cards -->
+      <div class="dashboard-metrics-grid">
+        <div class="metric-card">
+          <div>
+            <div class="metric-title">Monthly Impressions</div>
+            <div class="metric-number" id="statMonthlyViews">18.4K</div>
+            <div class="metric-sub">↑ +14.2% from last cycle</div>
+          </div>
+          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        </div>
+
+        <div class="metric-card">
+          <div>
+            <div class="metric-title">Published Posts</div>
+            <div class="metric-number" id="statTotalArticles">6</div>
+            <div class="metric-sub" style="color: var(--wp-text-muted);">Articles & Essays</div>
+          </div>
+          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        </div>
+
+        <div class="metric-card">
+          <div>
+            <div class="metric-title">Portfolio Projects</div>
+            <div class="metric-number" id="statTotalProjects">6</div>
+            <div class="metric-sub" style="color: var(--wp-text-muted);">Active Case Studies</div>
+          </div>
+          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+        </div>
+
+        <div class="metric-card">
+          <div>
+            <div class="metric-title">Media Files</div>
+            <div class="metric-number" id="statTotalMedia">12</div>
+            <div class="metric-sub" style="color: var(--wp-text-muted);">Images & Vector SVGs</div>
+          </div>
+          <svg style="width: 24px; height: 24px; fill: var(--wp-primary);" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+      </div>
+
+      <!-- Two-column dashboard widgets -->
+      <div class="dashboard-columns">
+        <!-- Column 1 -->
+        <div>
+          <!-- Traffic Analytics Postbox -->
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Site Traffic & Engagement (Last 14 Days)</h2>
+              <span style="font-size: 12px; color: var(--wp-primary); font-weight: 600;">1,240 Avg Daily</span>
+            </div>
+            <div class="inside">
+              <p style="color: var(--wp-text-muted); font-size: 12px; margin-bottom: 8px;">
+                Page impressions across public website routes. Spikes indicate publication releases.
+              </p>
+              <div class="chart-bars-wrap" id="analyticsBars">
+                <!-- Rendered dynamically via cms-admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Draft Postbox -->
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Quick Draft</h2>
+              <span style="font-size: 11px; color: var(--wp-text-muted);">Saves as draft</span>
+            </div>
+            <div class="inside">
+              <form id="quickDraftForm" onsubmit="handleQuickDraftSubmit(event)" class="quick-draft-fields">
+                <div>
+                  <label style="font-weight: 600; display: block; margin-bottom: 4px;">Title</label>
+                  <input type="text" id="quickDraftTitle" class="large-text" placeholder="What’s on your mind?" required />
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                  <div>
+                    <label style="font-weight: 600; display: block; margin-bottom: 4px;">Category</label>
+                    <select id="quickDraftCategory" style="width: 100%;">
+                      <option value="Design">Design</option>
+                      <option value="AI & Workflows">AI & Workflows</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Philosophy">Philosophy</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label style="font-weight: 600; display: block; margin-bottom: 4px;">Content</label>
+                  <textarea id="quickDraftContent" rows="3" class="large-text" placeholder="Write draft thoughts or outline..." required></textarea>
+                </div>
+
+                <div>
+                  <button type="submit" class="button button-primary">Save Draft</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div>
+          <!-- Activity Postbox -->
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Recent Activity</h2>
+              <span style="font-size: 11px; color: var(--wp-text-muted);">Audit log</span>
+            </div>
+            <div class="inside">
+              <div class="activity-list" id="dashboardActivityList">
+                <!-- Populated dynamically via cms-admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- System Overview Postbox -->
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>At a Glance</h2>
+            </div>
+            <div class="inside">
+              <ul style="list-style: disc; margin-left: 20px; line-height: 1.8; color: var(--wp-text);">
+                <li>6 Published Posts</li>
+                <li>6 Portfolio Case Studies</li>
+                <li>12 Media Assets Uploaded</li>
+                <li>Running on Personal Portfolio CMS 6.4</li>
+                <li>Theme: Custom Portfolio Identity</li>
+                <li>Storage: 42% allocated (64 MB of 150 MB)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         VIEW 2: CONTENT MANAGER (#content)
+         ════════════════════════════════════════════════════════════ -->
+    <section class="admin-view" id="view-content">
+      <div class="wp-heading-wrap">
+        <div class="wp-heading-left">
+          <h1 class="wp-heading-inline">Posts & Content</h1>
+          <button class="page-title-action" onclick="switchAdminView('editor')">Add New</button>
+        </div>
+      </div>
+
+      <!-- WP subsubsub view tabs -->
+      <ul class="subsubsub" id="contentTabs">
+        <li>
+          <a href="#" class="current cat-btn active" data-type="articles">
+            Articles & Blog <span class="count" id="tabArticlesBadge">(6)</span>
+          </a> |
+        </li>
+        <li>
+          <a href="#" class="cat-btn" data-type="projects">
+            Portfolio Projects <span class="count" id="tabProjectsBadge">(6)</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Table nav filter bar -->
+      <div class="tablenav">
+        <div class="actions">
+          <select id="contentStatusFilter">
+            <option value="all">All Dates & Statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Drafts</option>
+          </select>
+          <button class="button">Filter</button>
+        </div>
+
+        <div style="display: flex; gap: 6px;">
+          <input type="search" id="contentSearchInput" placeholder="Search posts..." />
+          <button class="button">Search Posts</button>
+        </div>
+      </div>
+
+      <!-- WP List Table -->
+      <table class="wp-list-table">
+        <thead>
+          <tr>
+            <th style="width: 32px;"><input type="checkbox" /></th>
+            <th>Title</th>
+            <th style="width: 140px;">Category</th>
+            <th style="width: 100px;">Status</th>
+            <th style="width: 120px;">Date</th>
+            <th style="width: 90px;">Views</th>
+          </tr>
+        </thead>
+        <tbody id="contentTableBody">
+          <!-- Rendered dynamically via cms-admin.js -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         VIEW 3: CONTENT EDITOR (#editor)
+         ════════════════════════════════════════════════════════════ -->
+    <section class="admin-view" id="view-editor">
+      <div class="wp-heading-wrap">
+        <div class="wp-heading-left">
+          <h1 class="wp-heading-inline">Edit Post</h1>
+          <button class="page-title-action" onclick="switchAdminView('content')">Back to All Posts</button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="button" onclick="saveEditorPost('draft')">Save Draft</button>
+          <button class="button button-primary" onclick="saveEditorPost('published')">Publish / Update</button>
+        </div>
+      </div>
+
+      <div class="wp-editor-wrap">
+        <!-- Main Column -->
+        <div>
+          <input type="text" class="editor-title-input" id="editorTitleInput" value="AI Can Make It Faster. Can It Make It Meaningful?" placeholder="Add title" oninput="syncEditorPreview()" />
+
+          <div class="editor-toolbar">
+            <button type="button" class="ed-btn" onclick="applyFormat('bold')">B</button>
+            <button type="button" class="ed-btn" onclick="applyFormat('italic')"><em>I</em></button>
+            <button type="button" class="ed-btn" onclick="applyFormat('h2')">H2</button>
+            <button type="button" class="ed-btn" onclick="applyFormat('h3')">H3</button>
+            <button type="button" class="ed-btn" onclick="applyFormat('quote')">❝ Quote</button>
+            <button type="button" class="ed-btn" onclick="applyFormat('code')">&lt;/&gt;</button>
+            <button type="button" class="ed-btn" onclick="applyFormat('bullet')">• Bullet list</button>
+            <span style="margin-left: auto; font-size: 11px; color: var(--wp-text-muted);" id="editorStats">Words: 248 · Characters: 1,840</span>
+          </div>
+
+          <textarea class="wp-content-textarea" id="editorMarkdown" oninput="syncEditorPreview()">## The Acceleration Illusion
+
+Over the past two years, creative tooling has compressed the time between idea and artifact from days to seconds. We can synthesize dozens of visual directions in the span of a single coffee break. Yet with each reduction in friction, a quieter question surfaces: **does speed correlate with substance?**
+
+In our rush to optimize output velocity, it is easy to mistake quantity for creative breakthrough. An algorithm can produce thousands of variations, but it cannot know *why* a particular tension in typography creates emotional resonance.
+
+### The Real Creative Partnership
+
+When I incorporate AI models into my workflow, I treat them not as autonomous creators, but as high-dimensional brainstorming mirrors.
+
+> "AI gives us speed; human perspective gives us direction. Craft is no longer just how you make something, but how deeply you care about what you choose to keep."
+
+When we combine mechanical efficiency with human intentionality, we don’t dilute craft—we elevate it.</textarea>
+
+          <!-- Live Preview Postbox -->
+          <div class="editor-preview-container">
+            <div class="editor-preview-header">
+              Live Reader Preview
+            </div>
+            <div class="editor-preview-body" id="editorLivePreview">
+              <!-- Rendered preview -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Metaboxes -->
+        <div>
+          <!-- Publish Metabox -->
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Publish Settings</h2>
+            </div>
+            <div class="inside">
+              <div style="margin-bottom: 12px;">
+                <label style="font-weight: 600; display: block; margin-bottom: 4px;">Status:</label>
+                <select id="editorStatusSelect" style="width: 100%;">
+                  <option value="published">Published</option>
+                  <option value="draft">Draft</option>
+                </select>
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label style="font-weight: 600; display: block; margin-bottom: 4px;">Estimated Read Time:</label>
+                <input type="text" id="editorReadTimeInput" value="6 min read" readonly style="width: 100%; background: #f6f7f7;" />
+              </div>
+
+              <div style="padding-top: 10px; border-top: 1px solid var(--wp-border-subtle); display: flex; justify-content: space-between; align-items: center;">
+                <button class="button-link-delete" onclick="if(confirm('Move to trash?')) switchAdminView('content')">Move to Trash</button>
+                <button class="button button-primary" onclick="saveEditorPost('published')">Update</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Metabox -->
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Category</h2>
+            </div>
+            <div class="inside">
+              <select id="editorCategorySelect" style="width: 100%;">
+                <option value="AI & Workflows">AI & Workflows</option>
+                <option value="Design">Design</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Philosophy">Philosophy</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         VIEW 4: MEDIA LIBRARY (#media)
+         ════════════════════════════════════════════════════════════ -->
+    <section class="admin-view" id="view-media">
+      <div class="wp-heading-wrap">
+        <div class="wp-heading-left">
+          <h1 class="wp-heading-inline">Media Library</h1>
+          <button class="page-title-action" onclick="triggerMediaUploadSim()">Add New Media File</button>
+        </div>
+      </div>
+
+      <!-- Upload Dropzone -->
+      <div class="wp-media-dropzone" id="mediaDropzone" onclick="triggerMediaUploadSim()">
+        <h3>Drop files anywhere to upload</h3>
+        <p>Supports SVG, PNG, WebP, and JPEG files up to 25MB.</p>
+        <button class="button button-secondary">Select Files</button>
+        <div id="uploadProgressBarWrap" style="display: none; width: 50%; margin: 14px auto 0; height: 6px; background: #dcdcde;">
+          <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--wp-primary); transition: width 0.2s;"></div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="tablenav">
+        <div class="actions" id="mediaFilterPills">
+          <button class="button cat-btn active" data-cat="all">All Media <span id="mediaTotalBadge">(12)</span></button>
+          <button class="button cat-btn" data-cat="SVG Geometry">SVG Geometry</button>
+          <button class="button cat-btn" data-cat="UI Screenshots">UI Screenshots</button>
+          <button class="button cat-btn" data-cat="Art & Concept">Art & Concept</button>
+          <button class="button cat-btn" data-cat="Brand Assets">Brand Assets</button>
+        </div>
+
+        <div>
+          <input type="search" id="mediaSearchInput" placeholder="Search media items..." />
+        </div>
+      </div>
+
+      <!-- Media Thumbnail Grid -->
+      <div class="media-grid-wp" id="mediaGridContainer">
+        <!-- Rendered dynamically via cms-admin.js -->
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         VIEW 5: SEO SETTINGS (#seo)
+         ════════════════════════════════════════════════════════════ -->
+    <section class="admin-view" id="view-seo">
+      <div class="wp-heading-wrap">
+        <div class="wp-heading-left">
+          <h1 class="wp-heading-inline">SEO Settings</h1>
+          <button class="button button-primary" onclick="saveCurrentSeoSettings()">Save Changes</button>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start;">
+        <!-- Left: Settings Form -->
+        <div class="postbox">
+          <div class="postbox-header">
+            <h2>General SEO Configuration</h2>
+          </div>
+          <div class="inside">
+            <div style="margin-bottom: 16px;">
+              <label style="font-weight: 600; display: block; margin-bottom: 4px;">Target Page</label>
+              <select id="seoPageSelect" style="width: 100%;" onchange="loadSeoForPage(this.value)">
+                <option value="homepage">Homepage (index.html)</option>
+                <option value="journal">Journal Listing (journal.html)</option>
+                <option value="work">Portfolio Works (work.html)</option>
+                <option value="gallery">Visual Experiments (gallery.html)</option>
+                <option value="about">About Profile (about.html)</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <label style="font-weight: 600;">SEO Title</label>
+                <span style="font-size: 11px; color: var(--wp-text-muted);" id="seoTitleCounter">52 / 60 chars</span>
+              </div>
+              <input type="text" class="large-text" id="seoTitleInput" value="MadhanKR — Digital Designer & Creative Developer" oninput="updateSeoPreviews()" />
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <label style="font-weight: 600;">Meta Description</label>
+                <span style="font-size: 11px; color: var(--wp-text-muted);" id="seoDescCounter">142 / 160 chars</span>
+              </div>
+              <textarea class="large-text" id="seoDescInput" rows="3" oninput="updateSeoPreviews()">Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.</textarea>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="font-weight: 600; display: block; margin-bottom: 4px;">Canonical URL</label>
+              <input type="text" class="large-text" id="seoCanonicalInput" value="https://madhankumarrajagopal.netlify.app/" oninput="updateSeoPreviews()" />
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="font-weight: 600; display: block; margin-bottom: 4px;">Focus Keywords</label>
+              <input type="text" class="large-text" id="seoKeywordsInput" value="UI/UX Design, Creative Developer, EdTech, AI Workflows, Portfolio, MadhanKR" />
+            </div>
+
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--wp-border-subtle);">
+              <label style="font-weight: 600; display: block; margin-bottom: 8px;">Robots Meta Tag</label>
+              <div style="display: flex; gap: 16px;">
+                <label><input type="checkbox" id="seoIndexCheck" checked /> index</label>
+                <label><input type="checkbox" id="seoFollowCheck" checked /> follow</label>
+                <label><input type="checkbox" id="seoArchiveCheck" checked /> archive</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Google Snippet Preview -->
+        <div>
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Google Search Preview</h2>
+            </div>
+            <div class="inside">
+              <div class="google-preview-box">
+                <div class="google-breadcrumb" id="prevGoogleUrl">https://madhankumarrajagopal.netlify.app</div>
+                <a href="#" class="google-title-link" id="prevGoogleTitle">MadhanKR — Digital Designer & Creative Developer</a>
+                <div class="google-snippet-desc" id="prevGoogleDesc">Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="postbox">
+            <div class="postbox-header">
+              <h2>Social Share Preview (Twitter / Open Graph)</h2>
+            </div>
+            <div class="inside">
+              <div style="border: 1px solid #dfe1e5; border-radius: 6px; overflow: hidden;">
+                <div style="height: 120px; background: #2c3338; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                  Open Graph Image Preview
+                </div>
+                <div style="padding: 10px;">
+                  <strong style="font-size: 13px; display: block;" id="prevTwitterTitle">MadhanKR — Digital Designer & Creative Developer</strong>
+                  <p style="font-size: 11px; color: var(--wp-text-muted); margin-top: 4px;" id="prevTwitterDesc">Portfolio & personal journal of MadhanKR.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         VIEW 6: SITE SETTINGS (#settings)
+         ════════════════════════════════════════════════════════════ -->
+    <section class="admin-view" id="view-settings">
+      <div class="wp-heading-wrap">
+        <div class="wp-heading-left">
+          <h1 class="wp-heading-inline">General Settings</h1>
+        </div>
+      </div>
+
+      <div class="postbox">
+        <div class="postbox-header">
+          <h2>Site Identity & Options</h2>
+        </div>
+        <div class="inside">
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <th scope="row"><label for="settingSiteName">Site Title</label></th>
+                <td>
+                  <input type="text" id="settingSiteName" class="regular-text" value="MADHANKR" />
+                </td>
+              </tr>
+
+              <tr>
+                <th scope="row"><label for="settingSiteTagline">Tagline</label></th>
+                <td>
+                  <input type="text" id="settingSiteTagline" class="regular-text" value="Digital Designer × Creative Developer" />
+                  <p class="description">In a few words, explain what this site is about.</p>
+                </td>
+              </tr>
+
+              <tr>
+                <th scope="row"><label for="settingContactEmail">Administration Email Address</label></th>
+                <td>
+                  <input type="email" id="settingContactEmail" class="regular-text" value="madhan@example.com" />
+                  <p class="description">This address is used for admin purposes.</p>
+                </td>
+              </tr>
+
+              <tr>
+                <th scope="row">Site Preferences</th>
+                <td>
+                  <fieldset>
+                    <label style="display: block; margin-bottom: 6px;">
+                      <input type="checkbox" id="settingMaintenanceMode" />
+                      Enable maintenance mode on public website
+                    </label>
+                    <label style="display: block;">
+                      <input type="checkbox" id="settingAllowComments" checked />
+                      Allow readers to submit inquiries and comments
+                    </label>
+                  </fieldset>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--wp-border-subtle);">
+            <button class="button button-primary button-large" onclick="saveAllSiteSettings()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Builder & Backup Tools -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="postbox">
+          <div class="postbox-header">
+            <h2>Public Navigation Menu Items</h2>
+          </div>
+          <div class="inside">
+            <p style="font-size: 12px; color: var(--wp-text-muted); margin-bottom: 12px;">
+              Reorder or toggle visibility of navigation links on public pages.
+            </p>
+            <div id="navItemsBuilder" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Populated dynamically via cms-admin.js -->
+            </div>
+          </div>
+        </div>
+
+        <div class="postbox">
+          <div class="postbox-header">
+            <h2>Data Backup & Recovery</h2>
+          </div>
+          <div class="inside">
+            <p style="font-size: 12px; color: var(--wp-text-muted); margin-bottom: 14px;">
+              Export full JSON snapshot of all articles, portfolio items, and media records.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <button class="button" onclick="exportCmsDataBackup()">Export All Content (JSON)</button>
+              <button class="button" style="color: #b32d2e;" onclick="resetCmsDataToDefaults()">Reset to Default Mock Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- WordPress Toast Container -->
+  <div class="wp-toast-container" id="wpToastContainer"></div>
+
+  <script src="../cms-data.js"></script>
+  <script src="../cms-admin.js"></script>
+</body>
+</html>

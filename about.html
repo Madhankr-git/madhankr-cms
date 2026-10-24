@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About MadhanKR — Digital Designer & Creative Developer</title>
+  <meta name="description" content="Profile, design philosophy, skills matrix, career timeline, and contact information for MadhanKR." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public-layout.css" />
+  <style>
+    .about-page-hero {
+      padding: 130px var(--pad-x) 60px;
+      border-bottom: 1.5px solid var(--sky-border);
+    }
+    .about-timeline-section {
+      padding: 80px var(--pad-x);
+      border-bottom: 1.5px solid var(--sky-border);
+    }
+    .timeline-wrap {
+      position: relative;
+      margin-top: 48px;
+      border-left: 2px solid var(--sky-solid);
+      padding-left: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .timeline-node {
+      position: relative;
+    }
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -39px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      background: var(--dark-solid);
+      border: 2px solid var(--sky-solid);
+    }
+    .timeline-year {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--sky-blue);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .timeline-role {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .timeline-company {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--grey-text);
+      margin-bottom: 12px;
+    }
+    .timeline-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 680px;
+    }
+
+    /* Skills Interactive Gauge */
+    .skills-gauge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .skill-gauge-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 24px;
+    }
+    .skill-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .gauge-track {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-hover);
+      position: relative;
+    }
+    .gauge-fill {
+      height: 100%;
+      background: var(--sky-solid);
+      transition: width 1s ease;
+    }
+
+    /* Stack grid */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .stack-item {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .stack-item:hover {
+      border-color: var(--sky-blue);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
+  <header class="public-header">
+    <a href="index.html" class="public-brand">
+      <div class="brand-marks">
+        <span class="b-mark sq"></span>
+        <span class="b-mark semi"></span>
+        <span class="b-mark circ"></span>
+      </div>
+      <span>MADHANKR</span>
+    </a>
+
+    <ul class="public-nav-list">
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link"><span class="p-idx">01</span> Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link"><span class="p-idx">02</span> Journal</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link active"><span class="p-idx">04</span> About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link"><span class="p-idx">05</span> Contact</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="contact.html" class="public-header-cta">
+        <span class="cta-dot"></span>
+        <span>Let’s Talk</span>
+      </a>
+      <button class="public-burger-btn" id="publicBurger" aria-label="Toggle navigation menu">
+        <span class="line top"></span>
+        <span class="line mid"></span>
+        <span class="line bot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Public Mobile Drawer -->
+  <nav class="public-mobile-drawer" id="publicDrawer">
+    <div class="public-drawer-inner">
+      <div class="public-brand">
+        <span class="b-mark sq"></span>
+        <span>MADHANKR</span>
+      </div>
+
+      <ul class="drawer-links-list">
+        <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="drawer-nav-link"><span class="p-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="drawer-nav-link"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="gallery.html" class="drawer-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="drawer-nav-link active"><span class="p-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="drawer-nav-link"><span class="p-idx">05</span> Contact</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid var(--sky-border);">
+        <span class="b-mark sq" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark circ" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark semi" style="width: 18px; height: 9px;"></span>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="drawer-overlay" id="publicOverlay"></div>
+
+  <!-- ─── ABOUT HERO ───────────────────────────────────────────── -->
+  <section class="about-page-hero">
+    <div class="breadcrumb-wrap">
+      <a href="index.html">[ HOME ]</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">[ ABOUT MADHANKR ]</span>
+    </div>
+
+    <div class="section-tag-box">
+      <span class="section-num">04</span>
+      <span class="section-bracket">[ PHILOSOPHY & CAPABILITIES ]</span>
+    </div>
+
+    <h1 class="section-title">ABOUT MADHANKR</h1>
+    <p class="hero-manifesto" style="max-width: 780px; margin-bottom: 32px;">
+      Digital designer and creative developer working where visual elegance, front-end architecture, and AI-assisted workflows converge.
+    </p>
+
+    <!-- Bio Totem Grid -->
+    <div class="about-grid" style="margin-top: 48px;">
+      <div class="about-narrative">
+        <p class="about-lead-statement">
+          I work where <strong>visual design</strong>, <strong>digital experiences</strong>, and <strong>emerging technology</strong> meet.
+        </p>
+        <p class="about-body-text">
+          My journey has moved between graphic design, UI/UX, and front-end development. I enjoy understanding how a visual idea works—not only as a static composition, but as an experience people can touch, navigate, and rely upon.
+        </p>
+        <p class="about-body-text">
+          I’m drawn to thoughtful layouts, restrained colour, solid geometry, strong typography, and details that serve a genuine purpose. I also explore AI-assisted tools to test ideas faster and make repetitive parts of the workflow more efficient.
+        </p>
+      </div>
+
+      <div class="about-totem-wrap">
+        <div class="totem-stack" style="transform: scale(1);">
+          <div class="totem-layer totem-circ"></div>
+          <div class="totem-layer totem-semi"></div>
+          <div class="totem-layer totem-sq"></div>
+        </div>
+        <div class="totem-badge">
+          <span class="tb-big">03+</span>
+          <span class="tb-sub">YEARS OF SYSTEMIC CRAFT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SKILLS MATRIX & PROFICIENCY ──────────────────────────── -->
+  <section class="section" style="border-bottom: 1.5px solid var(--sky-border);">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">01</span>
+        <span class="section-bracket">[ CAPABILITIES ]</span>
+      </div>
+      <h2 class="section-title" style="font-size: clamp(32px, 4.5vw, 56px);">CORE SKILLS MATRIX</h2>
+    </div>
+
+    <div class="skills-gauge-grid">
+      <div class="skill-gauge-card">
+        <div class="skill-title-row">
+          <span>UI / UX & PRODUCT DESIGN</span>
+          <span style="color: var(--sky-blue);">95%</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style="width: 95%;"></div></div>
+        <p style="font-size: 12px; color: var(--grey-text); margin-top: 10px;">Information architecture, wireframes, high-fidelity prototypes, user journeys.</p>
+      </div>
+
+      <div class="skill-gauge-card">
+        <div class="skill-title-row">
+          <span>HTML5 / CSS / MODERN JS</span>
+          <span style="color: var(--sky-blue);">90%</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style="width: 90%;"></div></div>
+        <p style="font-size: 12px; color: var(--grey-text); margin-top: 10px;">Semantic markup, custom properties, responsive flexbox & grid, zero-dependency speed.</p>
+      </div>
+
+      <div class="skill-gauge-card">
+        <div class="skill-title-row">
+          <span>GSAP & KINETIC ANIMATION</span>
+          <span style="color: var(--sky-blue);">88%</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style="width: 88%;"></div></div>
+        <p style="font-size: 12px; color: var(--grey-text); margin-top: 10px;">ScrollTrigger timelines, mechanical eases, micro-interactions, scrubbed marquees.</p>
+      </div>
+
+      <div class="skill-gauge-card">
+        <div class="skill-title-row">
+          <span>AI-ASSISTED CREATIVE WORKFLOWS</span>
+          <span style="color: var(--sky-blue);">92%</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style="width: 92%;"></div></div>
+        <p style="font-size: 12px; color: var(--grey-text); margin-top: 10px;">Prompt architecture, generative imagery, rapid iteration, creative coding assistants.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EXPERIENCE TIMELINE ───────────────────────────────────── -->
+  <section class="about-timeline-section">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">02</span>
+        <span class="section-bracket">[ CAREER TRAJECTORY ]</span>
+      </div>
+      <h2 class="section-title" style="font-size: clamp(32px, 4.5vw, 56px);">EXPERIENCE & MILESTONES</h2>
+    </div>
+
+    <div class="timeline-wrap">
+      <div class="timeline-node">
+        <div class="timeline-year">2024 — PRESENT</div>
+        <h3 class="timeline-role">Lead Product Designer & Creative Developer</h3>
+        <div class="timeline-company">Independent Practice & Institutional Collaborations</div>
+        <p class="timeline-desc">
+          Leading design for EdTech platforms connected with IIT Hyderabad, IIT Dharwad, and NIT Calicut. Engineering responsive design systems, bespoke websites, and generative AI creative direction.
+        </p>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-year">2023 — 2024</div>
+        <h3 class="timeline-role">UI/UX & Brand Designer</h3>
+        <div class="timeline-company">Digital Experience Studio</div>
+        <p class="timeline-desc">
+          Crafted cross-platform brand identity systems, high-converting PPC campaign landing pages, and interactive product prototypes for web and mobile.
+        </p>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-year">2022 — 2023</div>
+        <h3 class="timeline-role">Visual & Graphic Designer</h3>
+        <div class="timeline-company">Creative Agency</div>
+        <p class="timeline-desc">
+          Developed brand guidelines, vector icon suites, marketing collateral, and foundational front-end implementations using semantic HTML and CSS.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TOOLKIT & HARDWARE ────────────────────────────────────── -->
+  <section class="section" style="border-bottom: 1.5px solid var(--sky-border);">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">03</span>
+        <span class="section-bracket">[ WORKSPACE & ARSENAL ]</span>
+      </div>
+      <h2 class="section-title" style="font-size: clamp(32px, 4.5vw, 56px);">DIGITAL TOOLKIT</h2>
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-item">
+        <span class="cr-shape sq"></span>
+        <div>
+          <div style="font-weight: 800; font-size: 14px;">Figma</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--grey-text);">Design Systems</div>
+        </div>
+      </div>
+
+      <div class="stack-item">
+        <span class="cr-shape semi"></span>
+        <div>
+          <div style="font-weight: 800; font-size: 14px;">GSAP 3</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--grey-text);">Scroll Motion</div>
+        </div>
+      </div>
+
+      <div class="stack-item">
+        <span class="cr-shape circ"></span>
+        <div>
+          <div style="font-weight: 800; font-size: 14px;">Vanilla CSS</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--grey-text);">Custom Tokens</div>
+        </div>
+      </div>
+
+      <div class="stack-item">
+        <span class="cr-shape sq"></span>
+        <div>
+          <div style="font-weight: 800; font-size: 14px;">JavaScript ES6+</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--grey-text);">DOM Logic</div>
+        </div>
+      </div>
+
+      <div class="stack-item">
+        <span class="cr-shape semi"></span>
+        <div>
+          <div style="font-weight: 800; font-size: 14px;">Midjourney v6</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--grey-text);">AI Direction</div>
+        </div>
+      </div>
+
+      <div class="stack-item">
+        <span class="cr-shape circ"></span>
+        <div>
+          <div style="font-weight: 800; font-size: 14px;">Cursor / VS Code</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--grey-text);">Development</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT SECTION ──────────────────────────────────────── -->
+  <section class="section" id="contactSection">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">04</span>
+        <span class="section-bracket">[ TRANSMISSION ]</span>
+      </div>
+      <h2 class="section-title">LET’S CONNECT</h2>
+    </div>
+
+    <div class="contact-frame">
+      <div class="contact-pitch">
+        <h3 class="contact-big-call">LET’S MAKE<br/><span>IT MEANINGFUL.</span></h3>
+        <p class="contact-subtext">
+          Open to opportunities in digital design, UI/UX, AI-assisted creative work, and web experiences. If you have an interesting idea or collaboration in mind, let’s talk.
+        </p>
+
+        <div class="contact-links-list">
+          <a href="https://www.linkedin.com/in/madhankrajagopal" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape sq"></span>
+            <span class="cr-label">LINKEDIN PROFILE</span>
+            <span class="cr-val">linkedin.com/in/madhankrajagopal</span>
+          </a>
+          <a href="https://madhankumarrajagopal.netlify.app/" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape semi"></span>
+            <span class="cr-label">PORTFOLIO</span>
+            <span class="cr-val">madhankumarrajagopal.netlify.app</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form-box">
+        <form class="c-form" id="aboutContactForm">
+          <div class="input-block">
+            <label>YOUR NAME</label>
+            <input type="text" name="name" placeholder="Your name" required />
+          </div>
+
+          <div class="input-block">
+            <label>YOUR EMAIL</label>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="input-block">
+            <label>PROJECT / ENGAGEMENT TYPE</label>
+            <input type="text" name="type" placeholder="UI/UX / Design System / Full Website / Advice" required />
+          </div>
+
+          <div class="input-block">
+            <label>BRIEF SPECIFICATION</label>
+            <textarea name="message" rows="4" placeholder="Tell me a little about your project..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-action-btn" id="aboutSubmitBtn">
+            <span class="btn-text">TRANSMIT INQUIRY</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="cms-data.js"></script>
+  <script src="public-layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('aboutContactForm');
+      const btn = document.getElementById('aboutSubmitBtn');
+      if (form && btn) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span class="btn-text">INQUIRY TRANSMITTED ■</span>';
+          btn.style.backgroundColor = '#090a0f';
+          btn.style.color = '#ffffff';
+          if (window.showToast) window.showToast('Inquiry transmitted successfully!');
+          form.reset();
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+          }, 3500);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

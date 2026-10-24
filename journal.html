@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal & Notes — MadhanKR</title>
+  <meta name="description" content="Reflections on design, front-end architecture, AI-assisted creative workflows, and digital craft." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public-layout.css" />
+  <style>
+    /* Journal specific layouts */
+    .journal-hero {
+      padding: 130px var(--pad-x) 50px;
+      border-bottom: 1.5px solid var(--sky-border);
+    }
+    .filter-bar {
+      margin-top: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 18px 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.05);
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 260px;
+      background: var(--bg-deep);
+      border: 1.5px solid var(--sky-border);
+      padding: 10px 16px;
+    }
+    .search-box:focus-within {
+      border-color: var(--sky-blue);
+      background: var(--bg-surface);
+    }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--text-main);
+    }
+    .search-icon {
+      color: var(--sky-blue);
+      font-family: var(--font-mono);
+      font-weight: 800;
+    }
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .cat-btn {
+      background: var(--bg-deep);
+      border: 1px solid var(--sky-border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .cat-btn:hover {
+      border-color: var(--sky-blue);
+      color: var(--sky-blue);
+    }
+    .cat-btn.active {
+      background: var(--sky-solid);
+      border-color: var(--sky-blue);
+      color: var(--dark-solid);
+    }
+    .cat-badge {
+      font-size: 9px;
+      opacity: 0.85;
+    }
+
+    /* Featured Spotlight Article */
+    .spotlight-section {
+      padding: 60px var(--pad-x);
+    }
+    .spotlight-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--dark-solid);
+      box-shadow: 8px 8px 0px var(--sky-solid);
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s;
+    }
+    .spotlight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 12px 12px 0px var(--sky-solid);
+    }
+    @media (max-width: 900px) {
+      .spotlight-card {
+        grid-template-columns: 1fr;
+      }
+    }
+    .spotlight-content {
+      padding: clamp(32px, 5vw, 60px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .spotlight-visual {
+      background: var(--bg-card);
+      border-left: 1.5px solid var(--sky-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+    @media (max-width: 900px) {
+      .spotlight-visual {
+        border-left: none;
+        border-top: 1.5px solid var(--sky-border);
+      }
+    }
+    .spot-geo-shape {
+      width: 140px;
+      height: 140px;
+      background: var(--sky-solid);
+      box-shadow: 0 0 0 12px var(--sky-tint);
+    }
+
+    /* Articles Grid */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 32px;
+      padding: 20px var(--pad-x) 100px;
+    }
+    @media (max-width: 600px) {
+      .articles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .article-item {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s, box-shadow 0.2s;
+    }
+    .article-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--sky-blue);
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
+    }
+    .art-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .art-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--sky-blue);
+      font-weight: 800;
+    }
+    .art-motif {
+      width: 10px;
+      height: 10px;
+      background: var(--sky-solid);
+    }
+    .art-motif.sq { width: 10px; height: 10px; }
+    .art-motif.semi { width: 12px; height: 6px; border-radius: 6px 6px 0 0; }
+    .art-motif.circ { width: 10px; height: 10px; border-radius: 50%; }
+    .art-readtime {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey-text);
+      background: var(--bg-card);
+      padding: 3px 8px;
+    }
+    .art-title {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      transition: color 0.2s;
+    }
+    .art-title:hover {
+      color: var(--sky-blue);
+    }
+    .art-summary {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .art-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .art-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 3px 8px;
+      letter-spacing: 0.05em;
+    }
+    .art-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--sky-border);
+      padding-top: 18px;
+    }
+    .art-read-btn {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--dark-solid);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.2s, color 0.2s;
+    }
+    .art-read-btn:hover {
+      color: var(--sky-blue);
+      gap: 12px;
+    }
+    .bookmark-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--grey-text);
+      transition: color 0.2s;
+      padding: 4px;
+    }
+    .bookmark-btn.saved {
+      color: var(--sky-blue);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
+  <header class="public-header">
+    <a href="index.html" class="public-brand">
+      <div class="brand-marks">
+        <span class="b-mark sq"></span>
+        <span class="b-mark semi"></span>
+        <span class="b-mark circ"></span>
+      </div>
+      <span>MADHANKR</span>
+    </a>
+
+    <ul class="public-nav-list">
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link"><span class="p-idx">01</span> Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link active"><span class="p-idx">02</span> Journal</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link"><span class="p-idx">04</span> About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link"><span class="p-idx">05</span> Contact</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="contact.html" class="public-header-cta">
+        <span class="cta-dot"></span>
+        <span>Let’s Talk</span>
+      </a>
+      <button class="public-burger-btn" id="publicBurger" aria-label="Toggle navigation menu">
+        <span class="line top"></span>
+        <span class="line mid"></span>
+        <span class="line bot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Public Mobile Drawer -->
+  <nav class="public-mobile-drawer" id="publicDrawer">
+    <div class="public-drawer-inner">
+      <div class="public-brand">
+        <span class="b-mark sq"></span>
+        <span>MADHANKR</span>
+      </div>
+
+      <ul class="drawer-links-list">
+        <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="drawer-nav-link"><span class="p-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="drawer-nav-link active"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="gallery.html" class="drawer-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="drawer-nav-link"><span class="p-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="drawer-nav-link"><span class="p-idx">05</span> Contact</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid var(--sky-border);">
+        <span class="b-mark sq" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark circ" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark semi" style="width: 18px; height: 9px;"></span>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="drawer-overlay" id="publicOverlay"></div>
+
+  <!-- ─── JOURNAL HERO ─────────────────────────────────────────── -->
+  <section class="journal-hero">
+    <div class="breadcrumb-wrap">
+      <a href="index.html">[ HOME ]</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">[ JOURNAL & WRITINGS ]</span>
+    </div>
+
+    <div class="section-tag-box">
+      <span class="section-num">01</span>
+      <span class="section-bracket">[ PUBLICATIONS ]</span>
+    </div>
+
+    <h1 class="section-title">JOURNAL & NOTES</h1>
+    <p class="hero-manifesto" style="margin-bottom: 24px;">
+      Observations on visual hierarchy, interface engineering, AI-assisted creative workflows, and the discipline of digital craft.
+    </p>
+
+    <!-- Search & Filter Controls -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="journalSearchInput" placeholder="Search by topic, keyword, or tag..." />
+      </div>
+
+      <div class="category-pills" id="categoryPills">
+        <button class="cat-btn active" data-category="all">All <span class="cat-badge">(6)</span></button>
+        <button class="cat-btn" data-category="ai-workflows">AI & Workflows <span class="cat-badge">(1)</span></button>
+        <button class="cat-btn" data-category="design">Design <span class="cat-badge">(2)</span></button>
+        <button class="cat-btn" data-category="engineering">Engineering <span class="cat-badge">(2)</span></button>
+        <button class="cat-btn" data-category="philosophy">Philosophy <span class="cat-badge">(1)</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURED SPOTLIGHT ───────────────────────────────────── -->
+  <section class="spotlight-section" id="spotlightSection">
+    <div class="spotlight-card">
+      <div class="spotlight-content">
+        <div>
+          <div class="art-meta" style="margin-bottom: 12px;">
+            <span class="art-motif sq"></span>
+            <span>FEATURED ESSAY · AI & WORKFLOWS</span>
+            <span class="art-readtime">6 MIN READ</span>
+          </div>
+          <h2 style="font-size: clamp(26px, 3.2vw, 38px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 16px;">
+            AI Can Make It Faster. Can It Make It Meaningful?
+          </h2>
+          <p style="font-size: 16px; color: var(--text-muted); line-height: 1.6; max-width: 600px; margin-bottom: 24px;">
+            A designer’s perspective on using AI as a creative partner without giving up judgment, intention, or the human point of view. How speed can either dilute or elevate genuine digital craft.
+          </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <a href="article.html?id=ai-meaningful-craft" class="cta-btn">
+            <span>Read Full Essay</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="spotlight-visual">
+        <div class="spot-geo-shape"></div>
+        <div style="margin-top: 24px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--sky-blue); font-weight: 700;">
+          [ FIG. 01 — INTENTIONAL CRAFT ]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ARTICLES LIST GRID ────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+      <span class="sys-code" id="resultCountLabel">ALL ARTICLES (6)</span>
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);">SORTED BY RECENCY</span>
+    </div>
+
+    <div class="articles-grid" id="journalGrid">
+      <!-- Populated dynamically via journal.js and CMSData -->
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="cms-data.js"></script>
+  <script src="public-layout.js"></script>
+  <script src="journal.js"></script>
+</body>
+</html>

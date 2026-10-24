@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MadhanKR — Digital Designer & Creative Developer</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- GSAP & Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+</head>
+<body>
+
+  <!-- ─── FLOATING SCROLL-DRIVEN BACKGROUND SHAPES ─────────── -->
+  <div class="scroll-shapes-container" aria-hidden="true">
+    <div class="bg-shape bg-circle" id="bgCircle1"></div>
+    <div class="bg-shape bg-semi" id="bgSemi1"></div>
+    <div class="bg-shape bg-square" id="bgSquare1"></div>
+    <div class="bg-shape bg-semi-h" id="bgSemi2"></div>
+    <div class="bg-shape bg-circle-sm" id="bgCircle2"></div>
+  </div>
+
+  <!-- ─── BURGER MENU TRIGGER ──────────────────────────────── -->
+  <button class="burger" id="burger" aria-label="Toggle navigation menu">
+    <span class="b-line top"></span>
+    <span class="b-line mid"></span>
+    <span class="b-line bot"></span>
+  </button>
+
+  <!-- ─── RIGHT SIDE NAV DRAWER ────────────────────────────── -->
+  <nav class="side-nav" id="sideNav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="nav-sq"></span>
+        <span class="nav-brand-text">MADHANKR</span>
+      </div>
+
+      <ul class="nav-list">
+        <li><a href="#home" class="nav-link" data-section="home"><span class="nav-idx">00</span> Home</a></li>
+        <li><a href="#portfolio" class="nav-link" data-section="portfolio"><span class="nav-idx">01</span> Portfolio</a></li>
+        <li><a href="#about" class="nav-link" data-section="about"><span class="nav-idx">02</span> About</a></li>
+        <li><a href="#blog" class="nav-link" data-section="blog"><span class="nav-idx">03</span> Blog</a></li>
+        <li><a href="#contact" class="nav-link" data-section="contact"><span class="nav-idx">04</span> Contact</a></li>
+      </ul>
+
+      <!-- Geometric shapes in drawer -->
+      <div class="nav-shapes">
+        <div class="nav-shape-item n-square"></div>
+        <div class="nav-shape-item n-circle"></div>
+        <div class="nav-shape-item n-semi"></div>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ─── HERO SECTION ─────────────────────────────────────── -->
+  <section id="home" class="section hero">
+    <div class="hero-grid">
+      <!-- Left: Massive Typography -->
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="badge-shape-circle"></span>
+          <span class="badge-text">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+        </div>
+
+        <h1 class="hero-name">
+          <span class="hero-row">MADHAN</span>
+          <span class="hero-row hero-accent">KR<span class="dot">■</span></span>
+        </h1>
+
+        <p class="hero-manifesto">
+          I turn ideas into clear digital experiences through visual design, thoughtful interfaces, and AI-assisted workflows. Always learning, experimenting, and building at the intersection of creativity and technology.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#portfolio" class="cta-btn">
+            <span>Explore Works</span>
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="#contact" class="ghost-btn">
+            <span>Get In Touch</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Kinetic Hero Geometric Sculpture (Circle, Semi-Circle, Square) -->
+      <div class="hero-sculpture" id="heroSculpture">
+        <div class="sculpture-item sc-square" id="scSquare" title="Solid Square"></div>
+        <div class="sculpture-item sc-semi" id="scSemi" title="Solid Semi-Circle"></div>
+        <div class="sculpture-item sc-circle" id="scCircle" title="Solid Circle"></div>
+        <div class="sculpture-item sc-bar" id="scBar"></div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-cue">
+      <div class="cue-square"></div>
+      <span>SCROLL TO EXPLORE</span>
+    </div>
+  </section>
+
+  <!-- ─── SCRUBBED KINETIC TICKER (Scroll-Driven) ───────────── -->
+  <div class="kinetic-strip" id="kineticStrip">
+    <div class="strip-track" id="stripTrack">
+      <span class="strip-item">DIGITAL DESIGN</span>
+      <span class="strip-sep">◆</span>
+      <span class="strip-item">VISUAL STORYTELLING</span>
+      <span class="strip-sep">■</span>
+      <span class="strip-item">AI-ASSISTED WORKFLOWS</span>
+      <span class="strip-sep">●</span>
+      <span class="strip-item">DESIGN × DEVELOPMENT</span>
+      <span class="strip-sep">▲</span>
+      <span class="strip-item">DIGITAL DESIGN</span>
+      <span class="strip-sep">◆</span>
+      <span class="strip-item">VISUAL STORYTELLING</span>
+      <span class="strip-sep">■</span>
+      <span class="strip-item">AI-ASSISTED WORKFLOWS</span>
+      <span class="strip-sep">●</span>
+    </div>
+  </div>
+
+  <!-- ─── GEOMETRIC MORPH BAR (Animate on Scroll) ──────────── -->
+  <div class="shapes-showcase-section">
+    <div class="showcase-header">
+      <span class="sys-code">CORE GEOMETRY SYSTEM</span>
+    </div>
+    <div class="shapes-row" id="shapesRow">
+      <div class="shape-card sc-box">
+        <div class="geo-display geo-sq-display" id="geoSqDisplay"></div>
+        <span class="geo-label">01 / SQUARE</span>
+        <p class="geo-desc">Clarity, structure, and purposeful layouts</p>
+      </div>
+
+      <div class="shape-card sc-box">
+        <div class="geo-display geo-semi-display" id="geoSemiDisplay"></div>
+        <span class="geo-label">02 / SEMI-CIRCLE</span>
+        <p class="geo-desc">Movement that guides attention and meaning</p>
+      </div>
+
+      <div class="shape-card sc-box">
+        <div class="geo-display geo-circle-display" id="geoCircleDisplay"></div>
+        <span class="geo-label">03 / CIRCLE</span>
+        <p class="geo-desc">Balance, focus, and a natural visual flow</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── PORTFOLIO SECTION ────────────────────────────────── -->
+  <section id="portfolio" class="section">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">01</span>
+        <span class="section-bracket">[ WORKS ]</span>
+      </div>
+      <h2 class="section-title">SELECTED WORKS</h2>
+    </div>
+
+    <div class="portfolio-grid" id="portfolioGrid">
+      <!-- Project 1: Square Motif -->
+      <article class="p-card card-col-1" data-speed="1.0">
+        <div class="p-card-header">
+          <span class="p-card-tag">UI/UX · EDTECH</span>
+          <span class="p-card-year">2026</span>
+        </div>
+        <div class="p-card-graphic">
+          <div class="p-motif motif-square"></div>
+        </div>
+        <div class="p-card-info">
+          <h3 class="p-card-title">EDTECH PLATFORM EXPERIENCES</h3>
+          <p class="p-card-desc">Designed user interfaces for learning platforms connected with IIT Hyderabad, IIT Dharwad, and NIT Calicut, focusing on clear flows and usable screens.</p>
+          <div class="p-card-meta">
+            <span class="p-badge">UI/UX Design</span>
+            <span class="p-badge">EdTech</span>
+          </div>
+          <a href="#contact" class="p-card-link">Explore Case <span class="arrow-sym">→</span></a>
+        </div>
+      </article>
+
+      <!-- Project 2: Semi-Circle Motif -->
+      <article class="p-card card-col-2" data-speed="1.2">
+        <div class="p-card-header">
+          <span class="p-card-tag">WEB · CONCEPT</span>
+          <span class="p-card-year">2026</span>
+        </div>
+        <div class="p-card-graphic">
+          <div class="p-motif motif-semi"></div>
+        </div>
+        <div class="p-card-info">
+          <h3 class="p-card-title">MOVIELAND</h3>
+          <p class="p-card-desc">A movie-ticket booking concept exploring how discovery, film details, showtimes, and seat selection can come together in one clear experience.</p>
+          <div class="p-card-meta">
+            <span class="p-badge">Product Concept</span>
+            <span class="p-badge">UI Design</span>
+          </div>
+          <a href="#contact" class="p-card-link">Explore Case <span class="arrow-sym">→</span></a>
+        </div>
+      </article>
+
+      <!-- Project 3: Circle Motif -->
+      <article class="p-card card-col-1" data-speed="1.05">
+        <div class="p-card-header">
+          <span class="p-card-tag">WEB · LANDING PAGE</span>
+          <span class="p-card-year">2025</span>
+        </div>
+        <div class="p-card-graphic">
+          <div class="p-motif motif-circle"></div>
+        </div>
+        <div class="p-card-info">
+          <h3 class="p-card-title">PPC CAMPAIGN LANDING PAGE</h3>
+          <p class="p-card-desc">A responsive landing-page project built with HTML, CSS, and JavaScript, shaped around clear messaging, focused hierarchy, and conversion intent.</p>
+          <div class="p-card-meta">
+            <span class="p-badge">HTML / CSS / JS</span>
+            <span class="p-badge">Responsive Design</span>
+          </div>
+          <a href="#contact" class="p-card-link">Explore Case <span class="arrow-sym">→</span></a>
+        </div>
+      </article>
+
+      <!-- Project 4: Quarter Semi Motif -->
+      <article class="p-card card-col-2" data-speed="1.15">
+        <div class="p-card-header">
+          <span class="p-card-tag">AI FILM · STORYTELLING</span>
+          <span class="p-card-year">2025</span>
+        </div>
+        <div class="p-card-graphic">
+          <div class="p-motif motif-quarter"></div>
+        </div>
+        <div class="p-card-info">
+          <h3 class="p-card-title">SONHO — AI FILM CONCEPT</h3>
+          <p class="p-card-desc">An experimental cinematic teaser exploring dreams, visual metaphors, character direction, and AI-assisted image and video creation.</p>
+          <div class="p-card-meta">
+            <span class="p-badge">Creative Direction</span>
+            <span class="p-badge">AI Workflows</span>
+          </div>
+          <a href="#contact" class="p-card-link">Explore Case <span class="arrow-sym">→</span></a>
+        </div>
+      </article>
+
+      <!-- Project 5: Interlocking Square & Circle -->
+      <article class="p-card card-col-1" data-speed="1.02">
+        <div class="p-card-header">
+          <span class="p-card-tag">BRANDING · DIGITAL</span>
+          <span class="p-card-year">2024</span>
+        </div>
+        <div class="p-card-graphic">
+          <div class="p-motif-group">
+            <div class="motif-square-sm"></div>
+            <div class="motif-circle-sm"></div>
+          </div>
+        </div>
+        <div class="p-card-info">
+          <h3 class="p-card-title">DIGITAL BRAND EXPERIENCES</h3>
+          <p class="p-card-desc">Visual explorations for digital campaigns, brand communication, and marketing creatives—balancing consistency with the needs of each platform.</p>
+          <div class="p-card-meta">
+            <span class="p-badge">Visual Design</span>
+            <span class="p-badge">Campaigns</span>
+          </div>
+          <a href="#contact" class="p-card-link">Explore Case <span class="arrow-sym">→</span></a>
+        </div>
+      </article>
+
+      <!-- Project 6: Twin Semi-Circles -->
+      <article class="p-card card-col-2" data-speed="1.18">
+        <div class="p-card-header">
+          <span class="p-card-tag">EXPERIMENT · PRODUCT</span>
+          <span class="p-card-year">2024</span>
+        </div>
+        <div class="p-card-graphic">
+          <div class="p-motif-group">
+            <div class="motif-semi-l"></div>
+            <div class="motif-semi-r"></div>
+          </div>
+        </div>
+        <div class="p-card-info">
+          <h3 class="p-card-title">PERSONAL WEB PROJECTS</h3>
+          <p class="p-card-desc">Small web experiments that help me explore layouts, responsive behaviour, interaction patterns, and the relationship between design and code.</p>
+          <div class="p-card-meta">
+            <span class="p-badge">Web Design</span>
+            <span class="p-badge">Learning by Building</span>
+          </div>
+          <a href="work.html#edtech" class="p-card-link">Explore Case <span class="arrow-sym">→</span></a>
+        </div>
+      </article>
+    </div>
+
+    <div style="margin-top: 52px; display: flex; justify-content: center;">
+      <a href="work.html" class="cta-btn">
+        <span>Explore All Case Studies & Filter Projects</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT SECTION ────────────────────────────────────── -->
+  <section id="about" class="section">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">02</span>
+        <span class="section-bracket">[ PHILOSOPHY ]</span>
+      </div>
+      <h2 class="section-title">ABOUT MADHANKR</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-narrative">
+        <p class="about-lead-statement">
+          I work where <strong>visual design</strong>, <strong>digital experiences</strong>, and <strong>emerging technology</strong> meet.
+        </p>
+        <p class="about-body-text">
+          My journey has moved between graphic design, UI/UX, and front-end development. I enjoy understanding how a visual idea works—not only as a composition, but as an experience people can actually use. I bring a designer’s eye and a builder’s curiosity to each project.
+        </p>
+        <p class="about-body-text">
+          I’m drawn to thoughtful layouts, restrained colour, strong typography, and details that serve a purpose. I also explore AI-assisted tools to test ideas faster, extend creative possibilities, and make repetitive parts of the workflow more efficient.
+        </p>
+
+        <!-- Skill Matrix -->
+        <div class="matrix-grid">
+          <div class="matrix-col">
+            <div class="matrix-header">
+              <span class="shape-icon sq"></span>
+              <h4>DESIGN</h4>
+            </div>
+            <ul>
+              <li>Visual Design</li>
+              <li>UI / UX Design</li>
+              <li>Brand Identity</li>
+              <li>Digital Campaigns</li>
+              <li>Prototyping</li>
+            </ul>
+          </div>
+
+          <div class="matrix-col">
+            <div class="matrix-header">
+              <span class="shape-icon semi"></span>
+              <h4>DEVELOPMENT</h4>
+            </div>
+            <ul>
+              <li>HTML, CSS & JavaScript</li>
+              <li>Bootstrap & Tailwind basics</li>
+              <li>WordPress & CMS</li>
+              <li>Responsive Layouts</li>
+              <li>Creative Development</li>
+            </ul>
+          </div>
+
+          <div class="matrix-col">
+            <div class="matrix-header">
+              <span class="shape-icon circ"></span>
+              <h4>EXECUTION</h4>
+            </div>
+            <ul>
+              <li>Detail-focused Execution</li>
+              <li>AI-assisted Workflows</li>
+              <li>Cross-platform Visuals</li>
+              <li>Design-to-Development Handoff</li>
+              <li>Continuous Learning</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Kinetic Block Stack (Circle, Semi, Square Stacked) -->
+      <div class="about-totem-wrap">
+        <div class="totem-stack" id="totemStack">
+          <div class="totem-layer totem-circ" id="totemCirc"></div>
+          <div class="totem-layer totem-semi" id="totemSemi"></div>
+          <div class="totem-layer totem-sq" id="totemSq"></div>
+        </div>
+        <div class="totem-badge">
+          <span class="tb-big">03+</span>
+          <span class="tb-sub">YEARS OF DESIGN EXPERIENCE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BLOG SECTION ─────────────────────────────────────── -->
+  <section id="blog" class="section">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">03</span>
+        <span class="section-bracket">[ WRITINGS ]</span>
+      </div>
+      <h2 class="section-title">NOTES & IDEAS</h2>
+    </div>
+
+    <div class="blog-manifest" id="blogList">
+      <article class="b-entry" onclick="window.location.href='article.html?id=nothing-is-perfect'" style="cursor: pointer;">
+        <div class="b-meta">
+          <span class="b-shape sq"></span>
+          <span class="b-date">IDEA 01</span>
+        </div>
+        <div class="b-content">
+          <h3 class="b-title">Nothing Is Perfect, and Maybe That’s the Point</h3>
+          <p class="b-summary">A personal reflection on perfection, unfinished ideas, and learning to value progress without pretending everything needs to be flawless.</p>
+        </div>
+        <div class="b-action">
+          <a href="article.html?id=nothing-is-perfect" class="b-btn">READ <span>↗</span></a>
+        </div>
+      </article>
+
+      <article class="b-entry" onclick="window.location.href='article.html?id=seeing-like-a-designer'" style="cursor: pointer;">
+        <div class="b-meta">
+          <span class="b-shape semi"></span>
+          <span class="b-date">IDEA 02</span>
+        </div>
+        <div class="b-content">
+          <h3 class="b-title">Learning to See Like a Designer</h3>
+          <p class="b-summary">How everyday interfaces, films, posters, and ordinary spaces can train us to notice composition, contrast, and visual decisions.</p>
+        </div>
+        <div class="b-action">
+          <a href="article.html?id=seeing-like-a-designer" class="b-btn">READ <span>↗</span></a>
+        </div>
+      </article>
+
+      <article class="b-entry" onclick="window.location.href='article.html?id=designers-who-code'" style="cursor: pointer;">
+        <div class="b-meta">
+          <span class="b-shape circ"></span>
+          <span class="b-date">IDEA 03</span>
+        </div>
+        <div class="b-content">
+          <h3 class="b-title">What Happens When Designers Start Coding?</h3>
+          <p class="b-summary">My experience moving from visual design toward the browser, and how understanding code changes the way I think about digital work.</p>
+        </div>
+        <div class="b-action">
+          <a href="article.html?id=designers-who-code" class="b-btn">READ <span>↗</span></a>
+        </div>
+      </article>
+
+      <article class="b-entry" onclick="window.location.href='article.html?id=ai-meaningful-craft'" style="cursor: pointer;">
+        <div class="b-meta">
+          <span class="b-shape sq"></span>
+          <span class="b-date">IDEA 04</span>
+        </div>
+        <div class="b-content">
+          <h3 class="b-title">AI Can Make It Faster. Can It Make It Meaningful?</h3>
+          <p class="b-summary">A designer’s perspective on using AI as a creative partner without giving up judgment, intention, or the human point of view.</p>
+        </div>
+        <div class="b-action">
+          <a href="article.html?id=ai-meaningful-craft" class="b-btn">READ <span>↗</span></a>
+        </div>
+      </article>
+    </div>
+
+    <div style="margin-top: 48px; display: flex; justify-content: center;">
+      <a href="journal.html" class="cta-btn">
+        <span>Explore All Journal Entries & Search</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT SECTION ──────────────────────────────────── -->
+  <section id="contact" class="section">
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">04</span>
+        <span class="section-bracket">[ TRANSMISSION ]</span>
+      </div>
+      <h2 class="section-title">LET’S CONNECT</h2>
+    </div>
+
+    <div class="contact-frame">
+      <div class="contact-pitch">
+        <h3 class="contact-big-call">LET’S MAKE<br/><span>IT MEANINGFUL.</span></h3>
+        <p class="contact-subtext">
+          Open to opportunities in digital design, UI/UX, AI-assisted creative work, and web experiences. If you have an interesting idea or collaboration in mind, let’s talk.
+        </p>
+
+        <div class="contact-links-list">
+          <a href="https://www.linkedin.com/in/madhankrajagopal" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape sq"></span>
+            <span class="cr-label">LINKEDIN PROFILE</span>
+            <span class="cr-val">linkedin.com/in/madhankrajagopal</span>
+          </a>
+          <a href="https://madhankumarrajagopal.netlify.app/" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape semi"></span>
+            <span class="cr-label">PORTFOLIO</span>
+            <span class="cr-val">madhankumarrajagopal.netlify.app</span>
+          </a>
+          <a href="https://www.linkedin.com/in/madhankrajagopal" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape circ"></span>
+            <span class="cr-label">LET’S CONNECT</span>
+            <span class="cr-val">MadhanKR on LinkedIn</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form-box">
+        <form class="c-form" id="contactForm">
+          <div class="input-block">
+            <label>YOUR NAME</label>
+            <input type="text" name="name" placeholder="Your name" required />
+          </div>
+
+          <div class="input-block">
+            <label>YOUR EMAIL</label>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="input-block">
+            <label>ENGAGEMENT TYPE</label>
+            <input type="text" name="type" placeholder="UI/UX / Branding / Web Design / Collaboration" required />
+          </div>
+
+          <div class="input-block">
+            <label>BRIEF SPECIFICATION</label>
+            <textarea name="message" rows="4" placeholder="Tell me a little about your idea..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-action-btn" id="submitBtn">
+            <span class="btn-text">TRANSMIT INQUIRY</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

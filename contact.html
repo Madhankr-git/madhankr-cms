@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — MadhanKR</title>
+  <meta name="description" content="Get in touch with MadhanKR for digital design, UI/UX, AI workflows, and creative development collaborations." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public-layout.css" />
+</head>
+<body>
+
+  <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
+  <header class="public-header">
+    <a href="index.html" class="public-brand">
+      <div class="brand-marks">
+        <span class="b-mark sq"></span>
+        <span class="b-mark semi"></span>
+        <span class="b-mark circ"></span>
+      </div>
+      <span>MADHANKR</span>
+    </a>
+
+    <ul class="public-nav-list">
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link"><span class="p-idx">01</span> Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link"><span class="p-idx">02</span> Journal</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link"><span class="p-idx">04</span> About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link active"><span class="p-idx">05</span> Contact</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="mailto:madhan@example.com" class="public-header-cta">
+        <span class="cta-dot"></span>
+        <span>Let’s Talk</span>
+      </a>
+      <button class="public-burger-btn" id="publicBurger" aria-label="Toggle navigation menu">
+        <span class="line top"></span>
+        <span class="line mid"></span>
+        <span class="line bot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Public Mobile Drawer -->
+  <nav class="public-mobile-drawer" id="publicDrawer">
+    <div class="public-drawer-inner">
+      <div class="public-brand">
+        <span class="b-mark sq"></span>
+        <span>MADHANKR</span>
+      </div>
+
+      <ul class="drawer-links-list">
+        <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="drawer-nav-link"><span class="p-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="drawer-nav-link"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="gallery.html" class="drawer-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="drawer-nav-link"><span class="p-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="drawer-nav-link active"><span class="p-idx">05</span> Contact</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid var(--sky-border);">
+        <span class="b-mark sq" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark circ" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark semi" style="width: 18px; height: 9px;"></span>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="drawer-overlay" id="publicOverlay"></div>
+
+  <!-- ─── CONTACT SECTION ──────────────────────────────────────── -->
+  <section class="section" style="padding-top: 140px; min-height: 85vh;">
+    <div class="breadcrumb-wrap" style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; color: var(--grey-text); margin-bottom: 24px;">
+      <a href="index.html" style="color: var(--text-muted); text-decoration: none;">[ HOME ]</a>
+      <span style="color: var(--sky-solid);">/</span>
+      <span style="color: var(--sky-blue);">[ TRANSMISSION ]</span>
+    </div>
+
+    <div class="section-header">
+      <div class="section-tag-box">
+        <span class="section-num">05</span>
+        <span class="section-bracket">[ TRANSMISSION ]</span>
+      </div>
+      <h1 class="section-title">LET’S CONNECT</h1>
+    </div>
+
+    <div class="contact-frame">
+      <div class="contact-pitch">
+        <h2 class="contact-big-call">LET’S MAKE<br/><span>IT MEANINGFUL.</span></h2>
+        <p class="contact-subtext">
+          Open to opportunities in digital design, UI/UX, AI-assisted creative work, and web experiences. If you have an interesting idea or collaboration in mind, let’s talk.
+        </p>
+
+        <div class="contact-links-list">
+          <a href="https://www.linkedin.com/in/madhankrajagopal" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape sq"></span>
+            <span class="cr-label">LINKEDIN PROFILE</span>
+            <span class="cr-val">linkedin.com/in/madhankrajagopal</span>
+          </a>
+          <a href="https://madhankumarrajagopal.netlify.app/" target="_blank" rel="noopener" class="contact-row">
+            <span class="cr-shape semi"></span>
+            <span class="cr-label">PORTFOLIO</span>
+            <span class="cr-val">madhankumarrajagopal.netlify.app</span>
+          </a>
+          <a href="mailto:madhan@example.com" class="contact-row">
+            <span class="cr-shape circ"></span>
+            <span class="cr-label">DIRECT EMAIL</span>
+            <span class="cr-val">madhan@example.com</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form-box">
+        <form class="c-form" id="contactPageForm">
+          <div class="input-block">
+            <label>YOUR NAME</label>
+            <input type="text" name="name" placeholder="Your name" required />
+          </div>
+
+          <div class="input-block">
+            <label>YOUR EMAIL</label>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="input-block">
+            <label>ENGAGEMENT TYPE</label>
+            <input type="text" name="type" placeholder="UI/UX / Branding / Web Design / Collaboration" required />
+          </div>
+
+          <div class="input-block">
+            <label>BRIEF SPECIFICATION</label>
+            <textarea name="message" rows="4" placeholder="Tell me a little about your idea..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-action-btn" id="contactSubmitBtn">
+            <span class="btn-text">TRANSMIT INQUIRY</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PUBLIC FOOTER ────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="public-layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contactPageForm');
+      const btn = document.getElementById('contactSubmitBtn');
+      if (form && btn) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span class="btn-text">TRANSMITTED SUCCESSFUL ■</span>';
+          btn.style.backgroundColor = '#090a0f';
+          btn.style.color = '#ffffff';
+          form.reset();
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+          }, 3500);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

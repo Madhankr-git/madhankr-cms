@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article — MadhanKR</title>
+  <meta name="description" content="A designer’s perspective on using AI as a creative partner without giving up judgment, intention, or the human point of view." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public-layout.css" />
+  <style>
+    /* Reading progress bar */
+    #readingProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background-color: var(--sky-blue);
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* Article layout */
+    .article-page {
+      padding: 130px var(--pad-x) 100px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .article-header {
+      margin-bottom: 48px;
+      border-bottom: 1.5px solid var(--sky-border);
+      padding-bottom: 40px;
+    }
+
+    .art-header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px dashed var(--sky-border);
+    }
+
+    .author-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--dark-solid);
+      border: 1.5px solid var(--sky-solid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .art-quick-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-action-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--sky-border);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 8px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .icon-action-btn:hover {
+      border-color: var(--sky-blue);
+      color: var(--sky-blue);
+    }
+
+    /* Table of contents drawer */
+    .toc-box {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 24px 28px;
+      margin: 36px 0 48px;
+    }
+    .toc-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      font-weight: 800;
+      color: var(--sky-blue);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toc-list a {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .toc-list a:hover {
+      color: var(--sky-blue);
+      transform: translateX(4px);
+    }
+    .toc-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--sky-solid);
+    }
+
+    /* Article Rich Typography */
+    .article-body {
+      font-size: clamp(17px, 1.4vw, 19px);
+      line-height: 1.8;
+      color: var(--text-main);
+    }
+    .article-body h2 {
+      font-size: clamp(26px, 3vw, 34px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin: 56px 0 20px;
+      color: var(--text-main);
+    }
+    .article-body h3 {
+      font-size: clamp(20px, 2.2vw, 24px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 40px 0 16px;
+      color: var(--text-main);
+    }
+    .article-body p {
+      margin-bottom: 28px;
+      color: var(--text-muted);
+    }
+    .article-body strong {
+      color: var(--text-main);
+    }
+    .article-body blockquote {
+      margin: 40px 0;
+      padding: 24px 32px;
+      background: var(--bg-surface);
+      border-left: 4px solid var(--sky-solid);
+      font-size: clamp(19px, 1.8vw, 22px);
+      font-style: italic;
+      color: var(--text-main);
+      box-shadow: 0 4px 20px rgba(2, 132, 199, 0.05);
+    }
+    .article-body ol, .article-body ul {
+      margin: 24px 0 32px 24px;
+      color: var(--text-muted);
+    }
+    .article-body li {
+      margin-bottom: 12px;
+      padding-left: 6px;
+    }
+
+    /* Visual figure card */
+    .art-figure {
+      background: var(--bg-card);
+      border: 1.5px solid var(--sky-border);
+      padding: 40px;
+      margin: 48px 0;
+      text-align: center;
+    }
+    .fig-geo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .fig-sq { width: 48px; height: 48px; background: var(--sky-solid); }
+    .fig-circ { width: 48px; height: 48px; border-radius: 50%; background: var(--sky-blue); }
+    .fig-semi { width: 48px; height: 24px; border-radius: 24px 24px 0 0; background: var(--dark-solid); }
+    .fig-caption {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--sky-blue);
+      letter-spacing: 0.2em;
+      font-weight: 800;
+    }
+
+    /* Author signature */
+    .author-bio-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--dark-solid);
+      box-shadow: 6px 6px 0px var(--sky-solid);
+      padding: 36px;
+      margin: 70px 0;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .author-bio-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .author-bio-card .author-avatar {
+        margin: 0 auto;
+      }
+    }
+
+    /* Related articles footer */
+    .next-prev-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1.5px solid var(--sky-border);
+    }
+    @media (max-width: 700px) {
+      .next-prev-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+    .nav-card-item {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--sky-border);
+      padding: 24px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    .nav-card-item:hover {
+      border-color: var(--sky-blue);
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div id="readingProgress"></div>
+
+  <!-- ─── PUBLIC SITE HEADER (PublicLayout) ─────────────────────── -->
+  <header class="public-header">
+    <a href="index.html" class="public-brand">
+      <div class="brand-marks">
+        <span class="b-mark sq"></span>
+        <span class="b-mark semi"></span>
+        <span class="b-mark circ"></span>
+      </div>
+      <span>MADHANKR</span>
+    </a>
+
+    <ul class="public-nav-list">
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link"><span class="p-idx">01</span> Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link active"><span class="p-idx">02</span> Journal</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link"><span class="p-idx">04</span> About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link"><span class="p-idx">05</span> Contact</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="contact.html" class="public-header-cta">
+        <span class="cta-dot"></span>
+        <span>Let’s Talk</span>
+      </a>
+      <button class="public-burger-btn" id="publicBurger" aria-label="Toggle navigation menu">
+        <span class="line top"></span>
+        <span class="line mid"></span>
+        <span class="line bot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Public Mobile Drawer -->
+  <nav class="public-mobile-drawer" id="publicDrawer">
+    <div class="public-drawer-inner">
+      <div class="public-brand">
+        <span class="b-mark sq"></span>
+        <span>MADHANKR</span>
+      </div>
+
+      <ul class="drawer-links-list">
+        <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="drawer-nav-link"><span class="p-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="drawer-nav-link active"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="gallery.html" class="drawer-nav-link"><span class="p-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="drawer-nav-link"><span class="p-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="drawer-nav-link"><span class="p-idx">05</span> Contact</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid var(--sky-border);">
+        <span class="b-mark sq" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark circ" style="width: 18px; height: 18px;"></span>
+        <span class="b-mark semi" style="width: 18px; height: 9px;"></span>
+      </div>
+
+      <div class="nav-footer">
+        <span>DESIGN × AI × CODE</span>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </nav>
+  <div class="drawer-overlay" id="publicOverlay"></div>
+
+  <!-- ─── ARTICLE CONTAINER ────────────────────────────────────── -->
+  <main class="article-page">
+    <div class="breadcrumb-wrap">
+      <a href="index.html">[ HOME ]</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="journal.html">[ JOURNAL ]</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current" id="articleCategoryBreadcrumb">AI & WORKFLOWS</span>
+    </div>
+
+    <!-- Article Header -->
+    <header class="article-header">
+      <div class="section-tag-box">
+        <span class="section-num" id="articleMotifBox">■</span>
+        <span class="section-bracket" id="articleCategoryTag">[ AI & WORKFLOWS ]</span>
+      </div>
+
+      <h1 class="hero-name" id="articleTitle" style="font-size: clamp(34px, 5.5vw, 68px); line-height: 1.05; margin-bottom: 24px;">
+        AI Can Make It Faster. Can It Make It Meaningful?
+      </h1>
+
+      <p class="hero-manifesto" id="articleSummary" style="font-size: clamp(18px, 1.8vw, 22px); max-width: 800px; margin-bottom: 0;">
+        A designer’s perspective on using AI as a creative partner without giving up judgment, intention, or the human point of view.
+      </p>
+
+      <div class="art-header-meta">
+        <div class="author-pill">
+          <div class="author-avatar">MKR</div>
+          <div>
+            <div style="font-weight: 800; font-size: 13px;">MADHANKR</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);" id="articleDate">OCT 20, 2026 · 6 MIN READ</div>
+          </div>
+        </div>
+
+        <div class="art-quick-actions">
+          <button class="icon-action-btn" id="shareBtn" onclick="copyArticleShareLink()">
+            <span>🔗</span>
+            <span>Share Link</span>
+          </button>
+          <button class="icon-action-btn" id="bookmarkArticleBtn" onclick="toggleCurrentBookmark()">
+            <span id="bookmarkIcon">☆</span>
+            <span id="bookmarkLabel">Bookmark</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Table of Contents -->
+    <nav class="toc-box" aria-label="Table of contents">
+      <div class="toc-title">
+        <span class="toc-dot"></span>
+        <span>TABLE OF CONTENTS</span>
+      </div>
+      <ul class="toc-list" id="tocList">
+        <li><a href="#section-1"><span class="toc-dot"></span> 01 / The Acceleration Illusion</a></li>
+        <li><a href="#section-2"><span class="toc-dot"></span> 02 / The Real Creative Partnership</a></li>
+        <li><a href="#section-3"><span class="toc-dot"></span> 03 / Three Principles for Intentional AI Work</a></li>
+      </ul>
+    </nav>
+
+    <!-- Article Rich Body -->
+    <article class="article-body" id="articleBody">
+      <h2 id="section-1">The Acceleration Illusion</h2>
+      <p>
+        Over the past two years, creative tooling has compressed the time between idea and artifact from days to seconds. We can synthesize dozens of visual directions in the span of a single coffee break. Yet with each reduction in friction, a quieter question surfaces: <strong>does speed correlate with substance?</strong>
+      </p>
+      <p>
+        In our rush to optimize output velocity, it is easy to mistake quantity for creative breakthrough. An algorithm can produce thousands of variations, but it cannot know <em>why</em> a particular tension in typography creates emotional resonance, nor can it sense the cultural gravity of a deliberate blank space.
+      </p>
+
+      <!-- Geometric Visual Figure -->
+      <div class="art-figure">
+        <div class="fig-geo">
+          <div class="fig-sq"></div>
+          <div class="fig-semi"></div>
+          <div class="fig-circ"></div>
+        </div>
+        <div class="fig-caption">[ FIGURE 01: STRUCTURE (SQUARE) × FLOW (SEMI) × FOCUS (CIRCLE) ]</div>
+      </div>
+
+      <h2 id="section-2">The Real Creative Partnership</h2>
+      <p>
+        When I incorporate AI models into my workflow, I treat them not as autonomous creators, but as high-dimensional brainstorming mirrors. They are extraordinary at uncovering adjacent possibilities, but the designer remains the editorial conscience.
+      </p>
+
+      <blockquote>
+        "AI gives us speed; human perspective gives us direction. Craft is no longer just how you make something, but how deeply you care about what you choose to keep."
+      </blockquote>
+
+      <p>
+        The danger is not that machines will replace human discernment; the danger is that designers might abandon discernment in favor of convenience.
+      </p>
+
+      <h2 id="section-3">Three Principles for Intentional AI Work</h2>
+      <ol>
+        <li><strong>Intention precedes prompting:</strong> Never prompt in a vacuum. Define the problem, audience, and constraint before generating raw samples.</li>
+        <li><strong>Curate with ruthlessness:</strong> Treat the raw generated set as unrefined quarry stone. 90% must be pruned to reveal the 10% that holds genuine spark.</li>
+        <li><strong>Bring it back to the code and canvas:</strong> Real digital design lives in the DOM, in viewport adaptations, in subtle ease curves and tactile state changes.</li>
+      </ol>
+      <p>
+        When we combine mechanical efficiency with human intentionality, we don’t dilute craft—we elevate it.
+      </p>
+    </article>
+
+    <!-- Author Bio Signature -->
+    <div class="author-bio-card">
+      <div class="author-avatar" style="width: 72px; height: 72px; font-size: 20px;">MKR</div>
+      <div>
+        <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 6px;">WRITTEN BY MADHANKR</h3>
+        <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+          Digital designer & creative developer working at the intersection of visual systems, front-end architecture, and emerging AI technologies. Based in India.
+        </p>
+        <div style="display: flex; gap: 16px; font-family: var(--font-mono); font-size: 11px;">
+          <a href="https://www.linkedin.com/in/madhankrajagopal" target="_blank" rel="noopener" style="color: var(--sky-blue); font-weight: 700;">LinkedIn ↗</a>
+          <a href="work.html" style="color: var(--sky-blue); font-weight: 700;">Selected Works ↗</a>
+          <a href="about.html" style="color: var(--sky-blue); font-weight: 700;">Full Profile ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next / Prev Article Navigation -->
+    <div class="next-prev-wrap">
+      <a href="article.html?id=nothing-is-perfect" class="nav-card-item">
+        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.15em;">← PREVIOUS ESSAY</span>
+        <span style="font-weight: 800; font-size: 16px; margin: 8px 0; color: var(--text-main);">Nothing Is Perfect, and Maybe That’s the Point</span>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);">5 min read</span>
+      </a>
+
+      <a href="article.html?id=designers-who-code" class="nav-card-item" style="text-align: right;">
+        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.15em;">NEXT ESSAY →</span>
+        <span style="font-weight: 800; font-size: 16px; margin: 8px 0; color: var(--text-main);">What Happens When Designers Start Coding?</span>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);">7 min read</span>
+      </a>
+    </div>
+  </main>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="f-col-brand">
+      <div class="f-shapes">
+        <span class="f-s sq"></span>
+        <span class="f-s semi"></span>
+        <span class="f-s circ"></span>
+      </div>
+      <span class="f-title">MADHANKR</span>
+      <span class="f-desc">DIGITAL DESIGNER × CREATIVE DEVELOPER</span>
+    </div>
+    <div class="f-col-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">OPEN TO SELECT OPPORTUNITIES</span>
+    </div>
+    <div class="f-col-copy">
+      <span>DESIGN WITH INTENTION</span>
+      <span>BUILT THROUGH CURIOSITY</span>
+    </div>
+  </footer>
+
+  <script src="cms-data.js"></script>
+  <script src="public-layout.js"></script>
+  <script src="article.js"></script>
+</body>
+</html>
