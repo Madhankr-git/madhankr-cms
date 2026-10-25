@@ -60,7 +60,7 @@ export default function HomeBlogList({ initialArticles }: HomeBlogListProps) {
             )}
           </div>
           <div className="b-action">
-            <Link href={`/journal/${article.slug}`} className="b-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <Link href={`/article/${article.slug}`} className="b-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
               <span>READ</span>
               <ArrowUpRight size={13} />
             </Link>

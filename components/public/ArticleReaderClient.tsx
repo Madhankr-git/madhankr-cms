@@ -76,7 +76,7 @@ export default function ArticleReaderClient({ article: initialArticle, htmlConte
         <nav aria-label="Breadcrumb" className="breadcrumb-wrap" style={{ marginBottom: '32px' }}>
           <Link href="/">HOME</Link>
           <span className="breadcrumb-sep">/</span>
-          <Link href="/journal">JOURNAL</Link>
+          <Link href="/articles">ARTICLES</Link>
           <span className="breadcrumb-sep">/</span>
           <span className="breadcrumb-current">{article.category.toUpperCase()}</span>
         </nav>
@@ -164,28 +164,7 @@ export default function ArticleReaderClient({ article: initialArticle, htmlConte
                 )}
               </button>
 
-              <button
-                type="button"
-                className="icon-action-btn"
-                onClick={handleLike}
-                style={{
-                  background: liked ? 'var(--sky-solid)' : 'var(--bg-surface)',
-                  border: '1px solid var(--sky-border)',
-                  color: 'var(--text-main)',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  padding: '8px 14px',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <Heart size={13} style={{ fill: liked ? 'var(--dark-solid)' : 'none' }} />
-                <span>{likeCount}</span>
-              </button>
+              {/* Article like UI temporarily disabled per requirement; underlying data & state preserved */}
             </div>
           </div>
         </header>
@@ -197,7 +176,7 @@ export default function ArticleReaderClient({ article: initialArticle, htmlConte
             style={{
               position: 'relative',
               width: '100%',
-              maxHeight: '460px',
+              aspectRatio: '21 / 9',
               marginBottom: '44px',
               border: '2px solid var(--dark-solid)',
               boxShadow: '8px 8px 0px var(--sky-solid)',
@@ -210,7 +189,8 @@ export default function ArticleReaderClient({ article: initialArticle, htmlConte
               alt={article.title}
               style={{
                 width: '100%',
-                maxHeight: '460px',
+                height: '100%',
+                aspectRatio: '21 / 9',
                 objectFit: 'cover',
                 display: 'block'
               }}
@@ -253,6 +233,50 @@ export default function ArticleReaderClient({ article: initialArticle, htmlConte
           </div>
         )}
 
+        {/* Global Article Styles: Enforce 21:9 Aspect Ratio on All Inside Images */}
+        <style jsx global>{`
+          .article-featured-cover {
+            width: 100%;
+            aspect-ratio: 21 / 9 !important;
+            overflow: hidden;
+          }
+          .article-featured-cover img {
+            width: 100% !important;
+            height: 100% !important;
+            aspect-ratio: 21 / 9 !important;
+            object-fit: cover !important;
+          }
+          .article-body img {
+            display: block;
+            width: 100% !important;
+            aspect-ratio: 21 / 9 !important;
+            object-fit: cover !important;
+            margin: 36px 0;
+            border-radius: 6px;
+            border: 1.5px solid var(--sky-border, #cbd5e1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          }
+          .article-body figure {
+            width: 100%;
+            margin: 36px 0;
+          }
+          .article-body figure img {
+            width: 100% !important;
+            aspect-ratio: 21 / 9 !important;
+            object-fit: cover !important;
+            display: block;
+            margin: 0;
+          }
+          .article-body figcaption {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--grey-text, #64748b);
+            text-align: center;
+            margin-top: 10px;
+            letter-spacing: 0.05em;
+          }
+        `}</style>
+
         {/* Article Body */}
         <div
           className="article-body"
@@ -281,10 +305,10 @@ export default function ArticleReaderClient({ article: initialArticle, htmlConte
         )}
 
         {/* Post Bottom Navigation */}
-        <div style={{ marginTop: '54px', paddingTop: '32px', borderTop: '1.5px solid var(--sky-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Link href="/journal" className="ghost-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ marginTop: '54px', paddingTop: '32px', borderTop: '1.5px solid var(--sky-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <Link href="/articles" className="ghost-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             <ArrowLeft size={13} />
-            <span>Back to Journal</span>
+            <span>Back to Articles</span>
           </Link>
           <Link href="/contact" className="cta-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             <span>Send a Note / Response</span>

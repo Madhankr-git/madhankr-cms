@@ -2,14 +2,11 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { getAllProjects } from '@/lib/db/projects';
 import WorkFilterGrid from '@/components/public/WorkFilterGrid';
+import { buildPageMetadata } from '@/lib/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'Selected Works & Case Studies — MadhanKR',
-  description: 'In-depth case studies in digital product design, EdTech platforms, and interactive web experiences by MadhanKR.',
-  alternates: {
-    canonical: '/work'
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPageMetadata('work');
+}
 
 export const revalidate = 3600;
 
@@ -17,7 +14,7 @@ export default async function WorkPage() {
   const projects = await getAllProjects();
 
   return (
-    <div style={{ padding: '40px var(--pad-x) 100px' }}>
+    <div className="standard-page-container" style={{ padding: '40px var(--pad-x) 100px' }}>
       <div className="section-header" style={{ marginBottom: '24px' }}>
         <div className="section-tag-box">
           <span className="section-num">01</span>

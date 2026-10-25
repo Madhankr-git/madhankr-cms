@@ -250,7 +250,7 @@ export default function ContentManagerPage() {
                           {art.title}
                         </div>
                         <div style={{ fontSize: '11px', color: '#64748b', fontFamily: 'var(--font-mono)' }}>
-                          /journal/{art.slug} · <span style={{ color: '#2563eb', fontWeight: 600 }}>{art.category}</span>
+                          /article/{art.slug} · <span style={{ color: '#2563eb', fontWeight: 600 }}>{art.category}</span>
                           {art.tags && art.tags.length > 0 && (
                             <span style={{ color: '#94a3b8', marginLeft: '6px' }}>
                               · {art.tags.slice(0, 3).map((t) => `#${t}`).join(' ')}
@@ -316,7 +316,7 @@ export default function ContentManagerPage() {
                         <span>Edit</span>
                       </Link>
                       <Link
-                        href={`/journal/${art.slug}`}
+                        href={`/article/${art.slug}`}
                         target="_blank"
                         style={{
                           padding: '6px 10px',

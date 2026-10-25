@@ -1,21 +1,20 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import GalleryClient from '@/components/public/GalleryClient';
+import { buildPageMetadata } from '@/lib/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'Visual Experiments & Creative Lab — MadhanKR',
-  description: 'Explorations in solid geometry, generative AI imagery, motion concepts, and UI prototypes by MadhanKR.',
-  alternates: {
-    canonical: '/gallery'
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPageMetadata('gallery');
+}
+
+export const revalidate = 3600;
 
 export default function GalleryPage() {
   return (
-    <div style={{ padding: '40px var(--pad-x) 120px' }}>
+    <div className="standard-page-container" style={{ padding: '40px var(--pad-x) 120px' }}>
       <div className="section-header" style={{ marginBottom: '24px' }}>
         <div className="section-tag-box">
-          <span className="section-num">04</span>
+          <span className="section-num">01</span>
           <span className="section-bracket">[ LAB ]</span>
         </div>
         <h1 className="section-title">CREATIVE LAB &amp; EXPERIMENTS</h1>

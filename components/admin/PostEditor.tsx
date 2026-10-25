@@ -9,6 +9,13 @@ import { logActivity } from '@/lib/db/settings';
 import { slugify } from '@/lib/utils/slugify';
 import { calculateReadTime } from '@/lib/utils/markdown';
 import {
+  getArticlePublicUrl,
+  resolveArticleCanonicalUrl,
+  isValidAbsoluteUrl,
+  getSiteBaseUrl,
+  toAbsoluteImageUrl
+} from '@/lib/utils/seo';
+import {
   CheckCircle2,
   Save,
   Send,
@@ -21,7 +28,13 @@ import {
   Folder,
   Trash2,
   Tag,
-  FolderPlus
+  FolderPlus,
+  Globe,
+  Link2,
+  ExternalLink,
+  HelpCircle,
+  AlertCircle,
+  Share2
 } from 'lucide-react';
 
 interface PostEditorProps {
@@ -37,8 +50,14 @@ export default function PostEditor({ initialId }: PostEditorProps) {
 
   // Media library picker modal state
   const [mediaModalOpen, setMediaModalOpen] = useState(false);
+  const [selectingMediaTarget, setSelectingMediaTarget] = useState<'cover' | 'content'>('cover');
   const [mediaAssets, setMediaAssets] = useState<MediaAsset[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  // In-article image URL insertion state
+  const [showImageInserter, setShowImageInserter] = useState(false);
+  const [imageUrlToInsert, setImageUrlToInsert] = useState('');
+  const [imageAltToInsert, setImageAltToInsert] = useState('');
 
   // Category management state
   const [availableCategories, setAvailableCategories] = useState<string[]>([
@@ -52,6 +71,11 @@ export default function PostEditor({ initialId }: PostEditorProps) {
 
   // Keyword / Topic Taxonomy state
   const [tagInput, setTagInput] = useState('');
+
+  // Explicit slug editing state
+  const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const [customSlugInput, setCustomSlugInput] = useState('');
+  const [slugManuallySet, setSlugManuallySet] = useState(Boolean(initialId));
 
   const [article, setArticle] = useState<Partial<Article>>({
     id: '',
@@ -68,7 +92,10 @@ export default function PostEditor({ initialId }: PostEditorProps) {
     readTime: '4 min read',
     featured: false,
     views: 0,
-    likes: 0
+    likes: 0,
+    seo_title: '',
+    meta_description: '',
+    canonical_url: '',
   });
 
   // Load article if editing, plus load categories and media library assets
@@ -96,6 +123,8 @@ export default function PostEditor({ initialId }: PostEditorProps) {
       getArticleById(initialId).then((found) => {
         if (found) {
           setArticle(found);
+          setCustomSlugInput(found.slug);
+          setSlugManuallySet(true);
         }
         setLoading(false);
       });
@@ -104,11 +133,33 @@ export default function PostEditor({ initialId }: PostEditorProps) {
 
   const handleTitleChange = (val: string) => {
     const updated = { ...article, title: val };
-    if (!initialId || !article.slug) {
-      updated.slug = slugify(val);
-      updated.id = slugify(val);
+    // As long as the slug has not been explicitly locked / customized via "Edit Slug",
+    // dynamically derive and sync the slug in real time from the title.
+    if (!slugManuallySet) {
+      const generated = slugify(val);
+      updated.slug = generated;
+      updated.id = generated;
+      setCustomSlugInput(generated);
     }
     setArticle(updated);
+  };
+
+  const handleApplySlug = () => {
+    const cleaned = slugify(customSlugInput || article.slug || '');
+    if (cleaned) {
+      setArticle({ ...article, slug: cleaned, id: article.id || cleaned });
+      setCustomSlugInput(cleaned);
+      setSlugManuallySet(true);
+    }
+    setIsEditingSlug(false);
+  };
+
+  const handleResetSlugToTitle = () => {
+    const generated = slugify(article.title || '');
+    setArticle({ ...article, slug: generated, id: article.id || generated });
+    setCustomSlugInput(generated);
+    setSlugManuallySet(false);
+    setIsEditingSlug(false);
   };
 
   const handleContentChange = (val: string) => {
@@ -126,6 +177,33 @@ export default function PostEditor({ initialId }: PostEditorProps) {
     const replacement = prefix + selected + suffix;
     const updated = current.substring(0, start) + replacement + current.substring(end);
     handleContentChange(updated);
+  };
+
+  // Insert image markdown snippet into article content at cursor position
+  const handleInsertImageToContent = (overrideUrl?: string, overrideAlt?: string) => {
+    const url = (overrideUrl || imageUrlToInsert).trim();
+    if (!url) return;
+    const alt = (overrideAlt !== undefined ? overrideAlt : imageAltToInsert).trim() || 'Article visual';
+    const markdownSnippet = `\n\n![${alt}](${url})\n\n`;
+
+    const textarea = document.getElementById('editorTextarea') as HTMLTextAreaElement | null;
+    if (textarea) {
+      const start = textarea.selectionStart ?? (article.content || '').length;
+      const end = textarea.selectionEnd ?? start;
+      const current = article.content || '';
+      const updated = current.substring(0, start) + markdownSnippet + current.substring(end);
+      handleContentChange(updated);
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + markdownSnippet.length, start + markdownSnippet.length);
+      }, 50);
+    } else {
+      handleContentChange((article.content || '') + markdownSnippet);
+    }
+
+    setImageUrlToInsert('');
+    setImageAltToInsert('');
+    setShowImageInserter(false);
   };
 
   // Add tag(s) from tagInput
@@ -177,7 +255,11 @@ export default function PostEditor({ initialId }: PostEditorProps) {
     const res = await uploadMedia(files[0], 'Blog Covers');
     setUploadingImage(false);
     if (res.success && res.asset) {
-      setArticle({ ...article, cover_image: res.asset.public_url });
+      if (selectingMediaTarget === 'content') {
+        handleInsertImageToContent(res.asset.public_url, res.asset.name);
+      } else {
+        setArticle({ ...article, cover_image: res.asset.public_url });
+      }
       // Refresh media library
       const updatedList = await getMediaAssets();
       setMediaAssets(updatedList);
@@ -187,7 +269,11 @@ export default function PostEditor({ initialId }: PostEditorProps) {
   };
 
   const handleSelectMedia = (asset: MediaAsset) => {
-    setArticle({ ...article, cover_image: asset.public_url });
+    if (selectingMediaTarget === 'content') {
+      handleInsertImageToContent(asset.public_url, asset.name);
+    } else {
+      setArticle({ ...article, cover_image: asset.public_url });
+    }
     setMediaModalOpen(false);
   };
 
@@ -197,12 +283,21 @@ export default function PostEditor({ initialId }: PostEditorProps) {
       return;
     }
 
+    // Validate canonical override format if provided
+    if (article.canonical_url && article.canonical_url.trim()) {
+      if (!isValidAbsoluteUrl(article.canonical_url.trim())) {
+        alert('Invalid Canonical URL. Please provide a full absolute URL starting with http:// or https:// (or leave the field empty for automatic self-canonical).');
+        return;
+      }
+    }
+
     setIsSaving(true);
+    const resolvedSlug = (article.slug && slugify(article.slug)) || slugify(article.title);
     const finalArticle: Article = {
-      id: article.id || slugify(article.title),
-      slug: article.slug || slugify(article.title),
+      id: article.id || resolvedSlug,
+      slug: resolvedSlug,
       title: article.title,
-      summary: article.summary || 'Personal journal reflection by MadhanKR.',
+      summary: article.summary || 'Article reflection by MadhanKR.',
       content: article.content || 'Draft content in progress...',
       category: article.category || 'Design',
       categorySlug: slugify(article.category || 'design'),
@@ -214,7 +309,10 @@ export default function PostEditor({ initialId }: PostEditorProps) {
       featured: article.featured || false,
       views: article.views || 0,
       likes: article.likes || 0,
-      published_at: publishNow ? new Date().toISOString() : article.published_at,
+      seo_title: article.seo_title?.trim() || undefined,
+      meta_description: article.meta_description?.trim() || undefined,
+      canonical_url: article.canonical_url?.trim() || undefined,
+      published_at: publishNow ? (article.published_at || new Date().toISOString()) : article.published_at,
     };
 
     const res = await saveArticle(finalArticle);
@@ -339,7 +437,7 @@ export default function PostEditor({ initialId }: PostEditorProps) {
             }}
           >
             <Send size={14} />
-            <span>{isSaving ? 'Publishing...' : 'Publish & Revalidate'}</span>
+            <span>{isSaving ? 'Publishing...' : 'Publish Article'}</span>
           </button>
         </div>
       </div>
@@ -370,9 +468,111 @@ export default function PostEditor({ initialId }: PostEditorProps) {
               }}
             />
 
-            <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#64748b' }}>
-              <span style={{ fontFamily: 'var(--cms-font-mono)' }}>Slug:</span>
-              <span style={{ fontFamily: 'var(--cms-font-mono)', color: '#2563eb' }}>/journal/{article.slug || 'untitled'}</span>
+            <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px', fontSize: '12px' }}>
+              <span style={{ fontFamily: 'var(--cms-font-mono)', color: '#64748b' }}>Route:</span>
+              {!isEditingSlug ? (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <span style={{ fontFamily: 'var(--cms-font-mono)', color: '#2563eb', fontWeight: 700 }}>
+                    /article/{article.slug || 'untitled'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCustomSlugInput(article.slug || '');
+                      setIsEditingSlug(true);
+                    }}
+                    style={{
+                      background: '#f1f5f9',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '4px',
+                      padding: '3px 10px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      color: '#475569',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <Edit3 size={11} />
+                    <span>Edit Slug</span>
+                  </button>
+                  {slugManuallySet && (
+                    <button
+                      type="button"
+                      onClick={handleResetSlugToTitle}
+                      style={{
+                        background: '#eff6ff',
+                        border: '1px solid #bfdbfe',
+                        borderRadius: '4px',
+                        padding: '3px 8px',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: '#2563eb',
+                        cursor: 'pointer'
+                      }}
+                      title="Re-sync slug dynamically with article title"
+                    >
+                      ↺ Sync with Title
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontFamily: 'var(--cms-font-mono)', color: '#64748b' }}>/article/</span>
+                  <input
+                    type="text"
+                    value={customSlugInput}
+                    onChange={(e) => setCustomSlugInput(e.target.value)}
+                    placeholder="custom-article-slug"
+                    style={{
+                      padding: '4px 8px',
+                      fontSize: '12px',
+                      fontFamily: 'var(--cms-font-mono)',
+                      borderRadius: '4px',
+                      border: '1.5px solid #2563eb',
+                      outline: 'none',
+                      color: '#0f172a'
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleApplySlug();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplySlug}
+                    style={{
+                      background: '#2563eb',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '4px',
+                      padding: '4px 10px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Save Slug
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingSlug(false)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontSize: '11px',
+                      color: '#64748b',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -409,7 +609,7 @@ export default function PostEditor({ initialId }: PostEditorProps) {
               justifyContent: 'space-between',
               alignItems: 'center'
             }}>
-              <div style={{ display: 'flex', gap: '6px' }}>
+              <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button type="button" onClick={() => insertMarkdown('**', '**')} style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>B</button>
                 <button type="button" onClick={() => insertMarkdown('*', '*')} style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '12px', fontStyle: 'italic', cursor: 'pointer' }}>I</button>
                 <button type="button" onClick={() => insertMarkdown('## ')} style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>H2</button>
@@ -417,6 +617,28 @@ export default function PostEditor({ initialId }: PostEditorProps) {
                 <button type="button" onClick={() => insertMarkdown('> ')} style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '12px', cursor: 'pointer' }}>Quote</button>
                 <button type="button" onClick={() => insertMarkdown('```\n', '\n```')} style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '12px', fontFamily: 'var(--cms-font-mono)', cursor: 'pointer' }}>Code</button>
                 <button type="button" onClick={() => insertMarkdown('- ')} style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '12px', cursor: 'pointer' }}>List</button>
+                <span style={{ width: '1px', height: '18px', background: '#e2e8f0', margin: '0 4px' }} />
+                <button
+                  type="button"
+                  onClick={() => setShowImageInserter(!showImageInserter)}
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: '4px',
+                    border: showImageInserter ? '1.5px solid #2563eb' : '1px solid #cbd5e1',
+                    background: showImageInserter ? '#eff6ff' : '#ffffff',
+                    color: showImageInserter ? '#2563eb' : '#0f172a',
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px'
+                  }}
+                  title="Insert an image URL anywhere in the article (21:9 ratio)"
+                >
+                  <ImageIcon size={13} style={{ color: '#2563eb' }} />
+                  <span>+ Image URL</span>
+                </button>
               </div>
 
               <div style={{ display: 'flex', gap: '6px' }}>
@@ -463,6 +685,119 @@ export default function PostEditor({ initialId }: PostEditorProps) {
               </div>
             </div>
 
+            {/* In-Article Image URL Inserter Bar */}
+            {showImageInserter && activeTab === 'write' && (
+              <div style={{
+                background: '#f8fafc',
+                borderBottom: '1.5px solid #e2e8f0',
+                padding: '12px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', fontWeight: 800, color: '#2563eb', letterSpacing: '0.05em' }}>
+                    INSERT IN-ARTICLE IMAGE (CINEMATIC 21:9 RATIO)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowImageInserter(false)}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Paste Image URL (e.g. https://... or /assets/...)"
+                    value={imageUrlToInsert}
+                    onChange={(e) => setImageUrlToInsert(e.target.value)}
+                    style={{
+                      flex: '2',
+                      minWidth: '220px',
+                      padding: '7px 10px',
+                      borderRadius: '5px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '12px',
+                      outline: 'none'
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleInsertImageToContent();
+                      }
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Caption / Alt text (optional)"
+                    value={imageAltToInsert}
+                    onChange={(e) => setImageAltToInsert(e.target.value)}
+                    style={{
+                      flex: '1',
+                      minWidth: '150px',
+                      padding: '7px 10px',
+                      borderRadius: '5px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '12px',
+                      outline: 'none'
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleInsertImageToContent();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleInsertImageToContent()}
+                    disabled={!imageUrlToInsert.trim()}
+                    style={{
+                      background: imageUrlToInsert.trim() ? '#2563eb' : '#94a3b8',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '5px',
+                      padding: '7px 14px',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      cursor: imageUrlToInsert.trim() ? 'pointer' : 'not-allowed',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px'
+                    }}
+                  >
+                    <Plus size={13} />
+                    <span>Insert into Article</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectingMediaTarget('content');
+                      setMediaModalOpen(true);
+                    }}
+                    style={{
+                      background: '#ffffff',
+                      color: '#475569',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '5px',
+                      padding: '7px 12px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px'
+                    }}
+                  >
+                    <Folder size={13} style={{ color: '#2563eb' }} />
+                    <span>Pick from Media</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {activeTab === 'write' ? (
               <textarea
                 id="editorTextarea"
@@ -484,11 +819,74 @@ export default function PostEditor({ initialId }: PostEditorProps) {
               />
             ) : (
               <div style={{ padding: '24px', background: '#ffffff', minHeight: '360px', lineHeight: 1.8 }}>
-                <div style={{ fontSize: '12px', fontFamily: 'var(--cms-font-mono)', color: '#2563eb', marginBottom: '16px' }}>
-                  [ LIVE TYPOGRAPHY PREVIEW ]
+                <div style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', color: '#2563eb', fontWeight: 800, marginBottom: '16px', letterSpacing: '0.08em' }}>
+                  [ LIVE TYPOGRAPHY &amp; 21:9 MEDIA PREVIEW ]
                 </div>
-                <div style={{ whiteSpace: 'pre-wrap', color: '#0f172a' }}>
-                  {article.content || 'Nothing to preview yet.'}
+                {article.cover_image && (
+                  <div style={{
+                    width: '100%',
+                    aspectRatio: '21 / 9',
+                    overflow: 'hidden',
+                    borderRadius: '8px',
+                    border: '1.5px solid #0f172a',
+                    marginBottom: '24px',
+                    background: '#f8fafc'
+                  }}>
+                    <img
+                      src={article.cover_image}
+                      alt={article.title || 'Cover'}
+                      style={{ width: '100%', height: '100%', aspectRatio: '21 / 9', objectFit: 'cover', display: 'block' }}
+                    />
+                  </div>
+                )}
+                <h1 style={{ fontSize: '28px', fontWeight: 900, marginBottom: '12px', color: '#0f172a' }}>
+                  {article.title || 'Untitled Article'}
+                </h1>
+                {article.summary && (
+                  <p style={{ fontSize: '16px', color: '#64748b', fontStyle: 'italic', marginBottom: '24px' }}>
+                    {article.summary}
+                  </p>
+                )}
+                <div style={{ color: '#0f172a', fontSize: '15px' }}>
+                  {(article.content || '').split('\n\n').map((block, bIdx) => {
+                    const trimmed = block.trim();
+                    const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+                    if (imgMatch) {
+                      return (
+                        <div key={bIdx} style={{ margin: '24px 0', width: '100%' }}>
+                          <div style={{
+                            width: '100%',
+                            aspectRatio: '21 / 9',
+                            overflow: 'hidden',
+                            borderRadius: '6px',
+                            border: '1.5px solid #cbd5e1',
+                            background: '#f8fafc'
+                          }}>
+                            <img
+                              src={imgMatch[2]}
+                              alt={imgMatch[1]}
+                              style={{ width: '100%', height: '100%', aspectRatio: '21 / 9', objectFit: 'cover', display: 'block' }}
+                            />
+                          </div>
+                          {imgMatch[1] && (
+                            <div style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', color: '#64748b', textAlign: 'center', marginTop: '6px' }}>
+                              {imgMatch[1]} (21:9 ratio)
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+                    if (trimmed.startsWith('## ')) {
+                      return <h2 key={bIdx} style={{ fontSize: '20px', fontWeight: 800, margin: '24px 0 8px' }}>{trimmed.replace(/^## /, '')}</h2>;
+                    }
+                    if (trimmed.startsWith('### ')) {
+                      return <h3 key={bIdx} style={{ fontSize: '17px', fontWeight: 700, margin: '18px 0 6px' }}>{trimmed.replace(/^### /, '')}</h3>;
+                    }
+                    if (trimmed.startsWith('> ')) {
+                      return <blockquote key={bIdx} style={{ borderLeft: '3px solid #2563eb', paddingLeft: '14px', margin: '16px 0', fontStyle: 'italic', color: '#475569' }}>{trimmed.replace(/^> /, '')}</blockquote>;
+                    }
+                    return <p key={bIdx} style={{ marginBottom: '14px', lineHeight: 1.7 }}>{block}</p>;
+                  })}
                 </div>
               </div>
             )}
@@ -496,6 +894,187 @@ export default function PostEditor({ initialId }: PostEditorProps) {
             <div style={{ padding: '8px 16px', background: '#f8fafc', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', fontFamily: 'var(--cms-font-mono)' }}>
               <span>Reading time: {article.readTime}</span>
               <span>{(article.content || '').split(/\s+/).filter(Boolean).length} words</span>
+            </div>
+          </div>
+
+          {/* ─── SEO & SOCIAL METADATA SECTION ─────────────────── */}
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Globe size={18} style={{ color: '#2563eb' }} />
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                  Search Engine Optimization (SEO) &amp; Social Sharing
+                </h3>
+              </div>
+              <span style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', color: '#2563eb', background: '#eff6ff', padding: '3px 8px', borderRadius: '4px', fontWeight: 700 }}>
+                AUTOMATIC SCHEMA &amp; OPEN GRAPH
+              </span>
+            </div>
+            <p style={{ fontSize: '12.5px', color: '#64748b', marginBottom: '20px', lineHeight: 1.5 }}>
+              Fine-tune search engine indexability and social sharing cards. All fields are optional and default intelligently to your article content and thumbnail.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {/* Field A: SEO Title */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', fontWeight: 800, color: '#475569' }}>
+                    SEO TITLE TAG (OPTIONAL)
+                  </label>
+                  <span style={{ fontSize: '11px', color: (article.seo_title || '').length > 60 ? '#f59e0b' : '#94a3b8' }}>
+                    {(article.seo_title || '').length} / 60 chars (Recommended: 50–60)
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  placeholder={`Leave blank to use article title: "${article.title || 'Untitled Article'}"`}
+                  value={article.seo_title || ''}
+                  onChange={(e) => setArticle({ ...article, seo_title: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '13.5px',
+                    fontFamily: 'var(--cms-font)',
+                    outline: 'none',
+                    color: '#0f172a'
+                  }}
+                />
+                <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                  {article.seo_title?.trim() ? (
+                    <span style={{ color: '#16a34a', fontWeight: 600 }}>✓ Custom SEO title active.</span>
+                  ) : (
+                    <span>Defaulting to article title: &quot;{article.title || 'Untitled Article'}&quot;</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Field B: Meta Description */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', fontWeight: 800, color: '#475569' }}>
+                    META DESCRIPTION (OPTIONAL)
+                  </label>
+                  <span style={{ fontSize: '11px', color: (article.meta_description || '').length > 160 ? '#f59e0b' : '#94a3b8' }}>
+                    {(article.meta_description || '').length} / 160 chars (Recommended: 120–160)
+                  </span>
+                </div>
+                <textarea
+                  rows={3}
+                  placeholder={`Leave blank to use executive summary: "${(article.summary || 'Short summary of article...').substring(0, 80)}..."`}
+                  value={article.meta_description || ''}
+                  onChange={(e) => setArticle({ ...article, meta_description: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '13px',
+                    fontFamily: 'var(--cms-font)',
+                    lineHeight: 1.5,
+                    outline: 'none',
+                    color: '#0f172a'
+                  }}
+                />
+                <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                  {article.meta_description?.trim() ? (
+                    <span style={{ color: '#16a34a', fontWeight: 600 }}>✓ Custom meta description active.</span>
+                  ) : (
+                    <span>Defaulting to executive summary fallback.</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Field C: Canonical URL Override */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', fontWeight: 800, color: '#475569' }}>
+                    CANONICAL URL (OPTIONAL OVERRIDE)
+                  </label>
+                  {article.canonical_url && (
+                    <button
+                      type="button"
+                      onClick={() => setArticle({ ...article, canonical_url: '' })}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#ef4444',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Clear Override
+                    </button>
+                  )}
+                </div>
+                <input
+                  type="text"
+                  placeholder="e.g. https://medium.com/@madhankr/how-to-become-designer"
+                  value={article.canonical_url || ''}
+                  onChange={(e) => setArticle({ ...article, canonical_url: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '6px',
+                    border: article.canonical_url?.trim() && !isValidAbsoluteUrl(article.canonical_url.trim())
+                      ? '1.5px solid #ef4444'
+                      : '1px solid #cbd5e1',
+                    fontSize: '13px',
+                    fontFamily: 'var(--cms-font-mono)',
+                    outline: 'none',
+                    color: '#0f172a'
+                  }}
+                />
+
+                {/* Validation and Helper Messages */}
+                {article.canonical_url?.trim() && !isValidAbsoluteUrl(article.canonical_url.trim()) ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#ef4444', marginTop: '6px' }}>
+                    <AlertCircle size={13} />
+                    <span>Please enter a valid absolute URL starting with http:// or https://</span>
+                  </div>
+                ) : article.canonical_url?.trim() ? (
+                  <div style={{ background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '6px', padding: '8px 12px', marginTop: '8px', fontSize: '12px', color: '#92400e' }}>
+                    <strong>★ Custom Canonical Override Active:</strong> Search engines will treat <code>{article.canonical_url.trim()}</code> as the preferred canonical version instead of this website&apos;s URL.
+                  </div>
+                ) : (
+                  <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '8px 12px', marginTop: '8px', fontSize: '12px', color: '#475569' }}>
+                    <strong>✓ Self-Canonical Active (Recommended):</strong> Field is empty, so search engines automatically use this article&apos;s own public URL:
+                    <div style={{ marginTop: '3px', fontFamily: 'var(--cms-font-mono)', color: '#2563eb', fontSize: '11.5px' }}>
+                      {getArticlePublicUrl(article.slug || 'untitled')}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* SERP & Social Sharing Card Preview */}
+              <div style={{ marginTop: '10px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '11px', fontFamily: 'var(--cms-font-mono)', fontWeight: 800, color: '#64748b', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                  GOOGLE SEARCH SNIPPET PREVIEW
+                </div>
+
+                <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                  <div style={{ fontSize: '12px', color: '#202124', marginBottom: '2px', fontFamily: 'Arial, sans-serif' }}>
+                    <span style={{ color: '#4d5156', fontSize: '11px' }}>
+                      {getSiteBaseUrl()} › article › {article.slug || 'untitled'}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '18px', color: '#1a0dab', fontWeight: 500, lineHeight: 1.3, marginBottom: '4px', fontFamily: 'Arial, sans-serif' }}>
+                    {article.seo_title?.trim() || article.title || 'Untitled Article'}
+                  </div>
+                  <div style={{ fontSize: '13px', color: '#4d5156', lineHeight: 1.5, fontFamily: 'Arial, sans-serif' }}>
+                    {article.meta_description?.trim() || article.summary || 'Observations and reflections on design craft, front-end architecture, and creative workflows.'}
+                  </div>
+                </div>
+
+                <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11.5px', color: '#64748b' }}>
+                  <Share2 size={13} style={{ color: '#2563eb', flexShrink: 0 }} />
+                  <span>
+                    Social cards (OpenGraph &amp; Twitter) will automatically use your article cover thumbnail (<strong>{article.cover_image ? 'Cover image attached' : 'Default visual brand asset'}</strong>) as <code>og:image</code> and <code>twitter:image</code>.
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -541,16 +1120,34 @@ export default function PostEditor({ initialId }: PostEditorProps) {
                 position: 'relative',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                border: '1px solid #cbd5e1',
+                border: '1.5px solid #cbd5e1',
                 marginBottom: '14px',
-                height: '160px',
+                width: '100%',
+                aspectRatio: '21 / 9',
                 background: '#f8fafc'
               }}>
                 <img
                   src={article.cover_image}
                   alt="Article Preview"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  style={{ width: '100%', height: '100%', aspectRatio: '21 / 9', objectFit: 'cover', display: 'block' }}
                 />
+                <div style={{
+                  position: 'absolute',
+                  top: '8px',
+                  left: '8px',
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  backdropFilter: 'blur(4px)',
+                  border: '1px solid #38bdf8',
+                  borderRadius: '3px',
+                  padding: '2px 6px',
+                  fontFamily: 'var(--cms-font-mono)',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  color: '#38bdf8',
+                  letterSpacing: '0.08em'
+                }}>
+                  21:9 RATIO
+                </div>
                 {/* Geometric motif reference badge overlay */}
                 <div style={{
                   position: 'absolute',
@@ -593,7 +1190,7 @@ export default function PostEditor({ initialId }: PostEditorProps) {
                   No Cover Image Selected
                 </div>
                 <div style={{ fontSize: '11px', color: '#64748b' }}>
-                  Select from media library, upload, or paste an image URL.
+                  Select from media library, upload, or paste an image URL (21:9 ratio).
                 </div>
               </div>
             )}
@@ -602,7 +1199,10 @@ export default function PostEditor({ initialId }: PostEditorProps) {
             <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
               <button
                 type="button"
-                onClick={() => setMediaModalOpen(true)}
+                onClick={() => {
+                  setSelectingMediaTarget('cover');
+                  setMediaModalOpen(true);
+                }}
                 style={{
                   flex: 1,
                   padding: '8px 12px',

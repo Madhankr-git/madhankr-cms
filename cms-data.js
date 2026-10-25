@@ -6,6 +6,8 @@
 
 const CMS_STORAGE_KEY = 'madhankr_cms_data_v1';
 
+const _cmsOrigin = (typeof window !== 'undefined' && window.location ? window.location.origin : '');
+
 // Default initial dataset
 const INITIAL_CMS_DATA = {
   stats: {
@@ -29,14 +31,14 @@ const INITIAL_CMS_DATA = {
     allowComments: true,
     socialLinks: {
       linkedin: 'https://www.linkedin.com/in/madhankrajagopal',
-      portfolio: 'https://madhankumarrajagopal.netlify.app/',
+      portfolio: `${_cmsOrigin}/`,
       github: 'https://github.com/madhankr',
       twitter: 'https://twitter.com/madhankr'
     },
     navItems: [
       { id: 'nav-1', label: 'Home', url: 'index.html', visible: true },
       { id: 'nav-2', label: 'Work', url: 'work.html', visible: true },
-      { id: 'nav-3', label: 'Journal', url: 'journal.html', visible: true },
+      { id: 'nav-3', label: 'Articles', url: 'journal.html', visible: true },
       { id: 'nav-4', label: 'Gallery', url: 'gallery.html', visible: true },
       { id: 'nav-5', label: 'About', url: 'about.html', visible: true },
       { id: 'nav-6', label: 'Contact', url: 'contact.html', visible: true }
@@ -46,8 +48,8 @@ const INITIAL_CMS_DATA = {
   seoSettings: {
     homepage: {
       title: 'MadhanKR — Digital Designer & Creative Developer',
-      description: 'Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.',
-      canonical: 'https://madhankumarrajagopal.netlify.app/',
+      description: 'Portfolio & articles of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.',
+      canonical: `${_cmsOrigin}/`,
       keywords: 'UI/UX Design, Creative Developer, EdTech, AI Workflows, Portfolio, MadhanKR',
       ogType: 'website',
       ogImage: 'assets/og-home.svg',
@@ -56,9 +58,9 @@ const INITIAL_CMS_DATA = {
       follow: true
     },
     journal: {
-      title: 'Journal & Notes — MadhanKR',
-      description: 'Reflections on design, front-end architecture, AI-assisted creative workflows, and digital craft by MadhanKR.',
-      canonical: 'https://madhankumarrajagopal.netlify.app/journal.html',
+      title: 'Articles & Notes — MadhanKR',
+      description: 'Reflections and articles on design, front-end architecture, AI-assisted creative workflows, and digital craft by MadhanKR.',
+      canonical: `${_cmsOrigin}/articles.html`,
       keywords: 'Design Blog, AI Creative Tools, UI Engineering, Design Philosophy',
       ogType: 'blog',
       ogImage: 'assets/og-journal.svg',
@@ -69,7 +71,7 @@ const INITIAL_CMS_DATA = {
     work: {
       title: 'Selected Works & Case Studies — MadhanKR',
       description: 'In-depth case studies in digital product design, EdTech platforms, and interactive web experiences.',
-      canonical: 'https://madhankumarrajagopal.netlify.app/work.html',
+      canonical: `${_cmsOrigin}/work.html`,
       keywords: 'Product Design Case Studies, EdTech UI, Web Design Portfolio',
       ogType: 'website',
       ogImage: 'assets/og-work.svg',
@@ -80,7 +82,7 @@ const INITIAL_CMS_DATA = {
     gallery: {
       title: 'Visual Experiments & Creative Lab — MadhanKR',
       description: 'Explorations in solid geometry, generative AI imagery, motion concepts, and UI prototypes.',
-      canonical: 'https://madhankumarrajagopal.netlify.app/gallery.html',
+      canonical: `${_cmsOrigin}/gallery.html`,
       keywords: 'Visual Design Experiments, Generative AI, Geometric Art',
       ogType: 'website',
       ogImage: 'assets/og-gallery.svg',
@@ -91,7 +93,7 @@ const INITIAL_CMS_DATA = {
     about: {
       title: 'About MadhanKR — Background, Philosophy & Skills',
       description: 'Learn about MadhanKR’s 3+ years in visual design, front-end engineering, and AI-driven creative methodologies.',
-      canonical: 'https://madhankumarrajagopal.netlify.app/about.html',
+      canonical: `${_cmsOrigin}/about.html`,
       keywords: 'MadhanKR Biography, Designer Skills, Resume, Creative Tech',
       ogType: 'profile',
       ogImage: 'assets/og-about.svg',

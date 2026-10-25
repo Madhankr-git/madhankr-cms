@@ -23,6 +23,10 @@ export interface Article {
   published_at?: string;
   created_at?: string;
   updated_at?: string;
+  seo_title?: string;
+  meta_description?: string;
+  canonical_url?: string;
+  og_image?: string;
 }
 
 export interface MetricItem {
@@ -74,6 +78,7 @@ export interface PageSeoConfig {
   keywords: string;
   ogType: string;
   ogImage: string;
+  featuredImage?: string;
   twitterCard: string;
   index: boolean;
   follow: boolean;
@@ -111,6 +116,7 @@ export interface SiteSettings {
   primaryAccent: string;
   maintenanceMode: boolean;
   allowComments: boolean;
+  faviconUrl?: string;
   socialLinks: SocialLinks;
   navItems: NavItem[];
 }

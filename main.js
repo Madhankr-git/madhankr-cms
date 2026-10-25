@@ -484,6 +484,17 @@ function initBurgerNav() {
 
   overlay.addEventListener('click', closeDrawer);
 
+  const navCloseBtn = document.getElementById('navCloseBtn');
+  if (navCloseBtn) {
+    navCloseBtn.addEventListener('click', closeDrawer);
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      closeDrawer();
+    }
+  });
+
   // Nav link clicks with GSAP ScrollTo
   navLinks.forEach((link) => {
     link.addEventListener('click', (e) => {

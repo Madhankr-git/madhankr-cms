@@ -1,12 +1,18 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getPublishedArticles } from '@/lib/db/articles';
 import { getAllProjects } from '@/lib/db/projects';
 import PublicContactForm from '@/components/public/PublicContactForm';
 import HomeBlogList from '@/components/public/HomeBlogList';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/utils/seo';
 
 export const revalidate = 3600; // Background fallback revalidation
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPageMetadata('homepage');
+}
 
 export default async function HomePage() {
   const articles = await getPublishedArticles();
@@ -233,6 +239,13 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+
+        <div style={{ marginTop: '52px', display: 'flex', justifyContent: 'center' }}>
+          <Link href="/about" className="cta-btn" id="exploreAboutBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>Read More About MadhanKR</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
       </section>
 
       {/* ─── BLOG SECTION ─────────────────────────────────────── */}
@@ -248,8 +261,8 @@ export default async function HomePage() {
         <HomeBlogList initialArticles={articles} />
 
         <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'center' }}>
-          <Link href="/journal" className="cta-btn" id="exploreAllJournalBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-            <span>Explore All Journal Entries &amp; Search</span>
+          <Link href="/articles" className="cta-btn" id="exploreAllArticlesBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>Explore All Articles &amp; Search</span>
             <ArrowRight size={14} />
           </Link>
         </div>

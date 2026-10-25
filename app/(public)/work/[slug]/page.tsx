@@ -47,7 +47,7 @@ export default async function CaseStudyPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <article style={{ padding: '40px var(--pad-x) 120px', maxWidth: '1000px', margin: '0 auto' }}>
+    <article className="standard-page-container" style={{ padding: '40px var(--pad-x) 120px', maxWidth: '1000px', margin: '0 auto' }}>
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="breadcrumb-wrap" style={{ marginBottom: '32px' }}>
         <Link href="/">HOME</Link>
@@ -111,7 +111,7 @@ export default async function CaseStudyPage({ params }: ProjectPageProps) {
       )}
 
       {/* Challenge and Solution */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', marginBottom: '54px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '40px', marginBottom: '54px' }}>
         <div style={{ background: 'var(--bg-surface)', border: '1.5px solid var(--sky-border)', padding: '32px' }}>
           <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', letterSpacing: '0.15em', color: 'var(--sky-blue)', marginBottom: '14px' }}>
             01 / THE CHALLENGE
@@ -148,7 +148,7 @@ export default async function CaseStudyPage({ params }: ProjectPageProps) {
       )}
 
       {/* Bottom Navigation */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '32px', borderTop: '1.5px solid var(--sky-border)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', paddingTop: '32px', borderTop: '1.5px solid var(--sky-border)' }}>
         <Link href="/work" className="ghost-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <ArrowLeft size={13} />
           <span>Back to All Works</span>

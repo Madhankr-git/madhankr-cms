@@ -34,7 +34,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
   });
 
   const categories = [
-    { key: 'all', label: 'ALL ESSAYS' },
+    { key: 'all', label: 'ALL ARTICLES' },
     ...Array.from(uniqueCategoryMap.entries()).map(([key, label]) => ({
       key,
       label: label.toUpperCase(),
@@ -138,9 +138,9 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
 
       {filtered.length === 0 ? (
         <div style={{ padding: '80px 20px', textAlign: 'center', background: 'var(--bg-surface)', border: '1.5px solid var(--sky-border)', marginTop: '40px' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', color: 'var(--sky-blue)', marginBottom: '12px' }}>00 / NO ESSAYS FOUND</div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', color: 'var(--sky-blue)', marginBottom: '12px' }}>00 / NO ARTICLES FOUND</div>
           <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
-            No journal articles match your query &quot;{searchTerm}&quot;. Try selecting a different topic or resetting the search.
+            No articles match your query &quot;{searchTerm}&quot;. Try selecting a different topic or resetting the search.
           </p>
           <button
             type="button"
@@ -157,7 +157,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
           {featured && (
             <div style={{ marginBottom: '48px' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.18em', color: 'var(--sky-blue)', fontWeight: 800, marginBottom: '12px' }}>
-                FEATURED ESSAY
+                FEATURED ARTICLE
               </div>
               <article
                 className="spotlight-card"
@@ -166,7 +166,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
                   border: '2px solid var(--dark-solid)',
                   boxShadow: '8px 8px 0px var(--sky-solid)',
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
                   position: 'relative',
                   overflow: 'hidden'
                 }}
@@ -176,7 +176,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
                       <span className="p-badge">{featured.category}</span>
                       <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--grey-text)' }}>
-                        {featured.readTime} · {featured.views} readers
+                        {featured.readTime}
                       </span>
                     </div>
 
@@ -214,8 +214,8 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <Link href={`/journal/${featured.slug}`} className="cta-btn" id="spotlightReadBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                      <span>Read Essay</span>
+                    <Link href={`/article/${featured.slug}`} className="cta-btn" id="spotlightReadBtn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                      <span>Read Article</span>
                       <ArrowRight size={14} />
                     </Link>
                   </div>
@@ -278,7 +278,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
           {regularList.length > 0 && (
             <div>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.18em', color: 'var(--grey-text)', fontWeight: 800, marginBottom: '16px' }}>
-                ALL ENTRIES ({regularList.length})
+                ALL ARTICLES ({regularList.length})
               </div>
               <div className="blog-manifest" id="blogList">
                 {regularList.map((article, idx) => (
@@ -318,7 +318,7 @@ export default function JournalFilterList({ initialArticles }: JournalFilterList
                       )}
                     </div>
                     <div className="b-action">
-                      <Link href={`/journal/${article.slug}`} className="b-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <Link href={`/article/${article.slug}`} className="b-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                         <span>READ</span>
                         <ArrowUpRight size={13} />
                       </Link>

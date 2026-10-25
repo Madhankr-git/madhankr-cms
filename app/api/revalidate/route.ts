@@ -48,11 +48,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'article' && slug) {
-      const articlePath = `/journal/${slug}`;
+      const articlePath = `/article/${slug}`;
+      const legacyPath = `/journal/${slug}`;
       revalidatePath(articlePath);
+      revalidatePath(legacyPath);
+      revalidatePath('/articles');
       revalidatePath('/journal');
       revalidatePath('/');
-      revalidatedPaths.push(articlePath, '/journal', '/');
+      revalidatedPaths.push(articlePath, legacyPath, '/articles', '/journal', '/');
     } else if (type === 'project' && slug) {
       const projectPath = `/work/${slug}`;
       revalidatePath(projectPath);
@@ -62,9 +65,10 @@ export async function POST(request: NextRequest) {
     } else if (!path) {
       // General site revalidation
       revalidatePath('/');
+      revalidatePath('/articles');
       revalidatePath('/journal');
       revalidatePath('/work');
-      revalidatedPaths.push('/', '/journal', '/work');
+      revalidatedPaths.push('/', '/articles', '/journal', '/work');
     }
 
     return NextResponse.json({

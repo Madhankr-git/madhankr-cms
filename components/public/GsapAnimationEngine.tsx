@@ -148,6 +148,16 @@ export default function GsapAnimationEngine() {
             );
           }
 
+          const heroBurger = document.getElementById('burger');
+          if (heroBurger) {
+            heroTl.fromTo(
+              heroBurger,
+              { scale: 0, opacity: 0, rotate: -90 },
+              { scale: 1, opacity: 1, rotate: 0, duration: 0.8, ease: 'back.out(2)' },
+              '-=0.7'
+            );
+          }
+
           const scrollCue = document.querySelector('.scroll-cue');
           if (scrollCue) {
             heroTl.fromTo(

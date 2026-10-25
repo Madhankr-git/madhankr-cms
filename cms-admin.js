@@ -666,6 +666,9 @@ function loadSeoForPage(pageKey) {
   document.getElementById('seoDescInput').value = settings.description || '';
   document.getElementById('seoCanonicalInput').value = settings.canonical || '';
   document.getElementById('seoKeywordsInput').value = settings.keywords || '';
+  if (document.getElementById('seoOgImageInput')) {
+    document.getElementById('seoOgImageInput').value = settings.ogImage || '';
+  }
 
   updateSeoPreviews();
 }
@@ -674,6 +677,7 @@ function updateSeoPreviews() {
   const title = document.getElementById('seoTitleInput')?.value || '';
   const desc = document.getElementById('seoDescInput')?.value || '';
   const canonical = document.getElementById('seoCanonicalInput')?.value || '';
+  const ogImage = document.getElementById('seoOgImageInput')?.value || '';
 
   // Counters
   const titleCount = document.getElementById('seoTitleCounter');
@@ -688,6 +692,7 @@ function updateSeoPreviews() {
 
   const twTitle = document.getElementById('prevTwitterTitle');
   const twDesc = document.getElementById('prevTwitterDesc');
+  const prevOg = document.getElementById('prevOgImage');
 
   if (gTitle) gTitle.textContent = title;
   if (gDesc) gDesc.textContent = desc;
@@ -695,6 +700,21 @@ function updateSeoPreviews() {
 
   if (twTitle) twTitle.textContent = title;
   if (twDesc) twDesc.textContent = desc;
+  if (prevOg && ogImage) prevOg.src = ogImage;
+}
+
+function handleStaticOgUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    if (document.getElementById('seoOgImageInput')) {
+      document.getElementById('seoOgImageInput').value = e.target.result;
+    }
+    updateSeoPreviews();
+    if (window.showToast) window.showToast('OG Image attached! Click Save to apply.');
+  };
+  reader.readAsDataURL(file);
 }
 
 function saveCurrentSeoSettings() {
@@ -703,12 +723,14 @@ function saveCurrentSeoSettings() {
   const description = document.getElementById('seoDescInput').value;
   const canonical = document.getElementById('seoCanonicalInput').value;
   const keywords = document.getElementById('seoKeywordsInput').value;
+  const ogImage = document.getElementById('seoOgImageInput')?.value || '';
 
   window.CMSData.saveSeoSettings(pageKey, {
     title,
     description,
     canonical,
-    keywords
+    keywords,
+    ogImage
   });
 
   refreshDashboardStats();
@@ -718,6 +740,30 @@ function saveCurrentSeoSettings() {
 // ─── 7. SITE SETTINGS VIEW CONTROLLER ─────────────────────────────
 function initSiteSettings() {
   renderNavItemsBuilder();
+  const settings = window.CMSData ? window.CMSData.getSiteSettings() : {};
+  if (document.getElementById('settingFaviconUrl')) {
+    document.getElementById('settingFaviconUrl').value = settings.faviconUrl || '/favicon.ico';
+    updateFaviconPreview(settings.faviconUrl || '/favicon.ico');
+  }
+}
+
+function updateFaviconPreview(url) {
+  const prev = document.getElementById('settingFaviconPreview');
+  if (prev) prev.src = url || 'favicon.ico';
+}
+
+function handleStaticFaviconUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    if (document.getElementById('settingFaviconUrl')) {
+      document.getElementById('settingFaviconUrl').value = e.target.result;
+    }
+    updateFaviconPreview(e.target.result);
+    if (window.showToast) window.showToast('Favicon uploaded! Click Save All Changes to apply.');
+  };
+  reader.readAsDataURL(file);
 }
 
 function renderNavItemsBuilder() {
@@ -770,16 +816,22 @@ function saveAllSiteSettings() {
   const siteName = document.getElementById('settingSiteName').value;
   const siteTagline = document.getElementById('settingSiteTagline').value;
   const contactEmail = document.getElementById('settingContactEmail').value;
+  const faviconUrl = document.getElementById('settingFaviconUrl')?.value || '/favicon.ico';
   const maintenanceMode = document.getElementById('settingMaintenanceMode').checked;
   const allowComments = document.getElementById('settingAllowComments').checked;
 
   window.CMSData.saveSiteSettings({
     siteName,
     siteTagline,
+    faviconUrl,
     contactEmail,
     maintenanceMode,
     allowComments
   });
+
+  // Dynamically update active browser tab favicon if exists
+  const activeIcon = document.querySelector("link[rel~='icon']");
+  if (activeIcon) activeIcon.href = faviconUrl;
 
   if (window.showToast) window.showToast('All preferences successfully updated! ✓');
 }

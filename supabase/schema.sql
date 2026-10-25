@@ -62,6 +62,9 @@ CREATE TABLE IF NOT EXISTS public.articles (
   cover_image TEXT,
   views INTEGER DEFAULT 0,
   likes INTEGER DEFAULT 0,
+  seo_title TEXT,
+  meta_description TEXT,
+  canonical_url TEXT,
   published_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -108,6 +111,7 @@ CREATE TABLE IF NOT EXISTS public.seo_settings (
   keywords TEXT NOT NULL,
   og_type TEXT DEFAULT 'website',
   og_image TEXT,
+  featured_image TEXT,
   twitter_card TEXT DEFAULT 'summary_large_image',
   index_robots BOOLEAN DEFAULT TRUE,
   follow_robots BOOLEAN DEFAULT TRUE,
@@ -125,6 +129,7 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
   primary_accent TEXT DEFAULT '#2563eb',
   maintenance_mode BOOLEAN DEFAULT FALSE,
   allow_comments BOOLEAN DEFAULT TRUE,
+  favicon_url TEXT DEFAULT '/favicon.ico',
   social_links JSONB DEFAULT '{}'::jsonb,
   nav_items JSONB DEFAULT '[]'::jsonb,
   updated_at TIMESTAMPTZ DEFAULT NOW()

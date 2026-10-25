@@ -83,19 +83,31 @@ const server = http.createServer((req, res) => {
     return serveFile(res, path.join(ROOT_DIR, 'work.html'), 'text/html; charset=utf-8');
   }
 
-  // Journal listing: /journal or /journal.html
+  // Legacy Journal redirects to new Article URLs (301 Permanent)
+  if (pathname.startsWith('/journal/')) {
+    const slug = pathname.replace(/^\/journal\//, '');
+    res.writeHead(301, { Location: `/article/${slug}` });
+    return res.end();
+  }
   if (pathname === '/journal' || pathname === '/journal.html') {
+    res.writeHead(301, { Location: '/articles' });
+    return res.end();
+  }
+
+  // Articles listing: /articles or /articles.html
+  if (pathname === '/articles' || pathname === '/articles.html') {
     return serveFile(res, path.join(ROOT_DIR, 'journal.html'), 'text/html; charset=utf-8');
   }
 
-  // Journal article: /journal/:slug
-  if (pathname.startsWith('/journal/')) {
+  // Article detail: /article/:slug
+  if (pathname.startsWith('/article/')) {
     return serveFile(res, path.join(ROOT_DIR, 'article.html'), 'text/html; charset=utf-8');
   }
 
-  // Article direct: /article or /article.html
-  if (pathname === '/article' || pathname === '/article.html' || pathname.startsWith('/article/')) {
-    return serveFile(res, path.join(ROOT_DIR, 'article.html'), 'text/html; charset=utf-8');
+  // Article direct redirect to /articles
+  if (pathname === '/article' || pathname === '/article.html') {
+    res.writeHead(301, { Location: '/articles' });
+    return res.end();
   }
 
   // Gallery: /gallery or /gallery.html

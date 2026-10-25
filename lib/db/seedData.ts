@@ -1,4 +1,5 @@
 import { Article, Project, SeoSettingsMap, SiteSettings, MediaAsset, ActivityItem } from '../types';
+import { getSiteBaseUrl } from '../utils/seo';
 
 export const INITIAL_SITE_SETTINGS: SiteSettings = {
   siteName: 'MADHANKR',
@@ -9,16 +10,17 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   primaryAccent: '#2563eb',
   maintenanceMode: false,
   allowComments: true,
+  faviconUrl: '/favicon.ico',
   socialLinks: {
     linkedin: 'https://www.linkedin.com/in/madhankrajagopal',
-    portfolio: 'https://madhankumarrajagopal.netlify.app/',
+    portfolio: `${getSiteBaseUrl()}/`,
     github: 'https://github.com/madhankr',
     twitter: 'https://twitter.com/madhankr'
   },
   navItems: [
     { id: 'nav-1', label: 'Home', url: '/', visible: true },
     { id: 'nav-2', label: 'Work', url: '/work', visible: true },
-    { id: 'nav-3', label: 'Journal', url: '/journal', visible: true },
+    { id: 'nav-3', label: 'Articles', url: '/articles', visible: true },
     { id: 'nav-4', label: 'Gallery', url: '/gallery', visible: true },
     { id: 'nav-5', label: 'About', url: '/about', visible: true },
     { id: 'nav-6', label: 'Contact', url: '/contact', visible: true }
@@ -28,8 +30,8 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
 export const INITIAL_SEO_SETTINGS: SeoSettingsMap = {
   homepage: {
     title: 'MadhanKR — Digital Designer & Creative Developer',
-    description: 'Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.',
-    canonical: 'https://madhankumarrajagopal.netlify.app/',
+    description: 'Portfolio & articles of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.',
+    canonical: `${getSiteBaseUrl()}/`,
     keywords: 'UI/UX Design, Creative Developer, EdTech, AI Workflows, Portfolio, MadhanKR',
     ogType: 'website',
     ogImage: '/assets/og-home.svg',
@@ -38,9 +40,9 @@ export const INITIAL_SEO_SETTINGS: SeoSettingsMap = {
     follow: true
   },
   journal: {
-    title: 'Journal & Notes — MadhanKR',
-    description: 'Reflections on design, front-end architecture, AI-assisted creative workflows, and digital craft by MadhanKR.',
-    canonical: 'https://madhankumarrajagopal.netlify.app/journal',
+    title: 'Articles & Notes — MadhanKR',
+    description: 'Reflections and articles on design, front-end architecture, AI-assisted creative workflows, and digital craft by MadhanKR.',
+    canonical: `${getSiteBaseUrl()}/articles`,
     keywords: 'Design Blog, AI Creative Tools, UI Engineering, Design Philosophy',
     ogType: 'blog',
     ogImage: '/assets/og-journal.svg',
@@ -51,7 +53,7 @@ export const INITIAL_SEO_SETTINGS: SeoSettingsMap = {
   work: {
     title: 'Selected Works & Case Studies — MadhanKR',
     description: 'In-depth case studies in digital product design, EdTech platforms, and interactive web experiences.',
-    canonical: 'https://madhankumarrajagopal.netlify.app/work',
+    canonical: `${getSiteBaseUrl()}/work`,
     keywords: 'Product Design Case Studies, EdTech UI, Web Design Portfolio',
     ogType: 'website',
     ogImage: '/assets/og-work.svg',
@@ -62,7 +64,7 @@ export const INITIAL_SEO_SETTINGS: SeoSettingsMap = {
   gallery: {
     title: 'Visual Experiments & Creative Lab — MadhanKR',
     description: 'Explorations in solid geometry, generative AI imagery, motion concepts, and UI prototypes.',
-    canonical: 'https://madhankumarrajagopal.netlify.app/gallery',
+    canonical: `${getSiteBaseUrl()}/gallery`,
     keywords: 'Visual Design Experiments, Generative AI, Geometric Art',
     ogType: 'website',
     ogImage: '/assets/og-gallery.svg',
@@ -73,7 +75,7 @@ export const INITIAL_SEO_SETTINGS: SeoSettingsMap = {
   about: {
     title: 'About MadhanKR — Background, Philosophy & Skills',
     description: 'Learn about MadhanKR’s 3+ years in visual design, front-end engineering, and AI-driven creative methodologies.',
-    canonical: 'https://madhankumarrajagopal.netlify.app/about',
+    canonical: `${getSiteBaseUrl()}/about`,
     keywords: 'MadhanKR Biography, Designer Skills, Resume, Creative Tech',
     ogType: 'profile',
     ogImage: '/assets/og-about.svg',

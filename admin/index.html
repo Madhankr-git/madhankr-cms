@@ -613,7 +613,7 @@
         <div class="cms-page-heading">
           <div>
             <h1 class="cms-heading-title">Posts & Case Studies</h1>
-            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Manage, edit, and organize all published portfolio case studies and journal essays.</p>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Manage, edit, and organize all published portfolio case studies and articles.</p>
           </div>
           <button class="btn-primary-blue" onclick="switchAdminView('editor')">+ Add New Post</button>
         </div>
@@ -829,7 +829,7 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
               <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Target Route</label>
               <select id="seoPageSelect" onchange="loadSeoForPage(this.value)">
                 <option value="homepage">Homepage (index.html)</option>
-                <option value="journal">Journal Listing (journal.html)</option>
+                <option value="journal">Articles Listing (journal.html)</option>
                 <option value="work">Portfolio Works (work.html)</option>
                 <option value="gallery">Visual Experiments (gallery.html)</option>
                 <option value="about">About Profile (about.html)</option>
@@ -854,12 +854,24 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
 
             <div style="margin-bottom: 18px;">
               <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Canonical URL</label>
-              <input type="text" id="seoCanonicalInput" value="https://madhankumarrajagopal.netlify.app/" oninput="updateSeoPreviews()" />
+              <input type="text" id="seoCanonicalInput" placeholder="Auto-resolved dynamically (e.g. https://your-domain.com/)" oninput="updateSeoPreviews()" />
             </div>
 
             <div style="margin-bottom: 18px;">
               <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Focus Keywords</label>
               <input type="text" id="seoKeywordsInput" value="UI/UX Design, Creative Developer, EdTech, AI Workflows, Portfolio, MadhanKR" />
+            </div>
+
+            <div style="margin-bottom: 18px;">
+              <label style="font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                <span>Open Graph (OG) Social Image</span>
+                <span style="font-size: 11px; color: var(--cms-text-subtle);">1200 × 630 px</span>
+              </label>
+              <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                <input type="text" id="seoOgImageInput" placeholder="/assets/og-home.svg or https://..." oninput="updateSeoPreviews()" style="flex: 1;" />
+                <button type="button" class="button" onclick="document.getElementById('seoOgFileInput').click()">Upload</button>
+                <input type="file" id="seoOgFileInput" style="display: none;" accept="image/*" onchange="handleStaticOgUpload(event)" />
+              </div>
             </div>
 
             <div style="padding-top: 14px; border-top: 1px solid var(--cms-border-subtle); display: flex; gap: 20px;">
@@ -876,7 +888,7 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
                 <h2 class="card-heading-title">Google Search Preview</h2>
               </div>
               <div class="google-preview-box">
-                <div class="google-breadcrumb" id="prevGoogleUrl">https://madhankumarrajagopal.netlify.app</div>
+                <div class="google-breadcrumb" id="prevGoogleUrl">https://your-domain.com</div>
                 <a href="#" class="google-title-link" id="prevGoogleTitle">MadhanKR — Digital Designer & Creative Developer</a>
                 <div class="google-snippet-desc" id="prevGoogleDesc">Portfolio & personal journal of MadhanKR. Specializing in UI/UX design, emerging technology, AI workflows, and creative development.</div>
               </div>
@@ -887,8 +899,8 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
                 <h2 class="card-heading-title">Social Share Card Preview</h2>
               </div>
               <div style="border: 1px solid var(--cms-border); border-radius: var(--cms-radius-md); overflow: hidden; background: #ffffff;">
-                <div style="height: 120px; background: linear-gradient(135deg, #1e293b, #0f172a); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">
-                  OpenGraph Social Card Image
+                <div style="height: 140px; background: #0f172a; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                  <img id="prevOgImage" src="assets/og-home.svg" alt="Social Card" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='assets/og-journal.svg'" />
                 </div>
                 <div style="padding: 12px;">
                   <strong style="font-size: 13px; display: block;" id="prevTwitterTitle">MadhanKR — Digital Designer & Creative Developer</strong>
@@ -907,7 +919,7 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
         <div class="cms-page-heading">
           <div>
             <h1 class="cms-heading-title">System Settings & Data</h1>
-            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Site metadata, navigation menu items, and JSON backup tools.</p>
+            <p style="color: var(--cms-text-muted); font-size: 13px; margin-top: 4px;">Site metadata, favicon, navigation menu items, and JSON backup tools.</p>
           </div>
           <button class="btn-primary-blue" onclick="saveAllSiteSettings()">Save All Changes</button>
         </div>
@@ -915,7 +927,7 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
         <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
           <div class="cms-card">
             <div class="cms-card-header">
-              <h2 class="card-heading-title">Site Identity & Contact</h2>
+              <h2 class="card-heading-title">Site Identity, Favicon & Contact</h2>
             </div>
             <div style="display: flex; flex-direction: column; gap: 16px;">
               <div>
@@ -925,6 +937,18 @@ When we combine mechanical efficiency with human intentionality, we don’t dilu
               <div>
                 <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Tagline</label>
                 <input type="text" id="settingSiteTagline" value="Digital Designer × Creative Developer" />
+              </div>
+              <div>
+                <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Website Favicon</label>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                  <div style="width: 36px; height: 36px; border: 1px solid var(--cms-border); border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #ffffff;">
+                    <img id="settingFaviconPreview" src="favicon.ico" alt="Favicon" style="width: 24px; height: 24px; object-fit: contain;" onerror="this.src='favicon.ico'" />
+                  </div>
+                  <input type="text" id="settingFaviconUrl" value="/favicon.ico" placeholder="/favicon.ico" oninput="updateFaviconPreview(this.value)" style="flex: 1;" />
+                  <button type="button" class="button" onclick="document.getElementById('settingFaviconFileInput').click()">Upload</button>
+                  <input type="file" id="settingFaviconFileInput" style="display: none;" accept=".ico,.png,.svg,.webp" onchange="handleStaticFaviconUpload(event)" />
+                </div>
+                <span style="font-size: 11px; color: var(--cms-text-muted);">Supports .ico, .png, .svg, and .webp.</span>
               </div>
               <div>
                 <label style="font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px;">Contact Email</label>

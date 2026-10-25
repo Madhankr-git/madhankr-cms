@@ -179,6 +179,15 @@
       margin-bottom: 12px;
       padding-left: 6px;
     }
+    .article-body img {
+      width: 100%;
+      aspect-ratio: 21 / 9;
+      object-fit: cover;
+      display: block;
+      margin: 36px 0;
+      border-radius: 6px;
+      border: 1.5px solid var(--sky-border);
+    }
 
     /* Visual figure card */
     .art-figure {
@@ -284,12 +293,12 @@
     </a>
 
     <ul class="public-nav-list">
-      <li class="public-nav-item"><a href="index.html" class="public-nav-link"><span class="p-idx">00</span> Home</a></li>
-      <li class="public-nav-item"><a href="work.html" class="public-nav-link"><span class="p-idx">01</span> Work</a></li>
-      <li class="public-nav-item"><a href="journal.html" class="public-nav-link active"><span class="p-idx">02</span> Journal</a></li>
-      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link"><span class="p-idx">03</span> Gallery</a></li>
-      <li class="public-nav-item"><a href="about.html" class="public-nav-link"><span class="p-idx">04</span> About</a></li>
-      <li class="public-nav-item"><a href="contact.html" class="public-nav-link"><span class="p-idx">05</span> Contact</a></li>
+      <li class="public-nav-item"><a href="index.html" class="public-nav-link">Home</a></li>
+      <li class="public-nav-item"><a href="work.html" class="public-nav-link">Work</a></li>
+      <li class="public-nav-item"><a href="journal.html" class="public-nav-link active">Articles</a></li>
+      <li class="public-nav-item"><a href="gallery.html" class="public-nav-link">Gallery</a></li>
+      <li class="public-nav-item"><a href="about.html" class="public-nav-link">About</a></li>
+      <li class="public-nav-item"><a href="contact.html" class="public-nav-link">Contact</a></li>
     </ul>
 
     <div style="display: flex; align-items: center; gap: 14px;">
@@ -316,7 +325,7 @@
       <ul class="drawer-links-list">
         <li><a href="index.html" class="drawer-nav-link"><span class="p-idx">00</span> Home</a></li>
         <li><a href="work.html" class="drawer-nav-link"><span class="p-idx">01</span> Work</a></li>
-        <li><a href="journal.html" class="drawer-nav-link active"><span class="p-idx">02</span> Journal</a></li>
+        <li><a href="journal.html" class="drawer-nav-link active"><span class="p-idx">02</span> Articles</a></li>
         <li><a href="gallery.html" class="drawer-nav-link"><span class="p-idx">03</span> Gallery</a></li>
         <li><a href="about.html" class="drawer-nav-link"><span class="p-idx">04</span> About</a></li>
         <li><a href="contact.html" class="drawer-nav-link"><span class="p-idx">05</span> Contact</a></li>
@@ -341,7 +350,7 @@
     <div class="breadcrumb-wrap">
       <a href="index.html">[ HOME ]</a>
       <span class="breadcrumb-sep">/</span>
-      <a href="journal.html">[ JOURNAL ]</a>
+      <a href="journal.html">[ ARTICLES ]</a>
       <span class="breadcrumb-sep">/</span>
       <span class="breadcrumb-current" id="articleCategoryBreadcrumb">AI & WORKFLOWS</span>
     </div>
@@ -459,13 +468,13 @@
     <!-- Next / Prev Article Navigation -->
     <div class="next-prev-wrap">
       <a href="article.html?id=nothing-is-perfect" class="nav-card-item">
-        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.15em;">← PREVIOUS ESSAY</span>
+        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.15em;">← PREVIOUS ARTICLE</span>
         <span style="font-weight: 800; font-size: 16px; margin: 8px 0; color: var(--text-main);">Nothing Is Perfect, and Maybe That’s the Point</span>
         <span style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);">5 min read</span>
       </a>
 
       <a href="article.html?id=designers-who-code" class="nav-card-item" style="text-align: right;">
-        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.15em;">NEXT ESSAY →</span>
+        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--sky-blue); font-weight: 800; letter-spacing: 0.15em;">NEXT ARTICLE →</span>
         <span style="font-weight: 800; font-size: 16px; margin: 8px 0; color: var(--text-main);">What Happens When Designers Start Coding?</span>
         <span style="font-family: var(--font-mono); font-size: 11px; color: var(--grey-text);">7 min read</span>
       </a>

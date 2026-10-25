@@ -32,6 +32,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
           primaryAccent: data.primary_accent,
           maintenanceMode: data.maintenance_mode,
           allowComments: data.allow_comments,
+          faviconUrl: data.favicon_url || '/favicon.ico',
           socialLinks: data.social_links,
           navItems: data.nav_items,
         };
@@ -42,6 +43,15 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 export async function saveSiteSettings(settings: SiteSettings): Promise<boolean> {
+  // Always persist locally for offline/instant availability
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_SETTINGS_KEY, JSON.stringify(settings));
+    } catch (e) {
+      console.warn('Could not save site settings to localStorage', e);
+    }
+  }
+
   if (isSupabaseConfigured()) {
     const client = getSupabaseBrowserClient();
     if (client) {
@@ -61,6 +71,7 @@ export async function saveSiteSettings(settings: SiteSettings): Promise<boolean>
         primary_accent: settings.primaryAccent,
         maintenance_mode: settings.maintenanceMode,
         allow_comments: settings.allowComments,
+        favicon_url: settings.faviconUrl || '/favicon.ico',
         social_links: settings.socialLinks,
         nav_items: settings.navItems,
         updated_at: new Date().toISOString()
@@ -70,7 +81,7 @@ export async function saveSiteSettings(settings: SiteSettings): Promise<boolean>
     }
   }
 
-  return false;
+  return true;
 }
 
 export function getLocalSeoSettings(): SeoSettingsMap {
@@ -84,10 +95,48 @@ export function getLocalSeoSettings(): SeoSettingsMap {
 }
 
 export async function getSeoSettings(): Promise<SeoSettingsMap> {
+  if (isSupabaseConfigured()) {
+    const client = getSupabaseBrowserClient();
+    if (client) {
+      const { data, error } = await client.from('seo_settings').select('*');
+      if (!error && data && data.length > 0) {
+        const local = getLocalSeoSettings();
+        const mapped = { ...local };
+        for (const row of data) {
+          const k = row.page_key as keyof SeoSettingsMap;
+          if (mapped[k]) {
+            mapped[k] = {
+              ...mapped[k],
+              title: row.title || mapped[k].title,
+              description: row.description || mapped[k].description,
+              canonical: row.canonical || mapped[k].canonical,
+              keywords: row.keywords || mapped[k].keywords,
+              ogType: row.og_type || mapped[k].ogType,
+              ogImage: row.og_image || mapped[k].ogImage,
+              featuredImage: row.featured_image || mapped[k].featuredImage,
+              twitterCard: row.twitter_card || mapped[k].twitterCard,
+              index: row.index_robots !== false,
+              follow: row.follow_robots !== false,
+            };
+          }
+        }
+        return mapped;
+      }
+    }
+  }
   return getLocalSeoSettings();
 }
 
 export async function saveSeoSettings(seo: SeoSettingsMap): Promise<boolean> {
+  // Always persist locally for offline/instant availability
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_SEO_KEY, JSON.stringify(seo));
+    } catch (e) {
+      console.warn('Could not save SEO settings to localStorage', e);
+    }
+  }
+
   if (isSupabaseConfigured()) {
     const client = getSupabaseBrowserClient();
     if (client) {
@@ -107,9 +156,10 @@ export async function saveSeoSettings(seo: SeoSettingsMap): Promise<boolean> {
           keywords: pageSeo.keywords,
           og_type: pageSeo.ogType,
           og_image: pageSeo.ogImage,
+          featured_image: pageSeo.featuredImage || null,
           twitter_card: pageSeo.twitterCard,
-          index_robots: pageSeo.indexRobots,
-          follow_robots: pageSeo.followRobots,
+          index_robots: pageSeo.indexRobots ?? pageSeo.index,
+          follow_robots: pageSeo.followRobots ?? pageSeo.follow,
           updated_at: new Date().toISOString()
         });
       }
@@ -117,7 +167,7 @@ export async function saveSeoSettings(seo: SeoSettingsMap): Promise<boolean> {
     }
   }
 
-  return false;
+  return true;
 }
 
 export function getActivities(): ActivityItem[] {

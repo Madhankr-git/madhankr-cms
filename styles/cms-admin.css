@@ -1583,3 +1583,18 @@ button.button-primary {
     align-items: flex-start;
   }
 }
+
+/* ─── 21:9 ARTICLE IMAGES & PREVIEW STYLING ───────────────────── */
+.post-editor-cover-preview {
+  width: 100%;
+  aspect-ratio: 21 / 9 !important;
+  object-fit: cover !important;
+}
+
+.preview-markdown-flow img {
+  width: 100% !important;
+  aspect-ratio: 21 / 9 !important;
+  object-fit: cover !important;
+  display: block;
+  border-radius: 6px;
+}

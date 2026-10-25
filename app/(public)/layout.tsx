@@ -3,6 +3,7 @@ import '@/styles/public.css';
 import PublicHeader from '@/components/public/PublicHeader';
 import PublicFooter from '@/components/public/PublicFooter';
 import GsapAnimationEngine from '@/components/public/GsapAnimationEngine';
+import PublicMainLayout from '@/components/public/PublicMainLayout';
 
 export default function PublicLayout({
   children,
@@ -24,9 +25,7 @@ export default function PublicLayout({
 
       <PublicHeader />
 
-      <main style={{ flex: 1, position: 'relative', zIndex: 1, paddingTop: '76px' }}>
-        {children}
-      </main>
+      <PublicMainLayout>{children}</PublicMainLayout>
 
       <PublicFooter />
     </div>

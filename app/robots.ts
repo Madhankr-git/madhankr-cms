@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { getSiteBaseUrl } from '@/lib/utils/seo';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://madhankumarrajagopal.netlify.app';
+  const baseUrl = getSiteBaseUrl();
 
   return {
     rules: [

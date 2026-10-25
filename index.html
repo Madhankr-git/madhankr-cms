@@ -21,27 +21,48 @@
     <div class="bg-shape bg-circle-sm" id="bgCircle2"></div>
   </div>
 
-  <!-- ─── BURGER MENU TRIGGER ──────────────────────────────── -->
-  <button class="burger" id="burger" aria-label="Toggle navigation menu">
-    <span class="b-line top"></span>
-    <span class="b-line mid"></span>
-    <span class="b-line bot"></span>
-  </button>
+  <!-- ─── UNIFIED PUBLIC SITE HEADER ────────────────────────── -->
+  <header class="public-header public-header--home" id="publicSiteHeader">
+    <div class="public-header-container">
+      <a href="index.html" class="public-brand" aria-label="MadhanKR Portfolio Home">
+        <div class="brand-marks">
+          <span class="b-mark sq"></span>
+          <span class="b-mark semi"></span>
+          <span class="b-mark circ"></span>
+        </div>
+        <span class="brand-name">MADHANKR</span>
+      </a>
+
+      <div class="public-header-actions">
+        <button class="burger" id="burger" aria-label="Toggle navigation menu">
+          <span class="b-line top"></span>
+          <span class="b-line mid"></span>
+          <span class="b-line bot"></span>
+        </button>
+      </div>
+    </div>
+  </header>
 
   <!-- ─── RIGHT SIDE NAV DRAWER ────────────────────────────── -->
   <nav class="side-nav" id="sideNav">
     <div class="nav-inner">
-      <div class="nav-brand">
-        <span class="nav-sq"></span>
-        <span class="nav-brand-text">MADHANKR</span>
+      <div class="nav-brand-row">
+        <div class="nav-brand">
+          <span class="nav-sq"></span>
+          <span class="nav-brand-text">MADHANKR</span>
+        </div>
+        <button type="button" class="nav-close-btn" id="navCloseBtn" aria-label="Close navigation menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
       </div>
 
       <ul class="nav-list">
-        <li><a href="#home" class="nav-link" data-section="home"><span class="nav-idx">00</span> Home</a></li>
-        <li><a href="#portfolio" class="nav-link" data-section="portfolio"><span class="nav-idx">01</span> Portfolio</a></li>
-        <li><a href="#about" class="nav-link" data-section="about"><span class="nav-idx">02</span> About</a></li>
-        <li><a href="#blog" class="nav-link" data-section="blog"><span class="nav-idx">03</span> Blog</a></li>
-        <li><a href="#contact" class="nav-link" data-section="contact"><span class="nav-idx">04</span> Contact</a></li>
+        <li><a href="index.html" class="nav-link active"><span class="nav-idx">00</span> Home</a></li>
+        <li><a href="work.html" class="nav-link"><span class="nav-idx">01</span> Work</a></li>
+        <li><a href="journal.html" class="nav-link"><span class="nav-idx">02</span> Articles</a></li>
+        <li><a href="gallery.html" class="nav-link"><span class="nav-idx">03</span> Gallery</a></li>
+        <li><a href="about.html" class="nav-link"><span class="nav-idx">04</span> About</a></li>
+        <li><a href="contact.html" class="nav-link"><span class="nav-idx">05</span> Contact</a></li>
       </ul>
 
       <!-- Geometric shapes in drawer -->
@@ -378,6 +399,13 @@
         </div>
       </div>
     </div>
+
+    <div style="margin-top: 52px; display: flex; justify-content: center;">
+      <a href="about.html" class="cta-btn" id="exploreAboutBtn">
+        <span>Read More About MadhanKR</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
   </section>
 
   <!-- ─── BLOG SECTION ─────────────────────────────────────── -->
@@ -450,7 +478,7 @@
 
     <div style="margin-top: 48px; display: flex; justify-content: center;">
       <a href="journal.html" class="cta-btn">
-        <span>Explore All Journal Entries & Search</span>
+        <span>Explore All Articles & Search</span>
         <span class="btn-arrow">→</span>
       </a>
     </div>

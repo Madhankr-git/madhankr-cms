@@ -60,6 +60,9 @@ export function mapDbRowToArticle(row: any): Article {
     published_at: row.published_at || undefined,
     created_at: row.created_at || undefined,
     updated_at: row.updated_at || undefined,
+    seo_title: typeof row.seo_title === 'string' && row.seo_title.trim() ? row.seo_title.trim() : undefined,
+    meta_description: typeof row.meta_description === 'string' && row.meta_description.trim() ? row.meta_description.trim() : undefined,
+    canonical_url: typeof row.canonical_url === 'string' && row.canonical_url.trim() ? row.canonical_url.trim() : undefined,
   };
 }
 
@@ -95,6 +98,18 @@ export function mapArticleToDbPayload(article: Article): Record<string, any> {
 
   if (normalized.cover_image !== undefined) {
     payload.cover_image = normalized.cover_image || null;
+  }
+
+  if (normalized.seo_title !== undefined) {
+    payload.seo_title = normalized.seo_title ? normalized.seo_title.trim() : null;
+  }
+
+  if (normalized.meta_description !== undefined) {
+    payload.meta_description = normalized.meta_description ? normalized.meta_description.trim() : null;
+  }
+
+  if (normalized.canonical_url !== undefined) {
+    payload.canonical_url = normalized.canonical_url ? normalized.canonical_url.trim() : null;
   }
 
   return payload;
@@ -214,11 +229,20 @@ export async function saveArticle(article: Article): Promise<{ success: boolean;
         .select()
         .single();
 
-      // Graceful fallback if the remote Supabase database has not had the cover_image column added yet
-      if (error && (error.code === '42703' || error.message?.includes('cover_image'))) {
-        console.warn('[Supabase Articles] Retrying upsert without cover_image (column not in remote schema):', error.message);
+      // Graceful fallback if the remote Supabase database has not had the cover_image or SEO columns added yet
+      if (error && (error.code === '42703' || error.message?.includes('column') || error.message?.includes('cover_image') || error.message?.includes('seo_') || error.message?.includes('canonical_url'))) {
+        console.warn('[Supabase Articles] Retrying upsert without unmigrated optional columns:', error.message);
         const fallbackPayload = { ...payload };
-        delete fallbackPayload.cover_image;
+        if (error.message?.includes('cover_image')) delete fallbackPayload.cover_image;
+        if (error.message?.includes('seo_title')) delete fallbackPayload.seo_title;
+        if (error.message?.includes('meta_description')) delete fallbackPayload.meta_description;
+        if (error.message?.includes('canonical_url')) delete fallbackPayload.canonical_url;
+        // If general column error, strip all newly added optional fields
+        if (error.code === '42703') {
+          delete fallbackPayload.seo_title;
+          delete fallbackPayload.meta_description;
+          delete fallbackPayload.canonical_url;
+        }
         const retryResult = await client
           .from('articles')
           .upsert(fallbackPayload)
@@ -235,7 +259,10 @@ export async function saveArticle(article: Article): Promise<{ success: boolean;
       // Synchronize local cache with newly saved data
       const mappedResult = mapDbRowToArticle({
         ...data,
-        cover_image: normalized.cover_image || data?.cover_image
+        cover_image: normalized.cover_image || data?.cover_image,
+        seo_title: normalized.seo_title || data?.seo_title,
+        meta_description: normalized.meta_description || data?.meta_description,
+        canonical_url: normalized.canonical_url || data?.canonical_url,
       });
       const all = getLocalArticles();
       const existingIdx = all.findIndex((a) => a.id === mappedResult.id);

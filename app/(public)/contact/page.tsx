@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div style={{ padding: '40px var(--pad-x) 120px', maxWidth: '1000px', margin: '0 auto' }}>
+    <div className="standard-page-container" style={{ padding: '40px var(--pad-x) 120px' }}>
       <div className="section-header" style={{ marginBottom: '32px' }}>
         <div className="section-tag-box">
-          <span className="section-num">05</span>
+          <span className="section-num">01</span>
           <span className="section-bracket">[ TRANSMISSION ]</span>
         </div>
         <h1 className="section-title">LET’S CONNECT</h1>

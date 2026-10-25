@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
 import { getPublishedArticles } from '@/lib/db/articles';
 import { getAllProjects } from '@/lib/db/projects';
+import { getSiteBaseUrl } from '@/lib/utils/seo';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://madhankumarrajagopal.netlify.app';
+  const baseUrl = getSiteBaseUrl();
 
   const articles = await getPublishedArticles();
   const projects = await getAllProjects();
@@ -22,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/journal`,
+      url: `${baseUrl}/articles`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
@@ -48,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const articlePages: MetadataRoute.Sitemap = articles.map((a) => ({
-    url: `${baseUrl}/journal/${a.slug}`,
+    url: `${baseUrl}/article/${a.slug}`,
     lastModified: a.updated_at ? new Date(a.updated_at) : new Date(),
     changeFrequency: 'weekly',
     priority: 0.85,
